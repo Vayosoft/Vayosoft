@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Vayosoft.Core.SharedKernel.Events.External;
+using Vayosoft.Commons.Events.External;
 
 namespace Vayosoft.Streaming.Consumers
 {

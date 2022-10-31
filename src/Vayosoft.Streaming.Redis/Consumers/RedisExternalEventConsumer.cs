@@ -3,10 +3,10 @@ using System.Threading.Channels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Vayosoft.Core.SharedKernel.Events;
-using Vayosoft.Core.SharedKernel.Events.External;
-using Vayosoft.Core.Utilities;
+using Vayosoft.Commons.Events;
+using Vayosoft.Commons.Events.External;
 using Vayosoft.Streaming.Consumers;
+using Vayosoft.Utilities;
 
 namespace Vayosoft.Streaming.Redis.Consumers
 {

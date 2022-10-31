@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using Vayosoft.Core.Utilities;
+using Vayosoft.Utilities;
 
 namespace Vayosoft.MongoDB
 {

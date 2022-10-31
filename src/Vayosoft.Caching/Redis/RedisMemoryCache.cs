@@ -3,9 +3,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using Vayosoft.Core.Caching;
-using Vayosoft.Core.Utilities;
 using Vayosoft.Redis;
+using Vayosoft.Utilities;
 
 namespace Vayosoft.Caching.Redis
 {

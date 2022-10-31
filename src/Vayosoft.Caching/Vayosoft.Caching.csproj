@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vayosoft.Core\Vayosoft.Core.csproj" />
+    <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
     <ProjectReference Include="..\Vayosoft.Redis\Vayosoft.Redis.csproj" />
   </ItemGroup>
 

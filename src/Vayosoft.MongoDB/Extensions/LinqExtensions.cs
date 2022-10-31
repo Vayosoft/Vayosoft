@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver.Linq;
-using Vayosoft.Core.Specifications;
+using Vayosoft.Specifications;
 
 namespace Vayosoft.MongoDB.Extensions
 {

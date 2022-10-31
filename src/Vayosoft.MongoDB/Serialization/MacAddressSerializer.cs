@@ -1,5 +1,5 @@
 ﻿using MongoDB.Bson.Serialization;
-using Vayosoft.Core.SharedKernel.ValueObjects;
+using Vayosoft.Commons.ValueObjects;
 
 namespace Vayosoft.MongoDB.Serialization
 {

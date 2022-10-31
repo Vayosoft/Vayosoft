@@ -1,10 +1,9 @@
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Vayosoft.Core.Commands;
-using Vayosoft.Core.Commands.External;
 using Vayosoft.Http.Policies;
 using Polly;
+using Vayosoft.Commands;
 
 namespace Vayosoft.Http.Commands
 {

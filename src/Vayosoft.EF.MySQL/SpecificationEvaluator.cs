@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Vayosoft.Core.SharedKernel.Entities;
-using Vayosoft.Core.Specifications;
+using Vayosoft.Commons.Entities;
+using Vayosoft.Specifications;
 
 namespace Vayosoft.EF.MySQL
 {
-    public class SpecificationEvaluator<TEntity> : Core.Specifications.SpecificationEvaluator<TEntity> where TEntity : class, IEntity
+    public class SpecificationEvaluator<TEntity> : Specifications.SpecificationEvaluator<TEntity> where TEntity : class, IEntity
     {
         public new IQueryable<TEntity> Evaluate(IQueryable<TEntity> input, ISpecification<TEntity> spec)
         {

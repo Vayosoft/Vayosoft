@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver.Linq;
-using Vayosoft.Core.SharedKernel.Models;
-using Vayosoft.Core.Specifications;
+using Vayosoft.Commons.Models;
+using Vayosoft.Specifications;
 
 namespace Vayosoft.MongoDB.Extensions
 {

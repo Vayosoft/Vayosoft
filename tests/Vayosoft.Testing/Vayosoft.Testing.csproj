@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Vayosoft.Core\Vayosoft.Core.csproj" />
+    <ProjectReference Include="..\..\src\Vayosoft\Vayosoft.csproj" />
   </ItemGroup>
 
 </Project>

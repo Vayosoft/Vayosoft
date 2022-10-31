@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using Vayosoft.Core.SharedKernel.Entities;
+using Vayosoft.Commons.Entities;
 
 namespace Vayosoft.MongoDB
 {

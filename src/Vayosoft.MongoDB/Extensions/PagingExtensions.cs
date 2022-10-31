@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Core.SharedKernel.Models.Pagination;
+using Vayosoft.Commons.Models.Pagination;
 
 namespace Vayosoft.MongoDB.Extensions
 {

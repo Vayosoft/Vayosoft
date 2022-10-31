@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Core.Persistence;
-using Vayosoft.Core.SharedKernel;
-using Vayosoft.Core.SharedKernel.Aggregates;
-using Vayosoft.Core.SharedKernel.Models.Pagination;
-using Vayosoft.Core.Specifications;
+using Vayosoft.Commons;
+using Vayosoft.Commons.Aggregates;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.MongoDB.Extensions;
+using Vayosoft.Persistence;
+using Vayosoft.Specifications;
 
 namespace Vayosoft.MongoDB
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Vayosoft.Core.Persistence;
-using Vayosoft.Core.SharedKernel.Entities;
-using Vayosoft.Core.SharedKernel.Exceptions;
-using Vayosoft.Core.Specifications;
+using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Exceptions;
+using Vayosoft.Persistence;
+using Vayosoft.Specifications;
 
 namespace Vayosoft.EF.MySQL
 {

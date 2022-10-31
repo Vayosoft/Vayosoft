@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using AutoMapper;
-using Vayosoft.Core.Mapping;
+using Vayosoft.Mapping;
 
 namespace Vayosoft.AutoMapper
 {

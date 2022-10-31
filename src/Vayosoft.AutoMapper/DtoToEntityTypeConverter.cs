@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
-using Vayosoft.Core.Persistence;
-using Vayosoft.Core.SharedKernel.Entities;
+using Vayosoft.Commons.Entities;
+using Vayosoft.Persistence;
 
 namespace Vayosoft.AutoMapper
 {

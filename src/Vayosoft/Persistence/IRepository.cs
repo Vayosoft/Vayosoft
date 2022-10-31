@@ -1,0 +1,12 @@
+﻿using Vayosoft.Commons.Aggregates;
+
+namespace Vayosoft.Persistence
+{
+    public interface IRepository<T> : IReadOnlyRepository<T> where T : class, IAggregateRoot
+    {
+        Task AddAsync(T entity, CancellationToken cancellationToken = default);
+        Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+        Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+        Task DeleteAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull;
+    }
+}

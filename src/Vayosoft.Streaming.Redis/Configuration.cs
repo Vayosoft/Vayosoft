@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Vayosoft.Core.SharedKernel.Events.External;
+using Vayosoft.Commons.Events.External;
 using Vayosoft.Redis;
 using Vayosoft.Streaming.Consumers;
 using Vayosoft.Streaming.Redis.Consumers;

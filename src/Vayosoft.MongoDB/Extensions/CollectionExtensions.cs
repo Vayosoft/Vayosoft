@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using MongoDB.Driver;
-using Vayosoft.Core.SharedKernel.Entities;
-using Vayosoft.Core.SharedKernel.Models;
-using Vayosoft.Core.SharedKernel.Models.Pagination;
+using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models;
+using Vayosoft.Commons.Models.Pagination;
 
 namespace Vayosoft.MongoDB.Extensions
 {

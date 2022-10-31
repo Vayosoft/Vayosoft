@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
-using Vayosoft.Core.SharedKernel.Entities;
+using Vayosoft.Commons.Entities;
 using Vayosoft.MongoDB.Extensions;
 
 namespace Vayosoft.MongoDB

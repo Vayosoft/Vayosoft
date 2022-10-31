@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Vayosoft.Caching.Redis;
-using Vayosoft.Core.Caching;
 
 namespace Vayosoft.Caching
 {
