@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Caching", "src\Vay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.gRPC", "src\Vayosoft.gRPC\Vayosoft.gRPC.csproj", "{6D01C596-A92F-4516-896E-AB61FEC085DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Identity", "src\Vayosoft.Identity\Vayosoft.Identity.csproj", "{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{6D01C596-A92F-4516-896E-AB61FEC085DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D01C596-A92F-4516-896E-AB61FEC085DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D01C596-A92F-4516-896E-AB61FEC085DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{B99B151D-5FE0-4ECC-B40E-EFD3B82B356E} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{1B79B073-3A4F-48FE-BA5A-95EE69B43D21} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{6D01C596-A92F-4516-896E-AB61FEC085DE} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{A7FE9282-9D4F-4F53-87CF-C7A43CDFD92B} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}
