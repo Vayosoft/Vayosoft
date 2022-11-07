@@ -7,24 +7,24 @@ namespace Vayosoft.Identity.Tokens
 {
     public static class JwtUtils
     {
-        public static TokenResult GenerateToken()
+        public static TokenResult GenerateToken(string signingKey, IEnumerable<Claim> claims, TimeSpan timeout)
         {
             var signingCredentials = new SigningCredentials(
-                key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes("qwertyuiopasdfghjklzxcvbnm123456")),
+                key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
                 algorithm: SecurityAlgorithms.HmacSha256);
 
             var jwtDate = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
-                audience: "jwt-test", // must match the audience in AddJwtBearer()
-                issuer: "jwt-test", // must match the issuer in AddJwtBearer()
+                audience: "Vayosoft", // must match the audience in AddJwtBearer()
+                issuer: "Vayosoft", // must match the issuer in AddJwtBearer()
 
                 // Add whatever claims you'd want the generated token to include
-                claims: new List<Claim> {
-                    new Claim(ClaimTypes.Name, "anton@vayosoft.com"),
+                claims: claims ?? new List<Claim> {
+                    new(ClaimTypes.Name, "default"),
                 },
                 notBefore: jwtDate,
-                expires: jwtDate.AddSeconds(3600), // Should be short lived. For logins, it's may be fine to use 24h
+                expires: jwtDate.Add(timeout), // Should be short lived. For logins, it's may be fine to use 24h
 
                 // Provide a cryptographic key used to sign the token.
                 // When dealing with symmetric keys then this must be
@@ -33,7 +33,7 @@ namespace Vayosoft.Identity.Tokens
             );
 
             // Generate the actual token as a string
-            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             // Return some agreed upon or documented structure.
             return new TokenResult
