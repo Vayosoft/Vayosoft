@@ -10,9 +10,9 @@ namespace Vayosoft.Identity
     public static class Configuration
     {
         //https://blog.devgenius.io/jwt-authentication-in-asp-net-core-e67dca9ae3e8
-        public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, string symmetricKey)
         {
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Symmetric:Key"]));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symmetricKey));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -40,7 +40,7 @@ namespace Vayosoft.Identity
 
             return services;
         }
-
+        
         public static IServiceCollection AddTokenAuthorization(this IServiceCollection services)
         {
             services.AddAuthorization(options =>
