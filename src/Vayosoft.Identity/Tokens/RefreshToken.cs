@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Vayosoft.Identity
+namespace Vayosoft.Identity.Tokens
 {
     public class RefreshToken
     {

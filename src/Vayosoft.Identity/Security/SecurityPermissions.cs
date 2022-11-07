@@ -1,4 +1,4 @@
-﻿namespace Vayosoft.Identity
+﻿namespace Vayosoft.Identity.Security
 {
     [Flags]
     public enum SecurityPermissions

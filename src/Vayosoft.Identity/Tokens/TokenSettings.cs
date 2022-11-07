@@ -1,6 +1,6 @@
-﻿namespace Vayosoft.Identity
+﻿namespace Vayosoft.Identity.Tokens
 {
-    public class AppSettings
+    public class TokenSettings
     {
         public string Secret { get; set; }
 

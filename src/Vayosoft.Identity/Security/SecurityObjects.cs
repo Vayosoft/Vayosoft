@@ -1,6 +1,6 @@
 ﻿using Vayosoft.Commons.Entities;
 
-namespace Vayosoft.Identity
+namespace Vayosoft.Identity.Security
 {
     public class SecurityObjectEntity : EntityBase<string>
     {

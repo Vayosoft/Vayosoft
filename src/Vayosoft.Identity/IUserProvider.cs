@@ -1,11 +1,11 @@
 ﻿namespace Vayosoft.Identity
 {
-    public interface IProviderable
+    public interface IUserProvider
     {
         object ProviderId { get; }
     }
 
-    public interface IProviderable<out TKey> : IProviderable
+    public interface IUserProvider<out TKey> : IUserProvider
     {
         new TKey ProviderId { get; }
     }

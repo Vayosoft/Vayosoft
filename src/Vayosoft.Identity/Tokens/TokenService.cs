@@ -5,19 +5,20 @@ using System.Security.Principal;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Vayosoft.Identity.Security;
 
-namespace Vayosoft.Identity
+namespace Vayosoft.Identity.Tokens
 {
-    public class JwtService : IJwtService
+    public class TokenService : ITokenService
     {
-        private readonly AppSettings _appSettings;
+        private readonly TokenSettings _appSettings;
 
-        public JwtService(IOptions<AppSettings> appSettings)
+        public TokenService(IOptions<TokenSettings> appSettings)
         {
             _appSettings = appSettings.Value;
         }
 
-        public string GenerateJwtToken(IUser user, IEnumerable<SecurityRoleEntity> roles)
+        public string GenerateToken(IUser user, IEnumerable<SecurityRoleEntity> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -26,8 +27,8 @@ namespace Vayosoft.Identity
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()?? throw new InvalidOperationException("The User has no Id"), ClaimValueTypes.Integer64),
                 new(ClaimTypes.Name, user.Username, ClaimValueTypes.String),
                 new(ClaimTypes.Email, user.Email ?? string.Empty, ClaimValueTypes.Email),
-                new(CustomClaimTypes.UserType, user.Type.ToString(), ClaimValueTypes.String),
-                new(CustomClaimTypes.ProviderId, $"{(user as IProviderable)?.ProviderId ?? 0}", ClaimValueTypes.Integer64)
+                new(UserClaimType.UserType, user.Type.ToString(), ClaimValueTypes.String),
+                new(UserClaimType.ProviderId, $"{(user as IUserProvider)?.ProviderId ?? 0}", ClaimValueTypes.Integer64)
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Id, ClaimValueTypes.String)));
@@ -42,7 +43,45 @@ namespace Vayosoft.Identity
             return tokenHandler.WriteToken(token);
         }
 
-        public IPrincipal GetPrincipalFromJwtToken(string token)
+        public static TokenResult GenerateToken(string signingKey, IEnumerable<Claim> claims, TimeSpan timeout)
+        {
+            var signingCredentials = new SigningCredentials(
+                key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
+                algorithm: SecurityAlgorithms.HmacSha256);
+
+            var jwtDate = DateTime.Now;
+
+            var jwt = new JwtSecurityToken(
+                audience: "Vayosoft", // must match the audience in AddJwtBearer()
+                issuer: "Vayosoft", // must match the issuer in AddJwtBearer()
+
+                // Add whatever claims you'd want the generated token to include
+                claims: claims ?? new List<Claim> {
+                    new(ClaimTypes.Name, "default"),
+                },
+                notBefore: jwtDate,
+                expires: jwtDate.Add(timeout), // Should be short lived. For logins, it's may be fine to use 24h
+
+                // Provide a cryptographic key used to sign the token.
+                // When dealing with symmetric keys then this must be
+                // the same key used to validate the token.
+                signingCredentials: signingCredentials
+            );
+
+            // Generate the actual token as a string
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            // Return some agreed upon or documented structure.
+            return new TokenResult
+            {
+                Token = token,
+                // Even if the expiration time is already a part of the token, it's common to be 
+                // part of the response body.
+                UnixTimeExpiresAt = new DateTimeOffset(jwtDate).ToUnixTimeMilliseconds()
+            };
+        }
+
+        public IPrincipal GetPrincipalFromToken(string token)
         {
             if (token == null)
                 return null;
