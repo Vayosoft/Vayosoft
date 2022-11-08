@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 
 namespace Vayosoft.Identity
 {
@@ -16,9 +15,8 @@ namespace Vayosoft.Identity
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.IncludeErrorDetails = true; // <- great for debugging
+                    options.IncludeErrorDetails = true; // <- for debugging
 
-                    // Configure the actual Bearer validation
                     options.TokenValidationParameters =
                         new TokenValidationParameters
                         {

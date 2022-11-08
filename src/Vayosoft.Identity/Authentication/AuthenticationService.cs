@@ -5,9 +5,9 @@ using Vayosoft.Identity.Tokens;
 
 namespace Vayosoft.Identity.Authentication
 {
-    public class AuthenticationService<T> : IAuthenticationService where T : IUser
+    public class AuthenticationService : IAuthenticationService
     {
-        private readonly IUserRepository<T> _userRepository;
+        private readonly IUserRepository _userRepository;
 
         private readonly IPasswordHasher _passwordHasher;
         private readonly ITokenService _jwtUtils;
@@ -17,7 +17,7 @@ namespace Vayosoft.Identity.Authentication
             IPasswordHasher passwordHasher,
             ITokenService jwtUtils,
             IOptions<TokenSettings> appSettings,
-            IUserRepository<T> userRepository)
+            IUserRepository userRepository)
         {
             _passwordHasher = passwordHasher;
             _jwtUtils = jwtUtils;
