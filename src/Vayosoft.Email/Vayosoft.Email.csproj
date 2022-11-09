@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <LangVersion>latest</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <PackageVersion>2.0.0</PackageVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -21,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.4.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
