@@ -26,6 +26,8 @@ namespace Vayosoft.EF.MySQL
                     .EnableDetailedErrors()       // <-- with debugging (remove for production).
 
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+
+                    //.UseLoggerFactory()
             );
 
             return services;
