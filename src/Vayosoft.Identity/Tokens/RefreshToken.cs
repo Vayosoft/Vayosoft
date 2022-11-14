@@ -5,7 +5,7 @@ namespace Vayosoft.Identity.Tokens
     public class RefreshToken
     {
         [JsonIgnore]
-        public virtual IUser User { get; set; }
+        public IUser User { get; set; }
         [JsonIgnore]
         public long UserId { get; set; }
 

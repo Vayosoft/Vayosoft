@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Exceptions;
 using Vayosoft.Persistence;
@@ -11,12 +8,9 @@ namespace Vayosoft.EF.MySQL
 {
     public class DataContext : DbContext, ILinqProvider, IUnitOfWork
     {
-        private readonly ILoggerFactory _loggerFactory;
-
-        public DataContext(DbContextOptions options, ILoggerFactory loggerFactory) : base(options)
-        {
-            this._loggerFactory = loggerFactory;
-        }
+        public DataContext(DbContextOptions options)
+            : base(options)
+        { }
 
         public IQueryable<TEntity> AsQueryable<TEntity>() where TEntity : class, IEntity {
             return Set<TEntity>().AsQueryable();
@@ -73,11 +67,8 @@ namespace Vayosoft.EF.MySQL
         public Task CommitAsync() => SaveChangesAsync();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { 
-            //var serviceProvider = Database.GetInfrastructure();
-            //var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-
-            optionsBuilder.UseLoggerFactory(this._loggerFactory);
+        {
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
