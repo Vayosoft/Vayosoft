@@ -21,11 +21,11 @@ namespace Vayosoft.MongoDB
             Collection = connection.Collection<T>(CollectionName.For<T>());
         }
 
-        public IQueryable<T> AsQueryable() => Collection.AsQueryable();
+        public IQueryable<T> AsQueryable()
+            => Collection.AsQueryable();
 
-        public IQueryable<T> AsQueryable(ISpecification<T> specification) {
-            return new SpecificationEvaluator<T>().Evaluate(AsQueryable(), specification);
-        }
+        public IQueryable<T> AsQueryable(ISpecification<T> specification) 
+            => AsQueryable().Evaluate(specification);
 
         public Task<T> FindAsync<TId>(TId id, CancellationToken cancellationToken = default) =>
             Collection.Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
