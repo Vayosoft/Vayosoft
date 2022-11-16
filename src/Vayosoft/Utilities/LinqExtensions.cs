@@ -21,6 +21,10 @@ namespace Vayosoft.Utilities
                 ? queryable.Where(expr)
                 : queryable;
 
+        public static IQueryable<T> WhereIf<T>(this IQueryable<T> queryable, ISpecification<T> spec)
+            where T : class, IEntity 
+            => new SpecificationEvaluator<T>().Evaluate(queryable, spec);
+
         public static IQueryable<T> Apply<T>(this IQueryable<T> source, ILinqSpecification<T> spec)
             where T : class
             => spec.Apply(source);

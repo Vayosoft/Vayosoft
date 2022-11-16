@@ -4,9 +4,9 @@ using Vayosoft.Specifications;
 
 namespace Vayosoft.EF.MySQL
 {
-    public static class SpecificationExtensions
+    public static class LinqExtensions
     {
-        public static IQueryable<TEntity> Evaluate<TEntity>(this IQueryable<TEntity> input, ISpecification<TEntity> spec) where TEntity : class, IEntity
+        public static IQueryable<TEntity> WhereIf<TEntity>(this IQueryable<TEntity> input, ISpecification<TEntity> spec) where TEntity : class, IEntity
         {
             var query = new SpecificationEvaluator<TEntity>().Evaluate(input, spec);
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));

@@ -17,7 +17,7 @@ namespace Vayosoft.EF.MySQL
         }
 
         public IQueryable<TEntity> AsQueryable<TEntity>(ISpecification<TEntity> specification) where TEntity : class, IEntity {
-            return AsQueryable<TEntity>().Evaluate(specification);
+            return AsQueryable<TEntity>().WhereIf(specification);
         }
 
         public new void Add<TEntity>(TEntity entity) where TEntity : class, IEntity
