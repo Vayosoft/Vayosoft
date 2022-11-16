@@ -1,5 +1,4 @@
 ﻿using Vayosoft.Threading.Channels.Diagnostics;
-using Vayosoft.Threading.Channels.Handlers;
 
 namespace Vayosoft.Threading.Channels.Models
 {

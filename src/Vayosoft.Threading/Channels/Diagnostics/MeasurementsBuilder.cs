@@ -1,16 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Vayosoft.Threading.Channels.Models;
+﻿using Vayosoft.Threading.Channels.Models;
 
 namespace Vayosoft.Threading.Channels.Diagnostics
 {
     public class MeasurementsBuilder<T> where T : ChannelHandlerTelemetrySnapshot
     {
         private readonly List<T> _snapshots;
+        private readonly bool _singleChannel;
 
         public MeasurementsBuilder(List<T> channelsSnapshots)
         {
-            _snapshots = channelsSnapshots;
+            _snapshots = channelsSnapshots ?? throw new ArgumentNullException(nameof(channelsSnapshots));
+
+        }
+        public MeasurementsBuilder(T channelSnapshot)
+        {
+            _snapshots = new List<T> { channelSnapshot ?? throw new ArgumentNullException(nameof(channelSnapshot)) };
+            _singleChannel = true;
 
         }
 
@@ -19,9 +24,15 @@ namespace Vayosoft.Threading.Channels.Diagnostics
             var report = new QueueHandlerTelemetryReport();
             if (_snapshots.Count > 0)
             {
-                // queue snapshots for channels
-                var queueBuilder = new ChannelMeasurementsBuilder<T>(_snapshots, _snapshots.Sum(i => i.Length));
-                var qs = queueBuilder.Build();
+                ChannelMetricsSnapshot qs;
+                if (_singleChannel)
+                    qs = _snapshots.First();
+                else
+                {
+                    // queue snapshots for channels
+                    var queueBuilder = new ChannelMeasurementsBuilder<T>(_snapshots, _snapshots.Sum(i => i.Length));
+                    qs = queueBuilder.Build();
+                }
 
                 report.MinTimeMs = qs.MinTimeMs;
                 report.MaxTimeMs = qs.MaxTimeMs;

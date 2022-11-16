@@ -1,6 +1,4 @@
-﻿using Vayosoft.Threading.Channels.Diagnostics;
-
-namespace Vayosoft.Threading.Channels.Handlers
+﻿namespace Vayosoft.Threading.Channels.Diagnostics
 {
     public class HandlerMetricsSnapshot : IMetricsSnapshot
     {

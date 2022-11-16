@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 using Vayosoft.Threading.Channels.Consumers;
 using Vayosoft.Threading.Utilities;
 
@@ -15,7 +11,7 @@ namespace Vayosoft.Threading.Channels.Producers
     {
         private const BindingFlags BindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetProperty;
 
-        private readonly ConcurrentBag<Consumer<T>> _workers = new();
+        private readonly ConcurrentBag<ConsumerAsync<T>> _workers = new();
 
         private const int MAX_WORKERS = 100;
         private const int MAX_QUEUE = 100000;
@@ -31,13 +27,11 @@ namespace Vayosoft.Threading.Channels.Producers
 
         private readonly bool _enableTaskManagement;
 
-        protected ProducerConsumerChannelBase(string channelName, uint startedNumberOfWorkerThreads = 1,
+        protected ProducerConsumerChannelBase(string channelName = null, uint startedNumberOfWorkerThreads = 1,
             bool enableTaskManagement = false, CancellationToken globalCancellationToken = default)
         {
             if (startedNumberOfWorkerThreads == 0)
-            {
                 throw new ArgumentException($"{nameof(startedNumberOfWorkerThreads)} must be > 0");
-            }
 
             _channelName = channelName ?? GetType().Name;
             _enableTaskManagement = enableTaskManagement;
@@ -55,7 +49,7 @@ namespace Vayosoft.Threading.Channels.Producers
 
             for (var i = 0; i < startedNumberOfWorkerThreads; i++)
             {
-                var w = new Consumer<T>(_channel, ConsumerName, OnDataReceived, _cancellationToken);
+                var w = new ConsumerAsync<T>(_channel, ConsumerName, OnDataReceivedAsync, _cancellationToken);
 
                 _workers.Add(w);
                 w.StartConsume();
@@ -63,9 +57,7 @@ namespace Vayosoft.Threading.Channels.Producers
 
 
             if (globalCancellationToken != default)
-            {
                 globalCancellationToken.Register(Shutdown);
-            }
 
             Trace.TraceInformation("[{0}] started with {1} consumers. Options: maxWorkers: {2}, maxQueueLength: {3}, consumerManagementTimeout: {4} ms",
                 _channelName, startedNumberOfWorkerThreads, MAX_WORKERS, MAX_QUEUE, CONSUMER_MANAGEMENT_TIMEOUT_MS);
@@ -77,7 +69,7 @@ namespace Vayosoft.Threading.Channels.Producers
                 _timer.Start();
         }
 
-        protected abstract void OnDataReceived(T item, CancellationToken token);
+        protected abstract ValueTask OnDataReceivedAsync(T item, CancellationToken token);
 
         public bool Enqueue(T item)
         {
@@ -129,10 +121,9 @@ namespace Vayosoft.Threading.Channels.Producers
                     workersDiff = -workersDiff;
                     for (var i = 0; i < workersDiff; i++)
                     {
-                        if (_workers.Count >= MAX_WORKERS)
-                            break;
+                        if (_workers.Count >= MAX_WORKERS) break;
 
-                        var w = new Consumer<T>(_channel.Reader, ConsumerName, OnDataReceived, _cancellationToken);
+                        var w = new ConsumerAsync<T>(_channel.Reader, ConsumerName, OnDataReceivedAsync, _cancellationToken);
                         _workers.Add(w);
                         w.StartConsume();
                         processedWorkers++;

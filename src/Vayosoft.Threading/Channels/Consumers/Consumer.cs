@@ -2,23 +2,7 @@
 
 namespace Vayosoft.Threading.Channels.Consumers
 {
-    public class Consumer<T> : ConsumerBase<T>
-    {
-        private readonly Action<T, CancellationToken> _consumeAction;
-
-        public Consumer(ChannelReader<T> channelReader, string workerName, Action<T, CancellationToken> consumeAction, CancellationToken globalCancellationToken)
-            : base(channelReader, workerName, globalCancellationToken)
-        {
-            _consumeAction = consumeAction ?? throw new ArgumentNullException(nameof(consumeAction));
-        }
-
-        public override void OnDataReceived(T item, CancellationToken token, string _)
-        {
-            _consumeAction.Invoke(item, token);
-        }
-    }
-
-    public class ConsumerAsync<T> : AsyncConsumerBase<T>
+    public class ConsumerAsync<T> : ConsumerBase<T>
     {
         private readonly Func<T, CancellationToken, ValueTask> _consumeAction;
 
@@ -33,7 +17,5 @@ namespace Vayosoft.Threading.Channels.Consumers
         {
             return _consumeAction.Invoke(item, token);
         }
-
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Vayosoft.Threading.Attributes;
+﻿using Vayosoft.Threading.Attributes;
 using Vayosoft.Threading.Utilities;
 
 namespace Vayosoft.Threading.Channels.Handlers
@@ -12,14 +10,14 @@ namespace Vayosoft.Threading.Channels.Handlers
         private volatile int _idleTimeout = DefaultIdleTimeout;
         private DateTime _lastActivityTime = DateTime.Now;
 
-        protected abstract void Handle(T item, CancellationToken token = default);
+        protected abstract ValueTask HandleAsync(T item, CancellationToken token = default);
 
-        public void HandleAction(T item, CancellationToken token = default)
+        public async ValueTask HandleAction(T item, CancellationToken token = default)
         {
             try
             {
                 _lastActivityTime = DateTime.Now;
-                Handle(item, token);
+                await HandleAsync(item, token);
             }
             catch (Exception e)
             {

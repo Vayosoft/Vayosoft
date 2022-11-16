@@ -1,8 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Diagnostics;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 
 namespace Vayosoft.Threading.Channels.Consumers
 {
@@ -61,7 +58,7 @@ namespace Vayosoft.Threading.Channels.Consumers
                 Cts.Cancel();
         }
 
-        public abstract void OnDataReceived(T item, CancellationToken token, string workerName);
+        public abstract ValueTask OnDataReceivedAsync(T item, CancellationToken token, string workerName);
 
         private async ValueTask Consume()
         {
@@ -76,7 +73,7 @@ namespace Vayosoft.Threading.Channels.Consumers
                         {
                             // var item = await _channelReader.ReadAsync(_globalCancellationToken).ConfigureAwait(false);
                             
-                            OnDataReceived(item, _cancellationToken, WorkerName);
+                            await OnDataReceivedAsync(item, _cancellationToken, WorkerName);
                             //ThreadPool.QueueUserWorkItem(o => { _consumeAction.Invoke(item, _cts.Token); });
                         }
                     }

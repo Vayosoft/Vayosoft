@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Vayosoft.Threading.Channels.Models;
+﻿using Vayosoft.Threading.Channels.Models;
 
-namespace Vayosoft.Threading.Channels
+namespace Vayosoft.Threading.Channels.Diagnostics
 {
     public class ChannelMeasurementsBuilder<T> where T : ChannelMetricsSnapshot
     {
