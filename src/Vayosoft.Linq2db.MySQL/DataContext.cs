@@ -20,7 +20,7 @@ namespace Vayosoft.Linq2db.MySQL
         }
 
         public IQueryable<TEntity> AsQueryable<TEntity>(ISpecification<TEntity> specification) where TEntity : class, IEntity {
-            return new SpecificationEvaluator<TEntity>().Evaluate(AsQueryable<TEntity>(), specification);
+            return AsQueryable<TEntity>().Evaluate(specification);
         }
 
         public void Add<TEntity>(TEntity entity) where TEntity : class, IEntity
@@ -66,7 +66,7 @@ namespace Vayosoft.Linq2db.MySQL
             return entity;
         }
 
-        public void Commit() => this.CommitTransaction();
-        public Task CommitAsync() => this.CommitTransactionAsync();
+        public void Commit() => CommitTransaction();
+        public Task CommitAsync() => CommitTransactionAsync();
     }
 }
