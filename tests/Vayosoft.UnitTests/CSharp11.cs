@@ -54,7 +54,8 @@ namespace Vayosoft.UnitTests
             {
                 [] => "Name is empty",
                 [var fullName] => $"My full name is: {fullName}",
-                [var firstName, var lastName] => $"My full name is {firstName} {lastName}"
+                [var firstName, var lastName] => $"My full name is {firstName} {lastName}",
+                _ => ""
             };
 
             _output.WriteLine(text);
