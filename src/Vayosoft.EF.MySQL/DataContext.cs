@@ -40,36 +40,14 @@ namespace Vayosoft.EF.MySQL
             return Set<TEntity>().SingleOrDefault(x => x.Id == id);
         }
 
-        public TEntity Get<TEntity>(object id) where TEntity : class, IEntity
-        {
-            var entity = Find<TEntity>(id);
-            if (entity == null)
-                throw EntityNotFoundException.For<TEntity>(id);
-
-            return entity;
-        }
-
         public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken) where TEntity : class, IEntity
         {
             return Set<TEntity>().SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
         }
 
-        public async Task<TEntity> GetAsync<TEntity>(object id, CancellationToken cancellationToken) where TEntity : class, IEntity
-        {
-            var entity = await FindAsync<TEntity>(id, cancellationToken);
-            if (entity == null)
-                throw EntityNotFoundException.For<TEntity>(id);
-
-            return entity;
-        }
-
         public void Commit() => SaveChanges();
-        public Task CommitAsync() => SaveChangesAsync();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
+        public Task CommitAsync() => SaveChangesAsync();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,10 +1,11 @@
 using MediatR;
 using Vayosoft.Commons.Aggregates;
+using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Exceptions;
 
 namespace Vayosoft.Persistence
 {
-    public static class RepositoryExtensions
+    public static class Extensions
     {
         public static async Task<T> GetAsync<T, TId>(this IReadOnlyRepository<T> repository, TId id, CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot
@@ -22,6 +23,16 @@ namespace Vayosoft.Persistence
             await repository.UpdateAsync(entity, cancellationToken);
 
             return Unit.Value;
+        }
+
+        public static async Task<T> GetAsync<T, TId>(this IUnitOfWork unitOfWork, TId id, CancellationToken cancellationToken = default)
+            where T : class, IEntity
+        {
+            var entity = await unitOfWork.FindAsync<T>(id, cancellationToken);
+            if (entity == null)
+                throw EntityNotFoundException.For<T>(id);
+
+            return entity;
         }
     }
 }

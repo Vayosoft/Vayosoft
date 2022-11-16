@@ -16,7 +16,11 @@ namespace Vayosoft.Persistence
         TEntity Find<TEntity>(object id)
             where TEntity : class, IEntity;
 
+        Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity;
+
         void Commit();
+
         Task CommitAsync();
     }
 }
