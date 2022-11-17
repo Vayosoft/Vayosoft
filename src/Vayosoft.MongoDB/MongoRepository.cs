@@ -48,17 +48,10 @@ namespace Vayosoft.MongoDB
         public Task<T> FirstOrDefaultAsync(ILinqSpecification<T> spec, CancellationToken cancellationToken = default) =>
             Collection.AsQueryable().Apply(spec).FirstOrDefaultAsync(cancellationToken);
 
-        public Task<T> FirstOrDefaultAsync(ICriteriaSpecification<T> spec, CancellationToken cancellationToken = default) =>
-            Collection.Find(spec.Criteria).FirstOrDefaultAsync(cancellationToken);
 
         public Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> criteria, CancellationToken cancellationToken = default) =>
             Collection.Find(criteria).SingleOrDefaultAsync(cancellationToken);
 
-        public Task<T> SingleOrDefaultAsync(ICriteriaSpecification<T> spec, CancellationToken cancellationToken = default) =>
-            Collection.Find(spec.Criteria).SingleOrDefaultAsync(cancellationToken);
-
-        public Task<TResult> SingleOrDefaultAsync<TResult>(ICriteriaSpecification<T, TResult> spec, CancellationToken cancellationToken = default) =>
-            Collection.Find(spec.Criteria).Project(e => mapper.Map<TResult>(e)).SingleOrDefaultAsync(cancellationToken);
 
         public Task<List<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default) {
             return Collection.AsQueryable().Apply(spec).ToListAsync(cancellationToken);
@@ -68,8 +61,7 @@ namespace Vayosoft.MongoDB
             return Collection.AsQueryable().Apply(spec).ToAsyncEnumerable(cancellationToken);
         }
 
-        public async Task<IPagedEnumerable<T>> PageAsync(ILinqSpecification<T> spec, int page = 1, int pageSize = IPagingModel.DefaultSize,
-            CancellationToken cancellationToken = default) {
+        public async Task<IPagedEnumerable<T>> PageAsync(ILinqSpecification<T> spec, int page = 1, int pageSize = IPagingModel.DefaultSize, CancellationToken cancellationToken = default) {
             return await Collection.AsQueryable().Apply(spec).ToPagedEnumerableAsync(page, pageSize, cancellationToken: cancellationToken);
         }
 
