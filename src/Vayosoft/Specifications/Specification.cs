@@ -89,6 +89,10 @@ namespace Vayosoft.Specifications
                         new ParameterReplacer(rightParam, leftParam).Visit(rightExpr.Body)),
                     leftParam));
 
+            result._includes.AddRange(left.Includes.Union(right.Includes));
+
+            result.Sorting = right.Sorting;
+
             return result;
         }
 
@@ -99,12 +103,18 @@ namespace Vayosoft.Specifications
             var leftParam = leftExpr.Parameters[0];
             var rightParam = rightExpr.Parameters[0];
 
-            return new Specification<TEntity>(
+            var result = new Specification<TEntity>(
                 Expression.Lambda<Func<TEntity, bool>>(
                     Expression.OrElse(
                         leftExpr.Body,
                         new ParameterReplacer(rightParam, leftParam).Visit(rightExpr.Body)),
                     leftParam));
+
+            result._includes.AddRange(left.Includes.Union(right.Includes));
+
+            result.Sorting = right.Sorting;
+
+            return result;
         }
     }
 }

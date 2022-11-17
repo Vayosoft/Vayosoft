@@ -42,7 +42,7 @@ namespace Vayosoft.UnitTests
         {
             public UserIsActiveSpec()
             {
-                Predicate = u => u.IsActive;
+                Where(u => u.IsActive);
             }
 
 
@@ -52,7 +52,7 @@ namespace Vayosoft.UnitTests
         {
             public UserByUsernameSpec(string username)
             {
-                Predicate = u => u.Username == username;
+                Where(u => u.Username == username);
             }
         }
 
