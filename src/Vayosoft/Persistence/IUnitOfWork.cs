@@ -4,8 +4,19 @@ namespace Vayosoft.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
-        void Add<TEntity>(TEntity entity)
+        TEntity Find<TEntity>(object id)
             where TEntity : class, IEntity;
+
+        Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity;
+
+
+        TEntity Add<TEntity>(TEntity entity)
+            where TEntity : class, IEntity;
+
+        ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity;
+
 
         void Update<TEntity>(TEntity entity)
             where TEntity : class, IEntity;
@@ -13,11 +24,6 @@ namespace Vayosoft.Persistence
         void Delete<TEntity>(TEntity entity)
             where TEntity : class, IEntity;
 
-        TEntity Find<TEntity>(object id)
-            where TEntity : class, IEntity;
-
-        Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity;
 
         void Commit();
 

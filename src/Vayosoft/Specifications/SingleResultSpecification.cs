@@ -11,7 +11,7 @@ namespace Vayosoft.Specifications
 
         public CriteriaSpecification(Expression<Func<TEntity, bool>> criteria)
         {
-            Criteria = Guard.NotNull(criteria, nameof(criteria));
+            Criteria = Guard.NotNull(criteria);
         }
 
         public Expression<Func<TEntity, bool>> Criteria { get; protected set; }

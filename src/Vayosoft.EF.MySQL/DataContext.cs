@@ -1,39 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Commons.Exceptions;
 using Vayosoft.Persistence;
 using Vayosoft.Specifications;
 
 namespace Vayosoft.EF.MySQL
 {
-    public class DataContext : DbContext, ILinqProvider, IUnitOfWork
+    public class DataContext : DbContext, ILinqProvider, IDataProvider, IUnitOfWork
     {
         public DataContext(DbContextOptions options)
-            : base(options)
-        { }
-
-        public IQueryable<TEntity> AsQueryable<TEntity>() where TEntity : class, IEntity {
-            return Set<TEntity>().AsQueryable();
-        }
-
-        public IQueryable<TEntity> AsQueryable<TEntity>(ISpecification<TEntity> specification) where TEntity : class, IEntity {
-            return AsQueryable<TEntity>().WhereIf(specification);
-        }
-
-        public new void Add<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
-           base.Entry(entity).State = EntityState.Added;
-        }
-
-        public new void Update<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
-            base.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void Delete<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
-            base.Entry(entity).State = EntityState.Deleted;
-        }
+            : base(options) { }
 
         public TEntity Find<TEntity>(object id) where TEntity : class, IEntity
         {
@@ -42,12 +18,67 @@ namespace Vayosoft.EF.MySQL
 
         public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken) where TEntity : class, IEntity
         {
-            return Set<TEntity>().SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
+            return Set<TEntity>()
+                .AsTracking()
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
         }
 
-        public void Commit() => SaveChanges();
 
-        public Task CommitAsync() => SaveChangesAsync();
+        public new TEntity Add<TEntity>(TEntity entity) where TEntity : class, IEntity
+        {
+           return base.Add(entity).Entity;
+        }
+        public new async ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class, IEntity
+        {
+            return (await base.AddAsync(entity, cancellationToken)).Entity;
+        }
+
+        public new void Update<TEntity>(TEntity entity) where TEntity : class, IEntity
+        {
+            base.Update(entity);
+        }
+
+        public void Delete<TEntity>(TEntity entity) where TEntity : class, IEntity
+        {
+            base.Remove(entity);
+        }
+
+        public void Commit()
+        {
+            SaveChanges();
+        }
+
+        public async Task CommitAsync()
+        {
+            await SaveChangesAsync();
+        }
+
+
+        public Task<TEntity> SingleAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) 
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>().Where(predicate).SingleOrDefaultAsync(cancellationToken);
+        }
+
+        public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>().Evaluate(spec).ToListAsync(cancellationToken);
+        }
+
+        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec)
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>().Evaluate(spec).AsAsyncEnumerable();
+        }
+
+
+
+        public IQueryable<TEntity> AsQueryable<TEntity>() where TEntity : class, IEntity
+        {
+            return Set<TEntity>();
+        }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

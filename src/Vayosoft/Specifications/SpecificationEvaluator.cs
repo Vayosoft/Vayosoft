@@ -7,9 +7,7 @@ namespace Vayosoft.Specifications
     {
         public IQueryable<TEntity> Evaluate(IQueryable<TEntity> input, ISpecification<TEntity> spec)
         {
-            var query = input;
-            if (spec.Criteria != null) query = query.Where(spec.Criteria);
-            query = spec.WhereExpressions.Aggregate(query, (current, include) => current.Where(include));
+            var query = input.Where(spec.ToExpression());
             if (spec.Sorting != null)
             {
                 query = spec.Sorting.SortOrder == SortOrder.Asc

@@ -2,7 +2,6 @@
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Queries;
-using Vayosoft.Utilities;
 
 namespace Vayosoft.Persistence.Queries
 {

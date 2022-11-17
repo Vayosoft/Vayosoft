@@ -6,19 +6,18 @@ namespace Vayosoft.MongoDB.Extensions
 {
     public static class SpecificationExtensions
     {
-        public static IMongoQueryable<T> Apply<T>(this IMongoQueryable<T> source, ISpecification<T> spec)
+        public static IMongoQueryable<T> Apply<T>(this IMongoQueryable<T> input, ISpecification<T> spec)
             where T : class
         {
-            if (spec.Criteria != null) source = source.Where(spec.Criteria);
-            source = spec.WhereExpressions.Aggregate(source, (current, include) => current.Where(include));
+            var query = input.Where(spec.ToExpression());
             if (spec.Sorting != null)
             {
-                source = spec.Sorting.SortOrder == SortOrder.Asc
-                    ? source.OrderBy(spec.Sorting.Expression)
-                    : source.OrderByDescending(spec.Sorting.Expression);
+                query = spec.Sorting.SortOrder == SortOrder.Asc
+                    ? query.OrderBy(spec.Sorting.Expression)
+                    : query.OrderByDescending(spec.Sorting.Expression);
             }
 
-            return source;
+            return query;
         }
     }
 }
