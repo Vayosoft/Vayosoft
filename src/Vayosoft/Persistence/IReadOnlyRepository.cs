@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Models.Pagination;
-using Vayosoft.Specifications;
+using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence
 {

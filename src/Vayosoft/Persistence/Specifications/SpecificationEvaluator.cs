@@ -1,13 +1,13 @@
 ﻿using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Models;
 
-namespace Vayosoft.Specifications
+namespace Vayosoft.Persistence.Specifications
 {
     public class SpecificationEvaluator<TEntity> : ISpecificationEvaluator<TEntity> where TEntity : class, IEntity
     {
         public IQueryable<TEntity> Evaluate(IQueryable<TEntity> input, ISpecification<TEntity> spec)
         {
-            var query = input.Where(spec.ToExpression());
+            var query = input.Where(spec.Criteria.ToExpression());
             if (spec.Sorting != null)
             {
                 query = spec.Sorting.SortOrder == SortOrder.Asc

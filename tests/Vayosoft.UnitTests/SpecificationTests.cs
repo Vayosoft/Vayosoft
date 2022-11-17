@@ -1,4 +1,5 @@
-﻿using Vayosoft.Specifications;
+﻿using Vayosoft.Persistence.Specifications;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Utilities;
 using Xunit.Abstractions;
 
@@ -15,7 +16,7 @@ namespace Vayosoft.UnitTests
         [Fact]
         public void IsSatisfiedByObject()
         {
-            var spec = new UserIsActiveSpec();
+            var spec = new UserIsActiveCriteria();
             var user = new User {IsActive = true};
 
             Assert.True(spec.IsSatisfiedBy(user));
@@ -32,15 +33,15 @@ namespace Vayosoft.UnitTests
 
             };
 
-            var result = list.Where(new UserByUsernameSpec("admin") && new UserIsActiveSpec());
+            var result = list.Where(new UserByUsernameCriteria("admin") && new UserIsActiveCriteria());
             _output.WriteLine(result.ToJson());
             //context.Users.Where(spec.ToExpression());
-            //context.Uses.Where(new UserByUsernameSpec("admin") || new UserByUsernameSpec("user"));
+            //context.Uses.Where(new UserByUsernameCriteria("admin") || new UserByUsernameCriteria("user"));
         }
 
-        public class UserIsActiveSpec : Specification<User>
+        public class UserIsActiveCriteria : Criteria<User>
         {
-            public UserIsActiveSpec()
+            public UserIsActiveCriteria()
             {
                 Where(u => u.IsActive);
             }
@@ -48,9 +49,9 @@ namespace Vayosoft.UnitTests
 
         }
 
-        public class UserByUsernameSpec : Specification<User>
+        public class UserByUsernameCriteria : Criteria<User>
         {
-            public UserByUsernameSpec(string username)
+            public UserByUsernameCriteria(string username)
             {
                 Where(u => u.Username == username);
             }
@@ -59,7 +60,7 @@ namespace Vayosoft.UnitTests
         public class UserCombinedSpec : Specification<User>
         {
             public UserCombinedSpec(string login)
-                : base(new UserIsActiveSpec() && new UserByUsernameSpec(login))
+                : base(new UserIsActiveCriteria() && new UserByUsernameCriteria(login))
             {
             }
         }

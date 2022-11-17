@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence;
-using Vayosoft.Specifications;
+using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.EF.MySQL
 {

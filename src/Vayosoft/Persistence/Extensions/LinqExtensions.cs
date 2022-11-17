@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons.Entities;
 
-namespace Vayosoft.Persistence
+namespace Vayosoft.Persistence.Extensions
 {
     public static class LinqExtensions
     {

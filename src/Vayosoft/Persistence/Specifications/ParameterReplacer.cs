@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Vayosoft.Specifications
+namespace Vayosoft.Persistence.Specifications
 {
     internal class ParameterReplacer : ExpressionVisitor
     {

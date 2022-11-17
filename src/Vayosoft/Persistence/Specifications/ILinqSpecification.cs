@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Vayosoft.Specifications
+namespace Vayosoft.Persistence.Specifications
 {
     public interface ILinqSpecification<T>
         where T : class

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Specifications;
+using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence
 {

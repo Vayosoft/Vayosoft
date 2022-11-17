@@ -1,6 +1,6 @@
 ﻿using Vayosoft.Commons.Entities;
 
-namespace Vayosoft.Specifications
+namespace Vayosoft.Persistence.Specifications
 {
     public interface ISpecificationEvaluator<TEntity> where TEntity : class, IEntity
     {

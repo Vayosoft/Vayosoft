@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Specifications;
+using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.Persistence
+namespace Vayosoft.Persistence.Extensions
 {
     public static class QueryableExtensions
     {

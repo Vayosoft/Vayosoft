@@ -3,9 +3,9 @@ using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Exceptions;
 
-namespace Vayosoft.Persistence
+namespace Vayosoft.Persistence.Extensions
 {
-    public static class Extensions
+    public static class RepositoryExtensions
     {
         public static async Task<T> GetAsync<T, TId>(this IReadOnlyRepository<T> repository, TId id, CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot
