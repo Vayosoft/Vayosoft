@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.EF.MySQL
@@ -11,12 +12,16 @@ namespace Vayosoft.EF.MySQL
         public DataContext(DbContextOptions options)
             : base(options) { }
 
-        public TEntity Find<TEntity>(object id) where TEntity : class, IEntity
+        public TEntity Find<TEntity>(object id) 
+            where TEntity : class, IEntity
         {
-            return Set<TEntity>().SingleOrDefault(x => x.Id == id);
+            return Set<TEntity>()
+                .AsTracking()
+                .SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken) where TEntity : class, IEntity
+        public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken) 
+            where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 .AsTracking()
@@ -24,59 +29,68 @@ namespace Vayosoft.EF.MySQL
         }
 
 
-        public new TEntity Add<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
-           return base.Add(entity).Entity;
-        }
-        public new async ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class, IEntity
-        {
-            return (await base.AddAsync(entity, cancellationToken)).Entity;
+        public new void Add<TEntity>(TEntity entity)
+            where TEntity : class, IEntity {
+           base.Add(entity);
         }
 
-        public new void Update<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
+        public new async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken)
+            where TEntity : class, IEntity {
+            await base.AddAsync(entity, cancellationToken);
+        }
+
+        public new void Update<TEntity>(TEntity entity)
+            where TEntity : class, IEntity {
             base.Update(entity);
         }
 
-        public void Delete<TEntity>(TEntity entity) where TEntity : class, IEntity
-        {
+        public void Delete<TEntity>(TEntity entity)
+            where TEntity : class, IEntity {
             base.Remove(entity);
         }
 
-        public void Commit()
-        {
+        public void Commit() {
             SaveChanges();
         }
 
-        public async Task CommitAsync()
-        {
+        public async Task CommitAsync() {
             await SaveChangesAsync();
         }
 
 
-        public Task<TEntity> SingleAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) 
+        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default) 
             where TEntity : class, IEntity
         {
-            return Set<TEntity>().Where(predicate).SingleOrDefaultAsync(cancellationToken);
+            return Set<TEntity>()
+                //.AsNoTracking()
+                .Where(criteria.ToExpression())
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
         public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
-            return Set<TEntity>().Evaluate(spec).ToListAsync(cancellationToken);
+            return Set<TEntity>()
+                //.AsNoTracking()
+                .Evaluate(spec)
+                .ToListAsync(cancellationToken);
         }
 
         public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec)
             where TEntity : class, IEntity
         {
-            return Set<TEntity>().Evaluate(spec).AsAsyncEnumerable();
+            return Set<TEntity>()
+                //.AsNoTracking()
+                .Evaluate(spec)
+                .AsAsyncEnumerable();
         }
 
 
-
-        public IQueryable<TEntity> AsQueryable<TEntity>() where TEntity : class, IEntity
+        public IQueryable<TEntity> AsQueryable<TEntity>()
+            where TEntity : class, IEntity
         {
-            return Set<TEntity>();
+            return Set<TEntity>()
+                .AsNoTracking();
         }
 
 

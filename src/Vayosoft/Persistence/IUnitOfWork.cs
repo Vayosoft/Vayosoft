@@ -11,10 +11,10 @@ namespace Vayosoft.Persistence
             where TEntity : class, IEntity;
 
 
-        TEntity Add<TEntity>(TEntity entity)
+        void Add<TEntity>(TEntity entity)
             where TEntity : class, IEntity;
 
-        ValueTask<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+        ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity;
 
 
