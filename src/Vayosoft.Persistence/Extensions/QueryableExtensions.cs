@@ -12,7 +12,7 @@ namespace Vayosoft.Persistence.Extensions
                 ? queryable.Where(expr)
                 : queryable;
 
-        public static IQueryable<T> Evaluate<T>(this IQueryable<T> queryable, ISpecification<T> spec)
+        public static IQueryable<T> BySpecification<T>(this IQueryable<T> queryable, ISpecification<T> spec)
             where T : class, IEntity
             => new SpecificationEvaluator<T>().Evaluate(queryable, spec);
 

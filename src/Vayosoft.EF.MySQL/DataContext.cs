@@ -12,7 +12,7 @@ namespace Vayosoft.EF.MySQL
         public DataContext(DbContextOptions options)
             : base(options) { }
 
-        public TEntity Find<TEntity>(object id) 
+        public TEntity Find<TEntity>(object id)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -20,7 +20,7 @@ namespace Vayosoft.EF.MySQL
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken) 
+        public Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -28,42 +28,57 @@ namespace Vayosoft.EF.MySQL
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
         }
 
-
-        public new void Add<TEntity>(TEntity entity)
-            where TEntity : class, IEntity {
-           base.Add(entity);
+        public Task<TEntity> FindAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>()
+                .AsTracking()
+                .ByCriteria(criteria)
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public new async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken)
-            where TEntity : class, IEntity {
+
+        public new void Add<TEntity>(TEntity entity)
+            where TEntity : class, IEntity
+        {
+            base.Add(entity);
+        }
+
+        public new async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+            where TEntity : class, IEntity
+        {
             await base.AddAsync(entity, cancellationToken);
         }
 
         public new void Update<TEntity>(TEntity entity)
-            where TEntity : class, IEntity {
+            where TEntity : class, IEntity
+        {
             base.Update(entity);
         }
 
         public void Delete<TEntity>(TEntity entity)
-            where TEntity : class, IEntity {
+            where TEntity : class, IEntity
+        {
             base.Remove(entity);
         }
 
-        public void Commit() {
+        public void Commit()
+        {
             SaveChanges();
         }
 
-        public async Task CommitAsync() {
+        public async Task CommitAsync()
+        {
             await SaveChangesAsync();
         }
 
 
-        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default) 
+        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 //.AsNoTracking()
-                .Where(criteria.ToExpression())
+                .ByCriteria(criteria)
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
@@ -72,7 +87,7 @@ namespace Vayosoft.EF.MySQL
         {
             return Set<TEntity>()
                 //.AsNoTracking()
-                .Evaluate(spec)
+                .BySpecification(spec)
                 .ToListAsync(cancellationToken);
         }
 
@@ -81,7 +96,7 @@ namespace Vayosoft.EF.MySQL
         {
             return Set<TEntity>()
                 //.AsNoTracking()
-                .Evaluate(spec)
+                .BySpecification(spec)
                 .AsAsyncEnumerable();
         }
 

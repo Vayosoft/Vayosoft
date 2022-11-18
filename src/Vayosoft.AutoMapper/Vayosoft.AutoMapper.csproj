@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vayosoft.Persistence\Vayosoft.Persistence.csproj" />
     <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
   </ItemGroup>
 

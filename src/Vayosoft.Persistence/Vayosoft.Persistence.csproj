@@ -16,17 +16,12 @@
 		<ReleasePackageFiles Include="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
+	</ItemGroup>
+
 	<Target Name="CopyPackage" AfterTargets="GenerateNuspec">
 		<Move SourceFiles="@(ReleasePackageFiles)" DestinationFolder="$(SolutionDir)packages\" />
 	</Target>
-
-  <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Vayosoft.Persistence\Vayosoft.Persistence.csproj" />
-    <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
-  </ItemGroup>
 
 </Project>
