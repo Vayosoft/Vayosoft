@@ -13,7 +13,7 @@ namespace Vayosoft.AutoMapper
             TypeMap = assemblies
                 .SelectMany(x => x.GetTypes())
                 .Where(x => x.GetTypeInfo().GetCustomAttribute<ConventionalMapAttribute>() != null)
-                .GroupBy(x => x.GetTypeInfo().GetCustomAttribute<ConventionalMapAttribute>().EntityType)
+                .GroupBy(x => x.GetTypeInfo().GetCustomAttribute<ConventionalMapAttribute>()!.EntityType)
                 .ToDictionary(k => k.Key, v => v.ToArray());
         }
 
@@ -28,7 +28,7 @@ namespace Vayosoft.AutoMapper
             {
                 foreach (var v in kv.Value)
                 {
-                    var attr = v.GetTypeInfo().GetCustomAttribute<ConventionalMapAttribute>();
+                    var attr = v.GetTypeInfo().GetCustomAttribute<ConventionalMapAttribute>()!;
                     if (attr.Direction is MapDirection.EntityToDto or MapDirection.Both)
                     {
                         CreateMap(kv.Key, v);
@@ -36,7 +36,7 @@ namespace Vayosoft.AutoMapper
                     if (attr.Direction is MapDirection.DtoToEntity or MapDirection.Both)
                     {
                         CreateMap(v, kv.Key).ConvertUsing(typeof(DtoEntityTypeConverter<,,>)
-                            .MakeGenericType(kv.Key.GetTypeInfo().GetProperty("Id")?.PropertyType, v, kv.Key));
+                            .MakeGenericType(kv.Key.GetTypeInfo().GetProperty("Id")!.PropertyType, v, kv.Key));
                     }
                 }
             }
