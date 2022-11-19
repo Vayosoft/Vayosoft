@@ -42,13 +42,13 @@ namespace Vayosoft.AutoMapper
             foreach (var propertyInfo in dp)
             {
                 var key = typeof(IEntity).GetTypeInfo().IsAssignableFrom(propertyInfo.PropertyType)
-                    ? propertyInfo.Name.ToUpper() + "ID"
+                    ? propertyInfo.Name.ToUpper() + "Id"
                     : propertyInfo.Name.ToUpper();
 
                 if (!sp.ContainsKey(key)) continue;
 
                 // маппим один к одному примитивы, связанные сущности тащим из контекста
-                if (key.EndsWith("ID")
+                if (key.EndsWith("Id")
                     && typeof(IEntity).GetTypeInfo().IsAssignableFrom(propertyInfo.PropertyType))
                 {
                     var method = _unitOfWork.GetType().GetMethods()
