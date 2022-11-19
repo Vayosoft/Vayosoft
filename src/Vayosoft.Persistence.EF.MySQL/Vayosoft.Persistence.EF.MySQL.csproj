@@ -21,6 +21,7 @@
 	</Target>
 
   <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
   </ItemGroup>
 

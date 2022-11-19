@@ -28,7 +28,13 @@ namespace Vayosoft.Persistence.EF.MySQL
                     .EnableDetailedErrors() // <-- with debugging (remove for production).
 #endif
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                    .UseLoggerFactory(serviceProvider.GetRequiredService<ILoggerFactory>());
+                    .UseLoggerFactory(serviceProvider.GetRequiredService<ILoggerFactory>())
+
+                    .UseSnakeCaseNamingConvention() //full_name
+                    //.UseLowerCaseNamingConvention() //fullname
+                    //.UseCamelCaseNamingConvention() //fullName
+                    //.UseUpperCaseNamingConvention() //FULLNAME
+                    ;
             });
 
 
