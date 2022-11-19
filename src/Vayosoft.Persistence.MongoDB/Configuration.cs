@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     public static class Configuration
     {

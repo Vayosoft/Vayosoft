@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     public class ConnectionSetting
     {

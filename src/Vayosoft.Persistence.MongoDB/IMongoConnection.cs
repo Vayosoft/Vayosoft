@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using Vayosoft.Commons.Entities;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     public interface IMongoConnection
     {

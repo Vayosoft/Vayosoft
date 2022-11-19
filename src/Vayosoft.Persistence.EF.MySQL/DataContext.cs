@@ -1,11 +1,9 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Persistence;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.EF.MySQL
+namespace Vayosoft.Persistence.EF.MySQL
 {
     public class DataContext : DbContext, ILinqProvider, IDataProvider, IUnitOfWork
     {

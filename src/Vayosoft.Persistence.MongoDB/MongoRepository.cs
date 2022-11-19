@@ -4,11 +4,10 @@ using MongoDB.Driver.Linq;
 using Vayosoft.Commons;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Models.Pagination;
-using Vayosoft.MongoDB.Extensions;
-using Vayosoft.Persistence;
+using Vayosoft.Persistence.MongoDB.Extensions;
 using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     public class MongoRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {

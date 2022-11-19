@@ -5,7 +5,7 @@ using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Models;
 using Vayosoft.Commons.Models.Pagination;
 
-namespace Vayosoft.MongoDB.Extensions
+namespace Vayosoft.Persistence.MongoDB.Extensions
 {
     using static String;
     public static class CollectionExtensions

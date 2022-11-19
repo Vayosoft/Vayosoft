@@ -2,7 +2,7 @@
 using Vayosoft.Commons.Models;
 using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.MongoDB.Extensions
+namespace Vayosoft.Persistence.MongoDB.Extensions
 {
     public static class SpecificationExtensions
     {

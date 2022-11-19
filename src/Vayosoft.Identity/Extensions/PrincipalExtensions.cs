@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Warehouse.Core.Application.Common.Services.Security
+namespace Vayosoft.Identity.Extensions
 {
     public static class PrincipalExtensions
     {

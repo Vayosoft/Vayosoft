@@ -2,7 +2,7 @@ using Pluralize.NET.Core;
 using Vayosoft.Mapping;
 using Vayosoft.Utilities;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     using static String;
 

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Vayosoft.MongoDB
+namespace Vayosoft.Persistence.MongoDB
 {
     public class AutoRegistration
     {
