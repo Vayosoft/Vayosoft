@@ -1,9 +1,7 @@
-﻿using Vayosoft.Commons.Entities;
-
-namespace Vayosoft.Persistence.Specifications
+﻿namespace Vayosoft.Persistence.Specifications
 {
-    public interface ISpecificationEvaluator<TEntity> where TEntity : class, IEntity
+    public interface ISpecificationEvaluator<T> where T : class
     {
-        IQueryable<TEntity> Evaluate(IQueryable<TEntity> input, ISpecification<TEntity> spec);
+        IQueryable<T> Evaluate(IQueryable<T> input, ISpecification<T> spec);
     }
 }

@@ -8,7 +8,7 @@ namespace Vayosoft.Persistence.Specifications
     {
         public ICriteria<T> Criteria { get; private set; }
         public Sorting<T> Sorting { get; private set; }
-
+        public Expression<Func<T, object>> GroupBy { get; private set; }
 
         public Specification()
         {
@@ -39,6 +39,11 @@ namespace Vayosoft.Persistence.Specifications
         protected void OrderByDescending(Expression<Func<T, object>> orderByDescExpression)
         {
             Sorting = new Sorting<T>(orderByDescExpression, SortOrder.Desc);
+        }
+
+        protected void ApplyGroupBy(Expression<Func<T, object>> groupByExpression)
+        {
+            GroupBy = groupByExpression;
         }
     }
 }

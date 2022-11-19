@@ -8,5 +8,6 @@ namespace Vayosoft.Persistence.Specifications
     {
         ICriteria<T> Criteria { get; }
         Sorting<T> Sorting { get; }
+        Expression<Func<T, object>> GroupBy { get; }
     }
 }
