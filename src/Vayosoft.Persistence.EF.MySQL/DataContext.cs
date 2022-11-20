@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence.Criterias;
+using Vayosoft.Persistence.EF.MySQL.Converters;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.EF.MySQL
@@ -106,7 +107,6 @@ namespace Vayosoft.Persistence.EF.MySQL
                 .AsNoTracking();
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -120,6 +120,8 @@ namespace Vayosoft.Persistence.EF.MySQL
                 dynamic configInstance = Activator.CreateInstance(type)!;
                 modelBuilder.ApplyConfiguration(configInstance);
             }
+
+            modelBuilder.UseUtcDateTimeConverter();
         }
     }
 }
