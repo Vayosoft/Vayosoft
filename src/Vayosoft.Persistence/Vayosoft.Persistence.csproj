@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -16,17 +16,12 @@
 		<ReleasePackageFiles Include="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
+	</ItemGroup>
+
 	<Target Name="CopyPackage" AfterTargets="GenerateNuspec">
 		<Move SourceFiles="@(ReleasePackageFiles)" DestinationFolder="$(SolutionDir)packages\" />
 	</Target>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Vayosoft.Persistence\Vayosoft.Persistence.csproj" />
-    <ProjectReference Include="..\Vayosoft\Vayosoft.csproj" />
-  </ItemGroup>
 
 </Project>

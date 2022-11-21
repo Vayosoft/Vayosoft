@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A0B57AC8-516
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.AutoMapper", "src\Vayosoft.AutoMapper\Vayosoft.AutoMapper.csproj", "{16583532-9060-4997-8FBE-D3B83ADE9D53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Dapper.MySQL", "src\Vayosoft.Dapper.MySQL\Vayosoft.Dapper.MySQL.csproj", "{1BA11007-D6F8-4971-A90D-E9BE1B341531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.Dapper.MySQL", "src\Vayosoft.Persistence.Dapper.MySQL\Vayosoft.Persistence.Dapper.MySQL.csproj", "{1BA11007-D6F8-4971-A90D-E9BE1B341531}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.EF.MySQL", "src\Vayosoft.EF.MySQL\Vayosoft.EF.MySQL.csproj", "{6751213B-948D-4D31-92D0-2D386D87B066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.EF.MySQL", "src\Vayosoft.Persistence.EF.MySQL\Vayosoft.Persistence.EF.MySQL.csproj", "{6751213B-948D-4D31-92D0-2D386D87B066}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Email", "src\Vayosoft.Email\Vayosoft.Email.csproj", "{F350ABD6-1666-4C85-B6D6-1CE3D7544F67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Http", "src\Vayosoft.Http\Vayosoft.Http.csproj", "{5A351D71-1082-4136-AD08-83A3A9D1529A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.MongoDB", "src\Vayosoft.MongoDB\Vayosoft.MongoDB.csproj", "{46C690EC-CBE2-45D4-8ADD-7B78B765D3CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.MongoDB", "src\Vayosoft.Persistence.MongoDB\Vayosoft.Persistence.MongoDB.csproj", "{46C690EC-CBE2-45D4-8ADD-7B78B765D3CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.PushMessage", "src\Vayosoft.PushMessage\Vayosoft.PushMessage.csproj", "{CF04A7F1-333E-43B6-A22C-856063B63C0E}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Linq2db.MySQL", "src\Vayosoft.Linq2db.MySQL\Vayosoft.Linq2db.MySQL.csproj", "{2FCC3CA7-6F7E-4542-BC87-7ECAC6FCC012}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Testing", "src\Vayosoft.Testing\Vayosoft.Testing.csproj", "{FBB1FD47-E8D7-4761-B424-766EBAAA0221}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence", "src\Vayosoft.Persistence\Vayosoft.Persistence.csproj", "{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +135,10 @@ Global
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +164,7 @@ Global
 		{A48EDDC0-2B58-4F8D-8194-5F09726AC4E5} = {70777D0B-D554-460B-8933-5E2749CBF0F4}
 		{2FCC3CA7-6F7E-4542-BC87-7ECAC6FCC012} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}

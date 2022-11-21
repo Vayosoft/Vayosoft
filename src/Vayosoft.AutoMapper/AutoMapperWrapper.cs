@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Vayosoft.Commons;
 using Vayosoft.Utilities;
 using AM = AutoMapper;
-using IMapper = Vayosoft.Commons.IMapper;
 
 namespace Vayosoft.AutoMapper
 {
-    public class AutoMapperWrapper : Commons.IMapper, IProjector
+    public class AutoMapperWrapper : IMapper, IProjector
     {
         public AM.IConfigurationProvider Configuration { get; private set; }
         public AM.IMapper Instance { get; private set; }
