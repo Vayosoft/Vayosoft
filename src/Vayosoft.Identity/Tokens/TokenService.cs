@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Vayosoft.Commons.Models;
 using Vayosoft.Identity.Security;
 
 namespace Vayosoft.Identity.Tokens
@@ -28,7 +29,7 @@ namespace Vayosoft.Identity.Tokens
                 new(ClaimTypes.Name, user.Username, ClaimValueTypes.String),
                 new(ClaimTypes.Email, user.Email ?? string.Empty, ClaimValueTypes.Email),
                 new(UserClaimType.UserType, user.Type.ToString(), ClaimValueTypes.String),
-                new(UserClaimType.ProviderId, $"{(user as IUserProvider)?.ProviderId ?? 0}", ClaimValueTypes.Integer64)
+                new(UserClaimType.ProviderId, $"{(user as IProviderId)?.ProviderId ?? 0}", ClaimValueTypes.Integer64)
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Id, ClaimValueTypes.String)));

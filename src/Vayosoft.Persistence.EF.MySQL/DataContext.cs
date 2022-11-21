@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.EF.MySQL.Converters;
 using Vayosoft.Persistence.Specifications;
