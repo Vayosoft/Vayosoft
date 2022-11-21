@@ -3,7 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
-namespace Vayosoft.Persistence.Dapper.MySQL
+namespace Vayosoft.Dapper.MySQL
 {
     public class DbConnection : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Vayosoft.Persistence.EF.MySQL
+namespace Vayosoft.Persistence.EntityFramework
 {
     public abstract partial class EntityConfigurationMapper<T> : IEntityTypeConfiguration<T> where T : class
     {

@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A0B57AC8-516
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.AutoMapper", "src\Vayosoft.AutoMapper\Vayosoft.AutoMapper.csproj", "{16583532-9060-4997-8FBE-D3B83ADE9D53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.Dapper.MySQL", "src\Vayosoft.Persistence.Dapper.MySQL\Vayosoft.Persistence.Dapper.MySQL.csproj", "{1BA11007-D6F8-4971-A90D-E9BE1B341531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Dapper.MySQL", "src\Vayosoft.Dapper.MySQL\Vayosoft.Dapper.MySQL.csproj", "{1BA11007-D6F8-4971-A90D-E9BE1B341531}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.EF.MySQL", "src\Vayosoft.Persistence.EF.MySQL\Vayosoft.Persistence.EF.MySQL.csproj", "{6751213B-948D-4D31-92D0-2D386D87B066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.EntityFramework.MySQL", "src\Vayosoft.EntityFramework.MySQL\Vayosoft.EntityFramework.MySQL.csproj", "{6751213B-948D-4D31-92D0-2D386D87B066}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Email", "src\Vayosoft.Email\Vayosoft.Email.csproj", "{F350ABD6-1666-4C85-B6D6-1CE3D7544F67}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Testing", "src\Vayosoft.Testing\Vayosoft.Testing.csproj", "{FBB1FD47-E8D7-4761-B424-766EBAAA0221}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence", "src\Vayosoft.Persistence\Vayosoft.Persistence.csproj", "{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Persistence.EntityFramework", "src\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj", "{0D48448E-0021-438A-A0C2-F9FA127959BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +135,10 @@ Global
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +164,7 @@ Global
 		{A48EDDC0-2B58-4F8D-8194-5F09726AC4E5} = {70777D0B-D554-460B-8933-5E2749CBF0F4}
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{0D48448E-0021-438A-A0C2-F9FA127959BF} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}

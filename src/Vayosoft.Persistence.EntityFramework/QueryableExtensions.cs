@@ -3,7 +3,7 @@ using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.Persistence.EF.MySQL
+namespace Vayosoft.Persistence.EntityFramework
 {
     public static class QueryableExtensions
     {

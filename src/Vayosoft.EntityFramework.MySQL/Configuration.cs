@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Vayosoft.Persistence.EF.MySQL
+namespace Vayosoft.EntityFramework.MySQL
 {
     public static class Configuration
     {
