@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Commons.Models;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.EF.MySQL.Converters;
 using Vayosoft.Persistence.Specifications;
@@ -69,7 +69,27 @@ namespace Vayosoft.Persistence.EF.MySQL
 
         public async Task CommitAsync()
         {
-            await SaveChangesAsync();
+            try
+            {
+                await SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (HandleConcurrency(this, ex.Entries))
+                {
+                    await SaveChangesAsync();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+        }
+
+        protected virtual bool HandleConcurrency(DataContext context, IReadOnlyList<EntityEntry> entries)
+        {
+            return false;
         }
 
 
