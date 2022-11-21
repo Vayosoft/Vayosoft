@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-	  <LangVersion>latest</LangVersion>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageVersion>2.0.0</PackageVersion>
+	<LangVersion>latest</LangVersion>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageVersion>2.0.0</PackageVersion>
   </PropertyGroup>
 
 	<PropertyGroup>

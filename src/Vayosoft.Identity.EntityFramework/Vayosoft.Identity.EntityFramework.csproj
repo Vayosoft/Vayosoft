@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageVersion>2.0.0</PackageVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<ReleasePackageFiles Include="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" />
+	</ItemGroup>
+
+	<Target Name="CopyPackage" AfterTargets="GenerateNuspec">
+		<Move SourceFiles="@(ReleasePackageFiles)" DestinationFolder="$(SolutionDir)packages\" />
+	</Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vayosoft.Identity\Vayosoft.Identity.csproj" />
+    <ProjectReference Include="..\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj" />
+  </ItemGroup>
+
+</Project>

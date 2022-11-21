@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Testing", "src\Vay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence", "src\Vayosoft.Persistence\Vayosoft.Persistence.csproj", "{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Persistence.EntityFramework", "src\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj", "{0D48448E-0021-438A-A0C2-F9FA127959BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.EntityFramework", "src\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj", "{0D48448E-0021-438A-A0C2-F9FA127959BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,10 @@ Global
 		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D48448E-0021-438A-A0C2-F9FA127959BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +171,7 @@ Global
 		{FBB1FD47-E8D7-4761-B424-766EBAAA0221} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{0D48448E-0021-438A-A0C2-F9FA127959BF} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{666B3D3A-612A-4905-B330-5D322C0E22D2} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}
