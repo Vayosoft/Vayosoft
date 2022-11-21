@@ -1,4 +1,4 @@
-﻿using Vayosoft.Commons.Models;
+﻿using Vayosoft.Commons.Entities;
 
 namespace Vayosoft.Identity
 {

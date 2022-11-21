@@ -5,7 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Vayosoft.Commons.Models;
+using Vayosoft.Commons.Entities;
 using Vayosoft.Identity.Security;
 
 namespace Vayosoft.Identity.Tokens
