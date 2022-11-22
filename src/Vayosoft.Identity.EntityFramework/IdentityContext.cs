@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vayosoft.Identity.Security;
 using Vayosoft.Identity.Tokens;
-using Vayosoft.Persistence.EntityFramework;
 
 namespace Vayosoft.Identity.EntityFramework
 {
-    public sealed class IdentityContext : DataContext
+    public sealed class IdentityContext : DbContext
     {
         public IdentityContext(DbContextOptions options)
             : base(options)
