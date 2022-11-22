@@ -7,12 +7,10 @@ namespace Vayosoft.Identity.EntityFramework
     public sealed class IdentityContext : DbContext
     {
         public IdentityContext(DbContextOptions options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
+            : base(options) { }
 
-        public DbSet<UserEntity> Users => Set<UserEntity>();
+        //public DbSet<UserEntity> Users => Set<UserEntity>();
+        public DbSet<UserEntity> Users { set; get; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
