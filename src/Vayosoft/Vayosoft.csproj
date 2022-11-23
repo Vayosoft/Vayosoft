@@ -4,8 +4,14 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
+		<Company>Vayosoft</Company>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageVersion>2.0.0</PackageVersion>
+		<PackageVersion>2.1.0</PackageVersion>
+		<Version>1.0.0</Version>
+		<SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalSeconds)</SecondsSinceEpoch>
+		<Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 100000))))</Revision>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<FileVersion>$(Version).$(Revision)</FileVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
