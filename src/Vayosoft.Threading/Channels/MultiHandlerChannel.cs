@@ -17,6 +17,7 @@ namespace Vayosoft.Threading.Channels
         private const int ChannelManagementIntervalMin = 35 * 60 * 1000;
 
         private readonly ConcurrentDictionary<TIdent, HandlerChannel<T, TH>> _channels = new();
+        private readonly ConcurrentDictionary<TIdent, object> _locks = new();
         private Timer _timer;
 
         [ActivatorUtilitiesConstructor]
@@ -40,8 +41,14 @@ namespace Vayosoft.Threading.Channels
             {
                 if (!_channels.TryGetValue(key, out var channel))
                 {
-                    channel = Factory(key);
-                    _channels.TryAdd(key, channel);
+                    lock (_locks.GetOrAdd(key, s => new object()))
+                    {
+                        if (!_channels.TryGetValue(key, out channel))
+                        {
+                            channel = Factory(key);
+                            _channels.TryAdd(key, channel);
+                        }
+                    }
                 }
 
                 return channel.Enqueue;
@@ -50,13 +57,7 @@ namespace Vayosoft.Threading.Channels
 
         public bool Enqueue(TIdent key, T item)
         {
-            if (!_channels.TryGetValue(key, out var channel))
-            {
-                channel = Factory(key);
-                _channels.TryAdd(key, channel);
-            }
-
-            return channel.Enqueue(item);
+            return this[key].Invoke(item);
         }
 
         public QueueHandlerTelemetryReport GeTelemetryReport()
