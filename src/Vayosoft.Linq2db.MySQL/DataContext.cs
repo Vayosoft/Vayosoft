@@ -4,7 +4,9 @@ using LinqToDB.Data;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Exceptions;
 using Vayosoft.Persistence;
-using Vayosoft.Specifications;
+using Vayosoft.Persistence.Criterias;
+using Vayosoft.Persistence.Extensions;
+using Vayosoft.Persistence.Specifications;
 
 
 namespace Vayosoft.Linq2db.MySQL
@@ -19,13 +21,22 @@ namespace Vayosoft.Linq2db.MySQL
             return this.GetTable<TEntity>().AsQueryable();
         }
 
-        public IQueryable<TEntity> AsQueryable<TEntity>(ISpecification<TEntity> specification) where TEntity : class, IEntity {
-            return AsQueryable<TEntity>().Evaluate(specification);
+        public Task<TEntity> FindAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            return this.GetTable<TEntity>()
+                .AsQueryable()
+                .ByCriteria(criteria)
+                .SingleOrDefaultAsync(cancellationToken); ;
         }
 
         public void Add<TEntity>(TEntity entity) where TEntity : class, IEntity
         {
            this.GetTable<TEntity>().Insert(() => entity);
+        }
+
+        public async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            await this.GetTable<TEntity>().InsertAsync(() => entity, token: cancellationToken);
         }
 
         public void Update<TEntity>(TEntity entity) where TEntity : class, IEntity

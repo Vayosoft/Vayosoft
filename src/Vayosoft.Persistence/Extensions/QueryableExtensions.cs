@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons;
 using Vayosoft.Commons.Entities;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.Extensions
@@ -15,6 +16,11 @@ namespace Vayosoft.Persistence.Extensions
         public static IQueryable<T> BySpecification<T>(this IQueryable<T> queryable, ISpecification<T> spec)
             where T : class, IEntity
             => new SpecificationEvaluator<T>().Evaluate(queryable, spec);
+
+        public static IQueryable<TEntity> ByCriteria<TEntity>(this IQueryable<TEntity> queryable, ICriteria<TEntity> criteria) where TEntity : class, IEntity
+        {
+            return queryable.Where(criteria.ToExpression());
+        }
 
         public static IQueryable<T> Apply<T>(this IQueryable<T> source, ILinqSpecification<T> spec)
             where T : class

@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.EntityFramework", "src\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj", "{0D48448E-0021-438A-A0C2-F9FA127959BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
