@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>latest</LangVersion>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageVersion>2.0.0</PackageVersion>
+	    <TargetFramework>net7.0</TargetFramework>
+	    <ImplicitUsings>enable</ImplicitUsings>
+	    <LangVersion>latest</LangVersion>
+	    <Company>Vayosoft</Company>
+	    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	    <PackageVersion>2.1.0</PackageVersion>
+	    <Version>1.0.0</Version>
+	    <SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
+	    <Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 100000))))</Revision>
+	    <AssemblyVersion>$(Version)</AssemblyVersion>
+	    <FileVersion>$(Version).$(Revision)</FileVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -21,8 +27,8 @@
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.3.0" />
-    <PackageReference Include="MediatR" Version="11.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />

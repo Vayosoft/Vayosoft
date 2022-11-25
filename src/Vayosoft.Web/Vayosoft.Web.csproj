@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+      <TargetFramework>net7.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
 	  <LangVersion>latest</LangVersion>
+	  <Company>Vayosoft</Company>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageVersion>2.0.0</PackageVersion>
+	  <PackageVersion>2.1.0</PackageVersion>
+	  <Version>1.0.0</Version>
+	  <SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
+	  <Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 100000))))</Revision>
+	  <AssemblyVersion>$(Version)</AssemblyVersion>
+	  <FileVersion>$(Version).$(Revision)</FileVersion>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -24,7 +30,7 @@
     <PackageReference Include="LanguageExt.Core" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 

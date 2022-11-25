@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence.Criterias;
-using Vayosoft.Persistence.EF.MySQL.Converters;
+using Vayosoft.Persistence.EntityFramework.Converters;
 using Vayosoft.Persistence.Specifications;
 
-namespace Vayosoft.Persistence.EF.MySQL
+namespace Vayosoft.Persistence.EntityFramework
 {
     public class DataContext : DbContext, ILinqProvider, IDataProvider, IUnitOfWork
     {

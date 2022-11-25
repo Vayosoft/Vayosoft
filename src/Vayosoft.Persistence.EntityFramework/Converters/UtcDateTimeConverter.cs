@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Vayosoft.Persistence.EF.MySQL.Converters
+namespace Vayosoft.Persistence.EntityFramework.Converters
 {
     public static class ConverterExtensions
     {
