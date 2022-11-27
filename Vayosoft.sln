@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.PushMessage", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Redis", "src\Vayosoft.Redis\Vayosoft.Redis.csproj", "{6CE37B83-3CF9-4BA5-A296-4CBC43BD92E9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{70777D0B-D554-460B-8933-5E2749CBF0F4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{70777D0B-D554-460B-8933-5E2749CBF0F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.RestClient", "src\Vayosoft.RestClient\Vayosoft.RestClient.csproj", "{478D4226-7817-454F-99B2-866B8F6A8D7C}"
 EndProject
