@@ -1,6 +1,6 @@
 ﻿
 namespace Vayosoft.Identity.Persistence
 {
-    public interface IUserRepository : IUserStore<UserEntity>, IUserRoleStore
+    public interface IUserRepository : IUserStore<UserEntityBase>, IUserRoleStore
     { }
 }

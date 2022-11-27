@@ -5,9 +5,9 @@ using Vayosoft.Identity.Tokens;
 
 namespace Vayosoft.Identity.EntityFramework.Mapping
 {
-    public partial class UserEntityMap : IdentityConfigurationMapper<UserEntity>
+    public partial class UserEntityMap : IdentityConfigurationMapper<UserEntityBase>
     {
-        public override void Configure(EntityTypeBuilder<UserEntity> builder)
+        public override void Configure(EntityTypeBuilder<UserEntityBase> builder)
         {
             builder.ToTable("users").HasKey(t => t.Id);
             builder.Property(t => t.Id).HasColumnName("userid");
@@ -26,7 +26,7 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
                 .HasIndex(u => u.Username).IsUnique();
 
             builder.HasData(
-                new UserEntity("su")
+                new UserEntityBase("su")
                 {
                     Id = 1,
                     PasswordHash = "VBbXzW7xlaD3YiqcVrVehA==",
@@ -56,7 +56,7 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
             builder.Property(t => t.ReplacedByToken).HasColumnName("replaced_by_token");
             builder.Property(t => t.Expires).HasColumnName("expires");
             builder
-                .HasOne(t => t.User as UserEntity)
+                .HasOne(t => t.User as UserEntityBase)
                 .WithMany(t => t.RefreshTokens)
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade);

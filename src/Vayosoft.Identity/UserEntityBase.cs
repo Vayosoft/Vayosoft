@@ -5,10 +5,10 @@ using Vayosoft.Utilities;
 
 namespace Vayosoft.Identity
 {
-    public class UserEntity : EntityBase<long>, IUser, IProviderId<long>
+    public class UserEntityBase : EntityBase<long>, IUser, IProviderId<long>
     {
-        private UserEntity() { }
-        public UserEntity(string username)
+        private UserEntityBase() { }
+        public UserEntityBase(string username)
         {
             Username = Guard.NotEmpty(username);
         }
