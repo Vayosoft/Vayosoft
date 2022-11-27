@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using PushSharp.Apple;
 using Vayosoft.PushMessage.Exceptions;
@@ -8,15 +9,16 @@ namespace Vayosoft.PushMessage
 {
     public class ApplePushBroker : IPushBroker, IDisposable
     {
-        private FeedbackService _fbs;
-        private Timer _fbsTimer;
+        private readonly ILogger<ApplePushBroker> _logger;
+        private readonly Timer _fbsTimer;
         private const int CallbackTimeout = 1000 * 60 * 30;
         protected ApnsServiceBroker Broker;
 
         public event HandlerPushBrokerEvent OnEvent = null!;
 
-        public ApplePushBroker(IConfiguration configuration)
+        public ApplePushBroker(IConfiguration configuration, ILogger<ApplePushBroker> logger)
         {
+            _logger = logger;
             var cfg = configuration.GetApplePushBrokerConfig();
 
             if (string.IsNullOrEmpty(cfg.CertificatePath))
@@ -36,11 +38,11 @@ namespace Vayosoft.PushMessage
             Broker.OnNotificationFailed += NotificationFailed;
             Broker.OnNotificationSucceeded += notification => OnEvent?.Invoke(notification.Tag);
 
-            _fbs = new FeedbackService(config);
-            _fbs.FeedbackReceived += FeedbackReceived;
+            var fbs = new FeedbackService(config);
+            fbs.FeedbackReceived += FeedbackReceived;
             _fbsTimer = new Timer(_ =>
             {
-                _fbs.Check();
+                fbs.Check();
             }, null, CallbackTimeout, Timeout.Infinite);
 
             Start();
@@ -49,7 +51,7 @@ namespace Vayosoft.PushMessage
         private void Start()
         {
             Broker!.Start();
-            Trace.TraceInformation("{0}|  Service started.", nameof(ApplePushBroker));
+            _logger.LogInformation("Service started.");
         }
 
         private void NotificationFailed(ApnsNotification notification, AggregateException aggregateEx)
@@ -75,7 +77,8 @@ namespace Vayosoft.PushMessage
 
                 foreach (var e in aggregateEx.Flatten().InnerExceptions)
                 {
-                    Trace.TraceError("{0}| {1}\r\n{2}\r\n{3}", ex.GetType().Name, e.Message, e.InnerException, ex.StackTrace);
+                    _logger.LogError("{name}| {message}\r\n{exception}\r\n{stackTrace}",
+                        ex.GetType().Name, e.Message, e.InnerException, ex.StackTrace);
                 }
 
                 return true;
@@ -114,7 +117,7 @@ namespace Vayosoft.PushMessage
             _fbsTimer?.Dispose();
             Broker?.Stop(true);
 
-            Trace.TraceInformation("{0}| Services stopped.", nameof(ApplePushBroker));
+            _logger.LogInformation("Services stopped.");
         }
     }
 }

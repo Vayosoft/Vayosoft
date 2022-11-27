@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using PushSharp.Core;
 using PushSharp.Google;
@@ -9,14 +9,16 @@ namespace Vayosoft.PushMessage
 {
     public class GooglePushBroker : IPushBroker, IDisposable
     {
+        private readonly ILogger<GooglePushBroker> _logger;
         private const string FCM_SEND_URL = "https://fcm.googleapis.com/fcm/send";
 
         protected readonly GcmServiceBroker Broker;
 
         public event HandlerPushBrokerEvent OnEvent = null!;
 
-        public GooglePushBroker(IConfiguration configuration)
+        public GooglePushBroker(IConfiguration configuration, ILogger<GooglePushBroker> logger)
         {
+            _logger = logger;
             var cfg = configuration.GetGooglePushBrokerConfig();
 
             if (string.IsNullOrEmpty(cfg.AuthToken))
@@ -35,7 +37,7 @@ namespace Vayosoft.PushMessage
         private void Start()
         {
             Broker!.Start();
-            Trace.TraceInformation("{0}| Service started.", nameof(GooglePushBroker));
+            _logger.LogInformation("Service started.");
         }
 
         private void NotificationFailed(INotification notification, AggregateException aggregateEx)
@@ -97,7 +99,8 @@ namespace Vayosoft.PushMessage
 
                 foreach (var e in aggregateEx.Flatten().InnerExceptions)
                 {
-                    Trace.TraceError($"{ex.GetType().Name}| {e.Message}\r\n{e.InnerException}\r\n{ex.StackTrace}");
+                    _logger.LogError("{name}| {message}\r\n{exception}\r\n{stackTrace}",
+                        ex.GetType().Name, e.Message, e.InnerException, ex.StackTrace);
                 }
 
                 return true;
@@ -125,7 +128,7 @@ namespace Vayosoft.PushMessage
         public void Dispose()
         {
             Broker?.Stop(true);
-            Trace.TraceInformation("{0}| Services stopped.", nameof(GooglePushBroker));
+            _logger.LogInformation("Services stopped.");
         }
     }
 }

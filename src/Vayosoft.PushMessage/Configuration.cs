@@ -2,7 +2,7 @@
 
 namespace Vayosoft.PushMessage
 {
-    public static class Config
+    public static class Configuration
     {
         public static IServiceCollection AddPushBrokers(this IServiceCollection services)
         {
