@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Identity", "src\Va
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Web", "src\Vayosoft.Web\Vayosoft.Web.csproj", "{3F2F077A-4443-48AB-BB41-7EF32F6BF0BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.UnitTests", "tests\Vayosoft.UnitTests\Vayosoft.UnitTests.csproj", "{A48EDDC0-2B58-4F8D-8194-5F09726AC4E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.UnitTests", "test\Vayosoft.UnitTests\Vayosoft.UnitTests.csproj", "{A48EDDC0-2B58-4F8D-8194-5F09726AC4E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Testing", "src\Vayosoft.Testing\Vayosoft.Testing.csproj", "{FBB1FD47-E8D7-4761-B424-766EBAAA0221}"
 EndProject
