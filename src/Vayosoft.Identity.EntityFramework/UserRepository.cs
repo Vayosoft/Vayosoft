@@ -100,7 +100,7 @@ namespace Vayosoft.Identity.EntityFramework
             return query.ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public Task<UserEntityBase> FindByIdAsync(object userId, CancellationToken cancellationToken)
+        public Task<UserEntity> FindByIdAsync(object userId, CancellationToken cancellationToken)
         {
             return _context
                 .Users
@@ -109,7 +109,7 @@ namespace Vayosoft.Identity.EntityFramework
                 .SingleOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken: cancellationToken);
         }
 
-        public Task<UserEntityBase> FindByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+        public Task<UserEntity> FindByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
         {
             return _context
                 .Users
@@ -118,16 +118,16 @@ namespace Vayosoft.Identity.EntityFramework
                 .SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == refreshToken), cancellationToken: cancellationToken);
         }
 
-        public Task<UserEntityBase> FindByNameAsync(string username, CancellationToken cancellationToken)
+        public Task<UserEntity> FindByNameAsync(string username, CancellationToken cancellationToken)
         {
             return _context
-                    .Set<UserEntityBase>()
+                    .Set<UserEntity>()
                     .Include(u => u.RefreshTokens)
                     .AsTracking()
                     .SingleOrDefaultAsync(u => u.Username == username, cancellationToken: cancellationToken);
         }
 
-        public async Task UpdateAsync(UserEntityBase user, CancellationToken cancellationToken)
+        public async Task UpdateAsync(UserEntity user, CancellationToken cancellationToken)
         {
             if (user.IsTransient())
                 await _context.Users.AddAsync(user, cancellationToken);

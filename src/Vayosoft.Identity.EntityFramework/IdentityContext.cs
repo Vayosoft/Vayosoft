@@ -10,20 +10,20 @@ namespace Vayosoft.Identity.EntityFramework
             : base(options) { }
 
         //public DbSet<UserEntity> Users => Set<UserEntity>();
-        public DbSet<UserEntityBase> Users { set; get; } = null!;
+        public DbSet<UserEntity> Users { set; get; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            var userEntity = modelBuilder.Entity<UserEntityBase>();
+            var userEntity = modelBuilder.Entity<UserEntity>();
             {
                 userEntity
                     .Property(t => t.Username); //read_only field
                 userEntity
                     .HasIndex(u => u.Username).IsUnique();
                 userEntity.HasData(
-                    new UserEntityBase("su")
+                    new UserEntity("su")
                     {
                         Id = 1,
                         PasswordHash = "VBbXzW7xlaD3YiqcVrVehA==",
@@ -42,7 +42,7 @@ namespace Vayosoft.Identity.EntityFramework
                 refreshToken
                     .HasKey(t => new {t.UserId, t.Token});
                 refreshToken
-                    .HasOne(t => t.User as UserEntityBase)
+                    .HasOne(t => t.User as UserEntity)
                     .WithMany(t => t.RefreshTokens)
                     .HasForeignKey(t => t.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
