@@ -24,7 +24,7 @@ namespace Vayosoft.PushBrokers
             if (string.IsNullOrEmpty(cfg.AuthToken))
                 throw new ArgumentException(nameof(cfg.AuthToken));
 
-            var config = new GcmConfiguration(cfg.AuthToken);
+            var config = new GcmConfiguration(optionalSenderID: cfg.SenderId ?? string.Empty, senderAuthToken: cfg.AuthToken, null);
             config.OverrideUrl(FCM_SEND_URL);
 
             Broker = new GcmServiceBroker(config);
