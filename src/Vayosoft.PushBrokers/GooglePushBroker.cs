@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using PushSharp.Core;
 using PushSharp.Google;
-using Vayosoft.PushMessage.Exceptions;
+using Vayosoft.PushBrokers.Exceptions;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public class GooglePushBroker : IPushBroker, IDisposable
     {

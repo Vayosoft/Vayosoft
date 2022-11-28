@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Http", "src\Vayoso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.MongoDB", "src\Vayosoft.Persistence.MongoDB\Vayosoft.Persistence.MongoDB.csproj", "{46C690EC-CBE2-45D4-8ADD-7B78B765D3CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.PushMessage", "src\Vayosoft.PushMessage\Vayosoft.PushMessage.csproj", "{CF04A7F1-333E-43B6-A22C-856063B63C0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.PushBrokers", "src\Vayosoft.PushBrokers\Vayosoft.PushBrokers.csproj", "{CF04A7F1-333E-43B6-A22C-856063B63C0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Redis", "src\Vayosoft.Redis\Vayosoft.Redis.csproj", "{6CE37B83-3CF9-4BA5-A296-4CBC43BD92E9}"
 EndProject
@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.EntityFramework", "src\Vayosoft.Persistence.EntityFramework\Vayosoft.Persistence.EntityFramework.csproj", "{0D48448E-0021-438A-A0C2-F9FA127959BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public class PushBrokerConfig
     {

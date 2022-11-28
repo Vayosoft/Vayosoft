@@ -1,7 +1,7 @@
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public static class SerializationExtensions
     {

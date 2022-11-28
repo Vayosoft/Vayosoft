@@ -1,4 +1,4 @@
-﻿namespace Vayosoft.PushMessage.Exceptions
+﻿namespace Vayosoft.PushBrokers.Exceptions
 {
     public class PushBrokerException : Exception
     {

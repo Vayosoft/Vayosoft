@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public interface IPushBroker
     { 

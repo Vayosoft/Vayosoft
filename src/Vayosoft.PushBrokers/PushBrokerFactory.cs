@@ -1,6 +1,6 @@
-﻿using Vayosoft.PushMessage.Exceptions;
+﻿using Vayosoft.PushBrokers.Exceptions;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public delegate void HandlerPushBrokerEvent(object tag, PushBrokerException ex = null);
 

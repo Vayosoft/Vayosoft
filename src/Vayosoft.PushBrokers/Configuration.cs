@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public static class Configuration
     {

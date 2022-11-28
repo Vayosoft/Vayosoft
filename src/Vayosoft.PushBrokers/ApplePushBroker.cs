@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using PushSharp.Apple;
-using Vayosoft.PushMessage.Exceptions;
+using Vayosoft.PushBrokers.Exceptions;
 
-namespace Vayosoft.PushMessage
+namespace Vayosoft.PushBrokers
 {
     public class ApplePushBroker : IPushBroker, IDisposable
     {
