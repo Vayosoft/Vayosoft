@@ -8,7 +8,7 @@ namespace Vayosoft.Identity
         IPrincipal User { get; }
         IUserSession Session { get; }
 
-        Task<bool> LoadContextAsync();
+        ValueTask<bool> LoadContextAsync();
 
         bool HasRole(string role);
         bool HasAnyRole(IEnumerable<string> roles);
