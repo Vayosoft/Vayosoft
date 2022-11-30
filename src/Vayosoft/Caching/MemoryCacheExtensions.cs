@@ -7,8 +7,8 @@ namespace Vayosoft.Caching
 {
     public static class MemoryCacheExtensions
     {
-        private static readonly StringComparer _ignoreCase = StringComparer.OrdinalIgnoreCase;
-        private static readonly ConcurrentDictionary<string, object> _lockLookup = new ConcurrentDictionary<string, object>();
+        private static readonly StringComparer IgnoreCase = StringComparer.OrdinalIgnoreCase;
+        private static readonly ConcurrentDictionary<string, object> LockLookup = new();
 
         public static async Task<IList<TItem>> GetOrLoadByIdsAsync<TItem>(
             this IMemoryCache memoryCache,
@@ -20,7 +20,7 @@ namespace Vayosoft.Caching
         {
             ids = ids
                 ?.Where(id => !string.IsNullOrEmpty(id))
-                .Distinct(_ignoreCase)
+                .Distinct(IgnoreCase)
                 .ToArray()
                 ?? Array.Empty<string>();
 
@@ -38,7 +38,7 @@ namespace Vayosoft.Caching
 
                         var itemsByIds = items
                             .Where(x => x != null)
-                            .ToDictionary(x => x.Id, _ignoreCase);
+                            .ToDictionary(x => x.Id, IgnoreCase);
 
                         foreach (var id in missingIds)
                         {
@@ -61,7 +61,7 @@ namespace Vayosoft.Caching
 
         public static bool TryGetByIds<TItem>(this IMemoryCache memoryCache, string keyPrefix, IList<string> ids, out IDictionary<string, TItem> result)
         {
-            result = new Dictionary<string, TItem>(_ignoreCase);
+            result = new Dictionary<string, TItem>(IgnoreCase);
 
             foreach (var id in ids)
             {
@@ -115,7 +115,7 @@ namespace Vayosoft.Caching
         {
             if (!cache.TryGetValue(key, out var result))
             {
-                lock (_lockLookup.GetOrAdd(key, new object()))
+                lock (LockLookup.GetOrAdd(key, new object()))
                 {
                     try
                     {
@@ -131,7 +131,7 @@ namespace Vayosoft.Caching
                     }
                     finally
                     {
-                        _lockLookup.TryRemove(key, out var _);
+                        LockLookup.TryRemove(key, out var _);
                     }
                 }
             }
