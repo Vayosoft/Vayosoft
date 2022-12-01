@@ -64,7 +64,7 @@ namespace Vayosoft.Web.Authorization
                     if (_rolesSplit.Any())
                     {
                         var session = context.HttpContext.RequestServices.GetRequiredService<IUserContext>();
-                        if (!await session.LoadSessionAsync() || !session.HasAnyRole(_rolesSplit))
+                        if (!await session.LoadContextAsync() || !session.HasAnyRole(_rolesSplit))
                         {
                             HandleReject(context, principal.Identity); return;
                         }
@@ -73,7 +73,7 @@ namespace Vayosoft.Web.Authorization
                     if (!string.IsNullOrEmpty(_objectName))
                     {
                         var session = context.HttpContext.RequestServices.GetRequiredService<IUserContext>();
-                        if (!await session.LoadSessionAsync() || !session.HasPermission(_objectName, _permissions))
+                        if (!await session.LoadContextAsync() || !session.HasPermission(_objectName, _permissions))
                         {
                             HandleReject(context, principal.Identity); return;
                         }
