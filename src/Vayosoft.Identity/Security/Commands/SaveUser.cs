@@ -7,6 +7,7 @@ using Vayosoft.Commons.Exceptions;
 using Vayosoft.Identity.Exceptions;
 using Vayosoft.Identity.Extensions;
 using Vayosoft.Identity.Persistence;
+using Vayosoft.Identity.Providers;
 using Vayosoft.Utilities;
 
 namespace Vayosoft.Identity.Security.Commands;
@@ -43,7 +44,7 @@ public class SaveUser : ICommand
 //    private readonly IPasswordHasher _passwordHasher;
 //    private readonly ILogger<HandleSaveUser> _logger;
 
-//    public  HandleSaveUser(
+//    public HandleSaveUser(
 //        IUserRepository userRepository,
 //        ILinqProvider linqProvider,
 //        IUserContext userContext,
@@ -63,8 +64,8 @@ public class SaveUser : ICommand
 //        {
 //            var identity = Guard.NotNull(_userContext.User.Identity);
 //            var identityType = identity.GetUserType();
-            
-//            await _userContext.LoadSessionAsync();
+
+//            await _userContext.LoadContextAsync();
 
 //            if (!_userContext.IsAdministrator)
 //                throw new NotEnoughPermissionsException();
@@ -106,7 +107,7 @@ public class SaveUser : ICommand
 //            {
 //                entity.ProviderId = command.ProviderId;
 //            }
-            
+
 //            entity.LogLevel = command.LogLevel;
 
 //            await _userRepository.UpdateAsync(entity, cancellationToken);

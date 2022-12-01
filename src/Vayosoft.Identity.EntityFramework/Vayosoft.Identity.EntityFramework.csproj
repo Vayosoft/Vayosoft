@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Vayosoft.Identity\Vayosoft.Identity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Security\" />
+  </ItemGroup>
+
 </Project>
