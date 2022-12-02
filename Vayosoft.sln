@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Persistence.Entity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Identity.EntityFramework", "src\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj", "{666B3D3A-612A-4905-B330-5D322C0E22D2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "test\Benchmarks\Benchmarks.csproj", "{740B45E6-B061-491A-A48A-58AD8B002A94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{666B3D3A-612A-4905-B330-5D322C0E22D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{740B45E6-B061-491A-A48A-58AD8B002A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{740B45E6-B061-491A-A48A-58AD8B002A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{740B45E6-B061-491A-A48A-58AD8B002A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{740B45E6-B061-491A-A48A-58AD8B002A94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{1879DEB9-B2CD-4A78-A15E-55E0F8B95E0D} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{0D48448E-0021-438A-A0C2-F9FA127959BF} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{666B3D3A-612A-4905-B330-5D322C0E22D2} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{740B45E6-B061-491A-A48A-58AD8B002A94} = {70777D0B-D554-460B-8933-5E2749CBF0F4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}

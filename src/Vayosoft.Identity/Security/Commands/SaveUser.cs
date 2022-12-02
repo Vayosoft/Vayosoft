@@ -8,6 +8,8 @@ using Vayosoft.Identity.Exceptions;
 using Vayosoft.Identity.Extensions;
 using Vayosoft.Identity.Persistence;
 using Vayosoft.Identity.Providers;
+using Vayosoft.Persistence;
+using Vayosoft.Persistence.Extensions;
 using Vayosoft.Utilities;
 
 namespace Vayosoft.Identity.Security.Commands;
@@ -36,99 +38,99 @@ public class SaveUser : ICommand
     }
 }
 
-//public class HandleSaveUser : ICommandHandler<SaveUser>
-//{
-//    private readonly IUserRepository _userRepository;
-//    private readonly ILinqProvider _linqProvider;
-//    private readonly IUserContext _userContext;
-//    private readonly IPasswordHasher _passwordHasher;
-//    private readonly ILogger<HandleSaveUser> _logger;
+public class HandleSaveUser : ICommandHandler<SaveUser>
+{
+    private readonly IUserRepository _userRepository;
+    private readonly ILinqProvider _linqProvider;
+    private readonly IUserContext _userContext;
+    private readonly IPasswordHasher _passwordHasher;
+    private readonly ILogger<HandleSaveUser> _logger;
 
-//    public HandleSaveUser(
-//        IUserRepository userRepository,
-//        ILinqProvider linqProvider,
-//        IUserContext userContext,
-//        IPasswordHasher passwordHasher,
-//        ILogger<HandleSaveUser> logger)
-//    {
-//        _userRepository = userRepository;
-//        _linqProvider = linqProvider;
-//        _userContext = userContext;
-//        _passwordHasher = passwordHasher;
-//        _logger = logger;
-//    }
+    public HandleSaveUser(
+        IUserRepository userRepository,
+        ILinqProvider linqProvider,
+        IUserContext userContext,
+        IPasswordHasher passwordHasher,
+        ILogger<HandleSaveUser> logger)
+    {
+        _userRepository = userRepository;
+        _linqProvider = linqProvider;
+        _userContext = userContext;
+        _passwordHasher = passwordHasher;
+        _logger = logger;
+    }
 
-//    public async Task<Unit> Handle(SaveUser command, CancellationToken cancellationToken)
-//    {
-//        try
-//        {
-//            var identity = Guard.NotNull(_userContext.User.Identity);
-//            var identityType = identity.GetUserType();
+    public async Task<Unit> Handle(SaveUser command, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var identity = Guard.NotNull(_userContext.User.Identity);
+            var identityType = identity.GetUserType();
 
-//            await _userContext.LoadContextAsync();
+            await _userContext.LoadContextAsync();
 
-//            if (!_userContext.IsAdministrator)
-//                throw new NotEnoughPermissionsException();
+            if (!_userContext.IsAdministrator)
+                throw new NotEnoughPermissionsException();
 
-//            UserEntity entity;
-//            if (command.Id > 0)
-//            {
-//                entity = await _userRepository.FindByIdAsync(command.Id, cancellationToken);
-//                if (entity == null)
-//                    throw EntityNotFoundException.For<UserEntity>(command.Id);
+            UserEntity entity;
+            if (command.Id > 0)
+            {
+                entity = await _userRepository.FindByIdAsync(command.Id, cancellationToken);
+                if (entity == null)
+                    throw EntityNotFoundException.For<UserEntity>(command.Id);
 
-//                if (!string.IsNullOrEmpty(command.Password))
-//                    entity.PasswordHash = _passwordHasher.HashPassword(command.Password);
-//            }
-//            else
-//            {
-//                Guard.NotEmpty(command.Password);
+                if (!string.IsNullOrEmpty(command.Password))
+                    entity.PasswordHash = _passwordHasher.HashPassword(command.Password);
+            }
+            else
+            {
+                Guard.NotEmpty(command.Password);
 
-//                entity = new UserEntity(command.Username)
-//                {
-//                    PasswordHash = _passwordHasher.HashPassword(command.Password),
-//                    Email = command.Username,
-//                    Registered = DateTime.UtcNow,
-//                };
-//            }
+                entity = new UserEntity(command.Username)
+                {
+                    PasswordHash = _passwordHasher.HashPassword(command.Password),
+                    Email = command.Username,
+                    Registered = DateTime.UtcNow,
+                };
+            }
 
-//            entity.Phone = command.Phone;
+            entity.Phone = command.Phone;
 
-//            var userType = Enum.Parse<UserType>(command.Type);
-//            entity.Type = userType > identityType ? userType : identityType;
+            var userType = Enum.Parse<UserType>(command.Type);
+            entity.Type = userType > identityType ? userType : identityType;
 
-//            var providerId = identity.GetProviderId();
-//            if (!_userContext.IsSupervisor && command.ProviderId != providerId)
-//            {
-//                var provider = _linqProvider.ById<ProviderEntity>(command.ProviderId);
-//                entity.ProviderId = provider != null && provider.Parent == providerId ? command.ProviderId : providerId;
-//            }
-//            else
-//            {
-//                entity.ProviderId = command.ProviderId;
-//            }
+            var providerId = identity.GetProviderId();
+            if (!_userContext.IsSupervisor && command.ProviderId != providerId)
+            {
+                var provider = _linqProvider.ById<ProviderEntity>(command.ProviderId);
+                entity.ProviderId = provider != null && provider.Parent == providerId ? command.ProviderId : providerId;
+            }
+            else
+            {
+                entity.ProviderId = command.ProviderId;
+            }
 
-//            entity.LogLevel = command.LogLevel;
+            entity.LogLevel = command.LogLevel;
 
-//            await _userRepository.UpdateAsync(entity, cancellationToken);
+            await _userRepository.UpdateAsync(entity, cancellationToken);
 
-//            if (command.Roles.Any())
-//            {
-//                var userRoles = new List<string>();
-//                foreach (var commandRole in command.Roles)
-//                {
-//                    var role = await _userRepository.FindRoleByIdAsync(commandRole, cancellationToken);
-//                    if (role != null)
-//                        userRoles.Add(role.Id);
-//                }
-//                await _userRepository.UpdateUserRolesAsync(entity.Id, userRoles, cancellationToken);
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            _logger.LogError($"{e.Message}\r\n{e.StackTrace}");
-//        }
+            if (command.Roles.Any())
+            {
+                var userRoles = new List<string>();
+                foreach (var commandRole in command.Roles)
+                {
+                    var role = await _userRepository.FindRoleByIdAsync(commandRole, cancellationToken);
+                    if (role != null)
+                        userRoles.Add(role.Id);
+                }
+                await _userRepository.UpdateUserRolesAsync(entity.Id, userRoles, cancellationToken);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"{e.Message}\r\n{e.StackTrace}");
+        }
 
-//        return Unit.Value;
-//    }
-//}
+        return Unit.Value;
+    }
+}
