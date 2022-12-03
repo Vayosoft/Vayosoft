@@ -133,8 +133,10 @@ namespace Vayosoft.Persistence.EntityFramework
             base.OnModelCreating(modelBuilder);
 
             var typesToRegister = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
-                .Where(type => !string.IsNullOrEmpty(type.Namespace))
-                .Where(type => type.BaseType is { IsGenericType: true } && type.BaseType.GetGenericTypeDefinition() == typeof(EntityConfigurationMapper<>));
+                .Where(type =>
+                    !string.IsNullOrEmpty(type.Namespace)
+                    && type.BaseType is {IsGenericType: true} && type.BaseType.GetGenericTypeDefinition() ==
+                    typeof(EntityConfigurationMapper<>));
 
             foreach (var type in typesToRegister)
             {

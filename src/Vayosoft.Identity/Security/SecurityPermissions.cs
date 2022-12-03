@@ -1,7 +1,7 @@
 ﻿namespace Vayosoft.Identity.Security
 {
     [Flags]
-    public enum SecurityPermissions
+    public enum SecurityPermissions : byte
     {
         None = 0,
         View = 1,

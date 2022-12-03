@@ -9,7 +9,7 @@ using Logger = Serilog.Core.Logger;
 namespace Benchmarks
 {
     [MemoryDiagnoser]
-    public class LoggerBenchmarks
+    public class Loggers
     {
         private Logger _serilog;
 

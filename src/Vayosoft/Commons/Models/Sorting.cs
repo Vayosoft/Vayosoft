@@ -2,7 +2,7 @@
 
 namespace Vayosoft.Commons.Models
 {
-    public enum SortOrder
+    public enum SortOrder : byte
     {
         Asc = 1,
         Desc = 2

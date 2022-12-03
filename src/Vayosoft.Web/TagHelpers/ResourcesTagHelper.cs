@@ -40,10 +40,10 @@ namespace Vayosoft.Web.TagHelpers
                 IEnumerable<ResourceGroup> groupedResources = Resources.Select(x =>
                 {
                     IStringLocalizer localizer = _stringLocalizerFactory.Create(x, Assembly.GetEntryAssembly()!.FullName!);
-                    return new ResourceGroup { Name = x, Entries = localizer.GetAllStrings(true).ToList() };
+                    return new ResourceGroup { Name = x, Entries = localizer.GetAllStrings(true).ToArray() };
                 });
 
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append(groupedResources.ToJavascript());
 
                 TagHelperContent content = await output.GetChildContentAsync();

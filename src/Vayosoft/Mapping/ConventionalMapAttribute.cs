@@ -1,6 +1,6 @@
 ﻿namespace Vayosoft.Mapping
 {
-    public enum MapDirection
+    public enum MapDirection : byte
     {
         EntityToDto, DtoToEntity, Both
     }

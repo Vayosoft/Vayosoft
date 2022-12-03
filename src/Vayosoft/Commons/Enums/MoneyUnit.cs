@@ -1,6 +1,6 @@
 ﻿namespace Vayosoft.Commons.Enums
 {
-    public enum MoneyUnit : int
+    public enum MoneyUnit : byte
     {
         UnSpecified = 0,
         Shekel = 1,

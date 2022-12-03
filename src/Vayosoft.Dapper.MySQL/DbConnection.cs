@@ -15,9 +15,9 @@ namespace Vayosoft.Dapper.MySQL
 
         protected IDbConnection InnerConnection { get; }
 
-        public async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        public Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return (await InnerConnection.ExecuteAsync(sql, param, transaction));
+            return InnerConnection.ExecuteAsync(sql, param, transaction);
         }
 
         public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
@@ -28,14 +28,14 @@ namespace Vayosoft.Dapper.MySQL
             //)).AsList();
         }
 
-        public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        public Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return await InnerConnection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
+            return InnerConnection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
         }
 
-        public async Task<T> QuerySingleAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        public Task<T> QuerySingleAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return await InnerConnection.QuerySingleAsync<T>(sql, param, transaction);
+            return InnerConnection.QuerySingleAsync<T>(sql, param, transaction);
         }
 
         public void Dispose()

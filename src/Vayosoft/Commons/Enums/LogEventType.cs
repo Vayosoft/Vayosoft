@@ -1,6 +1,6 @@
 ﻿namespace Vayosoft.Commons.Enums
 {
-    public enum LogEventType
+    public enum LogEventType : byte
     {
         Debug = 0,
         Info = 1,
