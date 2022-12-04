@@ -2,9 +2,9 @@
 {
     public enum UserType : byte
     {
-        User = 0,
-        Support = 1,
-        Developer = 2,
+        Guest = 0,
+        User = 1,
+        Support = 2,
         Administrator = 3,
         Supervisor = 4
     }
