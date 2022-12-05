@@ -12,7 +12,7 @@ namespace Vayosoft.Web.Authentication
 
         public TokenAuthenticationMiddleware(RequestDelegate next, IOptions<TokenSettings> appSettings)
         {
-            _next = next;
+            _next = next ?? throw new ArgumentNullException(nameof(next));
             _tokenSettings = appSettings.Value;
         }
 
