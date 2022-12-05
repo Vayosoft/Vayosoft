@@ -56,12 +56,12 @@ namespace Vayosoft.Web.Authorization
                 var principal = context.HttpContext.User;
                 if (principal.Identity is { IsAuthenticated: true })
                 {
-                    if (_userTypes.Any() && !_userTypes.Contains(principal.Identity.GetUserType()))
+                    if (_userTypes.Length > 0 && !_userTypes.Contains(principal.Identity.GetUserType()))
                     {
                         HandleReject(context, principal.Identity); return;
                     }
 
-                    if (_rolesSplit.Any())
+                    if (_rolesSplit.Length > 0)
                     {
                         var session = context.HttpContext.RequestServices.GetRequiredService<IUserContext>();
                         if (!await session.LoadContextAsync() || !session.HasAnyRole(_rolesSplit))
@@ -93,7 +93,7 @@ namespace Vayosoft.Web.Authorization
         private static void HandleException(AuthorizationFilterContext context, Exception exception)
         {
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<PermissionAuthorizationAttribute>>();
-            logger.LogError(exception, exception.Message);
+            logger.LogError(exception, message: exception.Message);
 
             var codeInfo = exception.GetHttpStatusCodeInfo();
             context.Result = new JsonResult(new HttpErrorWrapper((int)codeInfo.Code, "Authorization error"))
@@ -103,7 +103,8 @@ namespace Vayosoft.Web.Authorization
         private static void HandleReject(AuthorizationFilterContext context, IIdentity identity)
         {
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<PermissionAuthorizationAttribute>>();
-            logger.LogWarning($"User: {identity.Name} URL: {context.HttpContext.Request.QueryString} rejected by permissions filter");
+            logger.LogWarning("User: {name} URL: {query} rejected by permissions filter", identity.Name, context.HttpContext.Request.QueryString);
+
             context.Result = new JsonResult(new HttpErrorWrapper(StatusCodes.Status401Unauthorized, "No enough permissions"))
             { StatusCode = StatusCodes.Status401Unauthorized };
         }
