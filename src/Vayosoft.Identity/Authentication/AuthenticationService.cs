@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Security.Claims;
+using Microsoft.Extensions.Options;
 using Vayosoft.Identity.Persistence;
 using Vayosoft.Identity.Security;
 using Vayosoft.Identity.Tokens;
@@ -10,35 +11,35 @@ namespace Vayosoft.Identity.Authentication
         private readonly IUserRepository _userRepository;
 
         private readonly IPasswordHasher _passwordHasher;
-        private readonly ITokenService _jwtUtils;
+        private readonly ITokenService<ClaimsPrincipal> _tokenService;
         private readonly TokenSettings _appSettings;
 
         public AuthenticationService(
             IPasswordHasher passwordHasher,
-            ITokenService jwtUtils,
+            ITokenService<ClaimsPrincipal> tokenService,
             IOptions<TokenSettings> appSettings,
             IUserRepository userRepository)
         {
             _passwordHasher = passwordHasher;
-            _jwtUtils = jwtUtils;
+            _tokenService = tokenService;
             _userRepository = userRepository;
             _appSettings = appSettings.Value;
         }
 
-        public async Task<AuthenticationResult> AuthenticateAsync(string username, string password, string ipAddress, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> AuthenticateAsync(string username, string password, string ipAddress, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByNameAsync(username, cancellationToken);
             if (user is null || !_passwordHasher.VerifyHashedPassword(user.PasswordHash, password))
                 throw new ApplicationException("Username or password is incorrect");
 
             // authentication successful so generate jwt and refresh tokens
-            var roles = new List<RoleDTO>();
+            List<RoleDTO> roles = null;
             if (_userRepository is IUserRoleStore roleStore)
             {
-                roles.AddRange(await roleStore.GetUserRolesAsync(user.Id, cancellationToken));
+                roles = await roleStore.GetUserRolesAsync(user.Id, cancellationToken);
             }
-            var jwtToken = _jwtUtils.GenerateToken(user, roles);
-            var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+            var jwtToken = _tokenService.GenerateToken(user, roles ?? Enumerable.Empty<RoleDTO>());
+            var refreshToken = _tokenService.GenerateRefreshToken(ipAddress);
             user.RefreshTokens.Add(refreshToken);
 
             // remove old refresh tokens from user
@@ -47,10 +48,10 @@ namespace Vayosoft.Identity.Authentication
             // save changes to db
             await _userRepository.UpdateAsync(user, cancellationToken);
 
-            return new AuthenticationResult(user, roles, jwtToken, refreshToken.Token, refreshToken.Expires);
+            return new AuthenticationResult(user, jwtToken, refreshToken.Token, refreshToken.Expires);
         }
 
-        public async Task<AuthenticationResult> RefreshTokenAsync(string token, string ipAddress, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> RefreshTokenAsync(string token, string ipAddress, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByRefreshTokenAsync(token, cancellationToken);
             if (user is null)
@@ -78,17 +79,18 @@ namespace Vayosoft.Identity.Authentication
             await _userRepository.UpdateAsync(user, cancellationToken);
 
             // generate new jwt
-            var roles = new List<RoleDTO>();
+            List<RoleDTO> roles = null;
             if (_userRepository is IUserRoleStore roleStore)
             {
-                roles.AddRange(await roleStore.GetUserRolesAsync(user.Id, cancellationToken));
+                roles = await roleStore.GetUserRolesAsync(user.Id, cancellationToken);
             }
-            var jwtToken = _jwtUtils.GenerateToken(user, roles);
 
-            return new AuthenticationResult(user, roles, jwtToken, newRefreshToken.Token, newRefreshToken.Expires);
+            var jwtToken = _tokenService.GenerateToken(user, roles ?? Enumerable.Empty<RoleDTO>());
+
+            return new AuthenticationResult(user, jwtToken, newRefreshToken.Token, newRefreshToken.Expires);
         }
 
-        public async Task RevokeTokenAsync(string token, string ipAddress, CancellationToken cancellationToken)
+        public async Task RevokeTokenAsync(string token, string ipAddress, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByRefreshTokenAsync(token, cancellationToken);
             if (user is null)
@@ -106,7 +108,7 @@ namespace Vayosoft.Identity.Authentication
 
         private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
-            var newRefreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+            var newRefreshToken = _tokenService.GenerateRefreshToken(ipAddress);
             RevokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
             return newRefreshToken;
         }

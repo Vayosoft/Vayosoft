@@ -3,10 +3,10 @@ using Vayosoft.Identity.Security;
 
 namespace Vayosoft.Identity.Tokens
 {
-    public interface ITokenService
+    public interface ITokenService<out TPrincipal> where TPrincipal : IPrincipal
     {
         public string GenerateToken(IUser user, IEnumerable<SecurityRoleEntity> roles);
-        public IPrincipal GetPrincipalFromToken(string token);
+        public TPrincipal GetPrincipalFromToken(string token);
         public RefreshToken GenerateRefreshToken(string ipAddress);
     }
 }

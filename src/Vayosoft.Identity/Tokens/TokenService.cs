@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +9,7 @@ using Vayosoft.Identity.Security;
 
 namespace Vayosoft.Identity.Tokens
 {
-    public class TokenService : ITokenService
+    public class TokenService : ITokenService<ClaimsPrincipal>
     {
         private readonly TokenSettings _appSettings;
 
@@ -82,7 +81,7 @@ namespace Vayosoft.Identity.Tokens
             };
         }
 
-        public IPrincipal GetPrincipalFromToken(string token)
+        public ClaimsPrincipal GetPrincipalFromToken(string token)
         {
             if (token == null)
                 return null;
