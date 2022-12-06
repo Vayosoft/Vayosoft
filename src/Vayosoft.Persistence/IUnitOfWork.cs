@@ -30,6 +30,6 @@ namespace Vayosoft.Persistence
 
         void Commit();
 
-        Task CommitAsync();
+        Task CommitAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -67,17 +67,17 @@ namespace Vayosoft.Persistence.EntityFramework
             SaveChanges();
         }
 
-        public async Task CommitAsync()
+        public async Task CommitAsync(CancellationToken cancellationToken)
         {
             try
             {
-                await SaveChangesAsync();
+                await SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 if (HandleConcurrency(this, ex.Entries))
                 {
-                    await SaveChangesAsync();
+                    await SaveChangesAsync(cancellationToken);
                 }
                 else
                 {
