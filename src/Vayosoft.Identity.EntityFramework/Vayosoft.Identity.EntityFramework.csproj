@@ -27,15 +27,17 @@
 	</Target>
 
 	<ItemGroup>
+	  <Compile Remove="Security\**" />
+	  <EmbeddedResource Remove="Security\**" />
+	  <None Remove="Security\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.11" />
 	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Vayosoft.Identity\Vayosoft.Identity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Security\" />
   </ItemGroup>
 
 </Project>
