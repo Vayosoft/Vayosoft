@@ -32,7 +32,7 @@ namespace Vayosoft.Web.Identity.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<AuthenticationResponse>> Post([FromBody] LoginRequest model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post([FromBody] LoginRequest model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -61,7 +61,7 @@ namespace Vayosoft.Web.Identity.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<AuthenticationResponse>> RefreshToken(TokenRequest model, CancellationToken cancellationToken)
+        public async Task<IActionResult> RefreshToken(TokenRequest model, CancellationToken cancellationToken)
         {
             var refreshToken = model.Token ?? Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
