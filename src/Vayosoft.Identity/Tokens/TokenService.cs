@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Identity.Security;
+using Vayosoft.Utilities;
 
 namespace Vayosoft.Identity.Tokens
 {
@@ -15,6 +16,7 @@ namespace Vayosoft.Identity.Tokens
 
         public TokenService(IOptions<TokenSettings> appSettings)
         {
+            Guard.NotEmpty(appSettings.Value.Secret);
             _appSettings = appSettings.Value;
         }
 

@@ -24,6 +24,25 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
             builder.Property(t => t.ProviderId).HasColumnName("providerid");
             builder.Property(t => t.Name).HasColumnName("role_name").IsRequired();
             builder.Property(t => t.Description).HasColumnName("role_desc");
+
+            builder.HasData(new List<SecurityRoleEntity>
+            {
+                new()
+                {
+                    Id = "f6694d71d26e40f5a2abb357177c9bdt",
+                    Name = "Support",
+                },
+                new()
+                {
+                    Id = "f6694d71d26e40f5a2abb357177c9bdx",
+                    Name = "Administrator",
+                },
+                new()
+                {
+                    Id = "f6694d71d26e40f5a2abb357177c9bdz",
+                    Name = "Supervisor",
+                },
+            });
         }
     }
 
@@ -47,6 +66,13 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
             builder.Property(t => t.Id).HasColumnName("urid").ValueGeneratedOnAdd();
             builder.Property(t => t.RoleId).HasColumnName("userid").IsRequired();
             builder.Property(t => t.RoleId).HasColumnName("roleid").IsRequired();
+
+            builder.HasData(new UserRoleEntity
+            {
+                Id = "0e5085516ee34d4bab806757e41f6dd6",
+                UserId = 1,
+                RoleId = "f6694d71d26e40f5a2abb357177c9bdz"
+            });
         }
     }
 

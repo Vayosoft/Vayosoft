@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<Company>Vayosoft</Company>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageVersion>2.1.1</PackageVersion>
+		<Version>1.0.0</Version>
+		<SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
+		<Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 10000))))</Revision>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<FileVersion>$(Version).$(Revision)</FileVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<ReleasePackageFiles Include="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Vayosoft.Identity.EntityFramework\Vayosoft.Identity.EntityFramework.csproj" />
+	  <ProjectReference Include="..\Vayosoft.Web\Vayosoft.Web.csproj" />
+	</ItemGroup>
+
+	<Target Name="CopyPackage" AfterTargets="GenerateNuspec">
+		<Move SourceFiles="@(ReleasePackageFiles)" DestinationFolder="$(SolutionDir)packages\" />
+	</Target>
+
+</Project>

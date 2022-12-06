@@ -127,6 +127,15 @@ namespace Vayosoft.Identity.EntityFramework
                     .SingleOrDefaultAsync(u => u.Username == username, cancellationToken: cancellationToken);
         }
 
+        public Task<UserEntity> FindByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            return _context
+                .Set<UserEntity>()
+                .Include(u => u.RefreshTokens)
+                .AsTracking()
+                .SingleOrDefaultAsync(u => u.Email == email, cancellationToken: cancellationToken);
+        }
+
         public async Task UpdateAsync(UserEntity user, CancellationToken cancellationToken)
         {
             if (user.IsTransient())

@@ -5,11 +5,11 @@ using Vayosoft.Caching;
 using Vayosoft.Identity.Authentication;
 using Vayosoft.Identity.Extensions;
 using Vayosoft.Utilities;
-using Vayosoft.Web.Authorization;
+using Vayosoft.Web.Identity.Authorization;
 using Vayosoft.Web.Model;
 using Vayosoft.Web.Model.Authentication;
 
-namespace Vayosoft.Web.Controllers
+namespace Vayosoft.Web.Identity.Controllers
 {
     [PermissionAuthorization]
     [Produces("application/json")]

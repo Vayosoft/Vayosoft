@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Vayosoft.Identity.Tokens;
 
-namespace Vayosoft.Web.Authentication
+namespace Vayosoft.Web.Identity.Authentication
 {
     public class TokenAuthenticationMiddleware
     {

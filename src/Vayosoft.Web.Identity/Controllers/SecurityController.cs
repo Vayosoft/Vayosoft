@@ -6,9 +6,9 @@ using Vayosoft.Identity.Security;
 using Vayosoft.Identity.Security.Commands;
 using Vayosoft.Identity.Security.Queries;
 using Vayosoft.Queries;
-using Vayosoft.Web.Authorization;
+using Vayosoft.Web.Identity.Authorization;
 
-namespace Vayosoft.Web.Controllers
+namespace Vayosoft.Web.Identity.Controllers
 {
     [Route("api/security")]
     [ApiController]

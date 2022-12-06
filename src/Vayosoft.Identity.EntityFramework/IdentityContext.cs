@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Vayosoft.Commons.Enums;
 using Vayosoft.Identity.Security;
 using Vayosoft.Identity.Tokens;
 
@@ -6,7 +7,7 @@ namespace Vayosoft.Identity.EntityFramework
 {
     public sealed class IdentityContext : DbContext
     {
-        public IdentityContext(DbContextOptions options)
+        public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options) { }
 
         //public DbSet<UserEntity> Users => Set<UserEntity>();
@@ -18,10 +19,21 @@ namespace Vayosoft.Identity.EntityFramework
 
             var userEntity = modelBuilder.Entity<UserEntity>();
             {
+                userEntity.ToTable("users").HasKey(t => t.Id);
+                userEntity.Property(t => t.Id).HasColumnName("userid");
+                userEntity.Property(t => t.Username).HasColumnName("username").IsRequired();
+                userEntity.Property(t => t.Email).HasColumnName("email");
+                userEntity.Property(t => t.PasswordHash).HasColumnName("pwdhash");
+                userEntity.Property(t => t.Phone).HasColumnName("phone").IsRequired();
+                userEntity.Property(t => t.Type).HasColumnName("user_type");
+                userEntity.Property(t => t.ProviderId).HasColumnName("providerid");
+                userEntity.Property(t => t.LogLevel).HasColumnName("log_level").HasDefaultValue(LogEventType.Error);
+                userEntity.Property(t => t.CultureId).HasColumnName("culture_id").HasDefaultValue("he-IL");
+                userEntity.Property(t => t.Registered).HasColumnName("regdate").IsRequired();
+                userEntity.Property(t => t.Deregistered).HasColumnName("enddate");
+
                 userEntity
-                    .Property(t => t.Username); //read_only field
-                userEntity
-                    .HasIndex(u => u.Username).IsUnique();
+                    .HasIndex(u => new { u.Username, u.ProviderId }).IsUnique();
                 userEntity.HasData(
                     new UserEntity("su")
                     {
@@ -39,8 +51,17 @@ namespace Vayosoft.Identity.EntityFramework
 
             var refreshToken = modelBuilder.Entity<RefreshToken>();
             {
-                refreshToken
-                    .HasKey(t => new {t.UserId, t.Token});
+                refreshToken.ToTable("refresh_tokens").HasKey(t => new { t.UserId, t.Token });
+                refreshToken.Property(t => t.UserId).HasColumnName("userid").IsRequired();
+                refreshToken.Property(t => t.Token).HasColumnName("token").IsRequired();
+                refreshToken.Property(t => t.Created).HasColumnName("created");
+                refreshToken.Property(t => t.CreatedByIp).HasColumnName("created_by_ip");
+                refreshToken.Property(t => t.Revoked).HasColumnName("revoked");
+                refreshToken.Property(t => t.RevokedByIp).HasColumnName("revoked_by_ip");
+                refreshToken.Property(t => t.ReasonRevoked).HasColumnName("reason_revoked");
+                refreshToken.Property(t => t.ReplacedByToken).HasColumnName("replaced_by_token");
+                refreshToken.Property(t => t.Expires).HasColumnName("expires");
+
                 refreshToken
                     .HasOne(t => t.User as UserEntity)
                     .WithMany(t => t.RefreshTokens)

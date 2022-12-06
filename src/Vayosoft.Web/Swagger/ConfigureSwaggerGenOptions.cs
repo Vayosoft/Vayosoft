@@ -81,7 +81,7 @@ public class ConfigureSwaggerGenOptions : IConfigureNamedOptions<SwaggerGenOptio
     {
         var info = new OpenApiInfo
         {
-            Title = "IPS Dashboard",
+            Title = "Vayosoft",
             Version = description.ApiVersion.ToString()
         };
 

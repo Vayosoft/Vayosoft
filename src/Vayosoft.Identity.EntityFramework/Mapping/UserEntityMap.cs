@@ -23,7 +23,7 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
             builder.Property(t => t.Deregistered).HasColumnName("enddate");
 
             builder
-                .HasIndex(u => u.Username).IsUnique();
+                .HasIndex(u => new { u.Username, u.ProviderId }).IsUnique();
 
             builder.HasData(
                 new UserEntity("su")

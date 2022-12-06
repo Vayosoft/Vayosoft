@@ -28,7 +28,7 @@ namespace Vayosoft.Identity.Authentication
 
         public async Task<AuthenticationResult> AuthenticateAsync(string username, string password, string ipAddress, CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.FindByNameAsync(username, cancellationToken);
+            var user = await _userRepository.FindByEmailAsync(username, cancellationToken);
             if (user is null || !_passwordHasher.VerifyHashedPassword(user.PasswordHash, password))
                 throw new ApplicationException("Username or password is incorrect");
 
