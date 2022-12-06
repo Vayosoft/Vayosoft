@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LanguageExt.Pipes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vayosoft.Caching;
@@ -34,7 +35,10 @@ namespace Vayosoft.Web.Identity.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody] LoginRequest model, CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
 
             var authResult = await _authService.AuthenticateAsync(model.Email, model.Password, IpAddress(), cancellationToken);
             await HttpContext.Session.SetAsync("_roles", authResult.Roles);
@@ -65,7 +69,10 @@ namespace Vayosoft.Web.Identity.Controllers
         {
             var refreshToken = model.Token ?? Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
-                return BadRequest(new HttpErrorWrapper(StatusCodes.Status400BadRequest, "Token is required"));
+            {
+                ModelState.AddModelError(nameof(refreshToken), "Token is required.");
+                return UnprocessableEntity(ModelState);
+            }
 
             var authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(model.Token), async options =>
             {
@@ -91,9 +98,11 @@ namespace Vayosoft.Web.Identity.Controllers
         {
             // accept refresh token in request body or cookie
             var refreshToken = model.Token ?? Request.Cookies["refreshToken"];
-
             if (string.IsNullOrEmpty(refreshToken))
-                return BadRequest(new HttpErrorWrapper(StatusCodes.Status400BadRequest, "Token is required"));
+            {
+                ModelState.AddModelError(nameof(refreshToken), "Token is required.");
+                return UnprocessableEntity(ModelState);
+            }
 
             await _authService.RevokeTokenAsync(refreshToken, IpAddress(), cancellationToken);
             return Ok(new { message = "Token revoked" });
@@ -129,8 +138,8 @@ namespace Vayosoft.Web.Identity.Controllers
         private string IpAddress()
         {
             // get source ip address for the current request
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-                return Request.Headers["X-Forwarded-For"];
+            if (Request.Headers.TryGetValue("X-Forwarded-For", out var header))
+                return header;
             else
                 return HttpContext.Connection.RemoteIpAddress!.MapToIPv4().ToString();
         }
