@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Vayosoft.Caching;
 using Vayosoft.Identity.Authentication;
 using Vayosoft.Identity.Extensions;
@@ -22,11 +23,13 @@ namespace Vayosoft.Web.Identity.Controllers
     {
         private readonly IAuthenticationService _authService;
         private readonly IDistributedMemoryCache _cache;
+        private readonly IHostEnvironment _env;
 
-        public IdentityController(IAuthenticationService authService, IDistributedMemoryCache cache)
+        public IdentityController(IAuthenticationService authService, IDistributedMemoryCache cache, IHostEnvironment env)
         {
             _authService = authService;
             _cache = cache;
+            _env = env;
         }
 
         [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
@@ -110,7 +113,6 @@ namespace Vayosoft.Web.Identity.Controllers
 
         private void SetTokenCookie(string token)
         {
-            //todo: set HTTPS policy in production
             // append cookie with refresh token to the http response
             var cookieOptions = new CookieOptions
             {
@@ -118,8 +120,7 @@ namespace Vayosoft.Web.Identity.Controllers
 
                 // Set the secure flag, which Chrome's changes will require for SameSite none.
                 // Note this will also require you to be running on HTTPS.
-                Secure = false,
-                //Secure = true,
+                Secure = _env.IsProduction(),
 
                 // Set the cookie to HTTP only which is good practice unless you really do need
                 // to access it client side in scripts.
