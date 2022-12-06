@@ -40,7 +40,7 @@ namespace Vayosoft.Web.Identity.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return UnprocessableEntity(ModelState);
+                return BadRequest(ModelState);
             }
 
             var authResult = await _authService.AuthenticateAsync(model.Email, model.Password, IpAddress(), cancellationToken);
@@ -74,7 +74,7 @@ namespace Vayosoft.Web.Identity.Controllers
             if (string.IsNullOrEmpty(refreshToken))
             {
                 ModelState.AddModelError(nameof(refreshToken), "Token is required.");
-                return UnprocessableEntity(ModelState);
+                return BadRequest(ModelState);
             }
 
             var authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(model.Token), async options =>
@@ -104,7 +104,7 @@ namespace Vayosoft.Web.Identity.Controllers
             if (string.IsNullOrEmpty(refreshToken))
             {
                 ModelState.AddModelError(nameof(refreshToken), "Token is required.");
-                return UnprocessableEntity(ModelState);
+                return BadRequest(ModelState);
             }
 
             await _authService.RevokeTokenAsync(refreshToken, IpAddress(), cancellationToken);
