@@ -35,7 +35,7 @@ namespace Vayosoft.Identity.EntityFramework.Mapping
                     Type = UserType.Supervisor,
                     Registered = new DateTime(2022, 11, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                     CultureId = "ru-RU",
-                    ProviderId = 1000,
+                    ProviderId = 0,
                 }
             );
         }
