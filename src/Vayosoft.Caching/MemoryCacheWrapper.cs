@@ -14,10 +14,12 @@ namespace Vayosoft.Caching
             ILogger<MemoryCacheWrapper> log)
         {
             _memoryCache = memoryCache;
+
             var cachingOptions = options.Value;
             CacheEnabled = cachingOptions.CacheEnabled;
             AbsoluteExpiration = cachingOptions.CacheAbsoluteExpiration;
             SlidingExpiration = cachingOptions.CacheSlidingExpiration;
+
             _log = log;
         }
 
@@ -30,14 +32,11 @@ namespace Vayosoft.Caching
         public virtual ICacheEntry CreateEntry(object key)
         {
             var result = _memoryCache.CreateEntry(key);
-            if (result != null)
-            {
-                result.RegisterPostEvictionCallback(callback: EvictionCallback);
-                var options = GetDefaultCacheEntryOptions();
-                //Add GlobalCache token for each entry
-                options.AddExpirationToken(GlobalCacheRegion.CreateChangeToken());
-                result.SetOptions(options);
-            }
+            result.RegisterPostEvictionCallback(callback: EvictionCallback);
+            var options = GetDefaultCacheEntryOptions();
+            //Add GlobalCache token for each entry
+            options.AddExpirationToken(GlobalCacheRegion.CreateChangeToken());
+            result.SetOptions(options);
             return result;
         }
 
