@@ -10,7 +10,7 @@ namespace Vayosoft.Caching
         {
             services.AddMemoryCache();
 
-            var redisConnectionString = configuration.GetConnectionString("RedisConnectionString");
+            var redisConnectionString = configuration.GetConnectionString("RedisConnection");
 
             services.AddOptions<CachingOptions>().Bind(configuration.GetSection("Caching")).ValidateDataAnnotations();
 

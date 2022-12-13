@@ -3,5 +3,6 @@
     public class RedisCachingOptions
     {
         public string ChannelName { get; set; }
+            = "DefaultCache";
     }
 }

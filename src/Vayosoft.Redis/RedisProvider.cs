@@ -10,7 +10,7 @@ namespace Vayosoft.Redis
         
         [ActivatorUtilitiesConstructor]
         public RedisProvider(IConfiguration config)
-            : this(ConfigurationOptions.Parse(config["ConnectionStrings:RedisConnectionString"])) { }
+            : this(ConfigurationOptions.Parse(config["ConnectionStrings:RedisConnection"])) { }
         public RedisProvider()
             : this(new ConfigurationOptions
             {
