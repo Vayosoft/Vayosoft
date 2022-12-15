@@ -14,10 +14,12 @@ namespace Vayosoft.Caching
             ILogger<MemoryCacheWrapper> log)
         {
             _memoryCache = memoryCache;
+
             var cachingOptions = options.Value;
             CacheEnabled = cachingOptions.CacheEnabled;
             AbsoluteExpiration = cachingOptions.CacheAbsoluteExpiration;
             SlidingExpiration = cachingOptions.CacheSlidingExpiration;
+
             _log = log;
         }
 
@@ -30,14 +32,11 @@ namespace Vayosoft.Caching
         public virtual ICacheEntry CreateEntry(object key)
         {
             var result = _memoryCache.CreateEntry(key);
-            if (result != null)
-            {
-                result.RegisterPostEvictionCallback(callback: EvictionCallback);
-                var options = GetDefaultCacheEntryOptions();
-                //Add GlobalCache token for each entry
-                options.AddExpirationToken(GlobalCacheRegion.CreateChangeToken());
-                result.SetOptions(options);
-            }
+            result.RegisterPostEvictionCallback(callback: EvictionCallback);
+            var options = GetDefaultCacheEntryOptions();
+            //Add GlobalCache token for each entry
+            options.AddExpirationToken(GlobalCacheRegion.CreateChangeToken());
+            result.SetOptions(options);
             return result;
         }
 
@@ -83,7 +82,7 @@ namespace Vayosoft.Caching
         {
             Dispose(true);
             // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
+            // Therefore, you should call GC.SuppressFinalize to
             // take this object off the finalization queue
             // and prevent finalization code for this object
             // from executing a second time.
@@ -105,7 +104,7 @@ namespace Vayosoft.Caching
 
         protected virtual void EvictionCallback(object key, object value, EvictionReason reason, object state)
         {
-            _log.LogTrace($"EvictionCallback: Cache entry with key:{key} has been removed.");
+            _log.LogTrace("EvictionCallback: Cache entry with key:{key} has been removed.", key);
         }
     }
 }

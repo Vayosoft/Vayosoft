@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bogus;
+using MemoryPack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Vayosoft.Commons.Events;
@@ -69,55 +70,60 @@ namespace Benchmarks
         //    return Encoding.UTF8.GetString(memoryStream.ToArray());
         //}
 
-        //[Benchmark]
-        //public string Serialize_TextJson_SourceGenerator()
-        //{
-        //    return JsonSerializer.Serialize(_persons, PersonJsonContext.Default.IEnumerablePerson);
-        //}
-
-        //[Benchmark]
-        //public string Serialize_TextJson_Options()
-        //{
-        //    return JsonSerializer.Serialize(_persons, _options);
-        //}
-
-        //[Benchmark]
-        //public string Serialize_NewtonsoftJson()
-        //{
-        //    return JsonConvert.SerializeObject(_persons, _newtonsoftOptions);
-        //}
-
-        private static readonly IEvent EventSrc = new TestEvent();
-
         [Benchmark]
-        public IEvent Serialize_Deserialize_By_Newtonsoft()
+        public string Serialize_TextJson_SourceGenerator()
         {
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-
-            var eventJson = JsonConvert.SerializeObject(EventSrc, settings);
-            return (IEvent)JsonConvert.DeserializeObject(eventJson, settings);
+            return JsonSerializer.Serialize(_persons, PersonJsonContext.Default.IEnumerablePerson);
         }
 
         [Benchmark]
-        public IEvent Serialize_Deserialize_By_Newtonsoft_WithType()
+        public string Serialize_TextJson_Options()
         {
-            var eventType = EventSrc.GetType();
-
-            var eventJson = JsonConvert.SerializeObject(EventSrc);
-            return (IEvent)JsonConvert.DeserializeObject(eventJson, eventType);
+            return JsonSerializer.Serialize(_persons, _options);
         }
 
         [Benchmark]
-        public IEvent Serialize_Deserialize_By_Microsoft_WithType()
+        public string Serialize_NewtonsoftJson()
         {
-            var eventType = EventSrc.GetType();
-
-            var eventJson = JsonSerializer.Serialize(EventSrc);
-            return (IEvent)JsonSerializer.Deserialize(eventJson, eventType);
+            return JsonConvert.SerializeObject(_persons, _newtonsoftOptions);
+        } 
+        [Benchmark]
+        public byte[] Serialize_MemoryPack()
+        {
+            return MemoryPackSerializer.Serialize(_persons);
         }
+
+        //private static readonly IEvent EventSrc = new TestEvent();
+
+        //[Benchmark]
+        //public IEvent Serialize_Deserialize_By_Newtonsoft()
+        //{
+        //    var settings = new JsonSerializerSettings
+        //    {
+        //        TypeNameHandling = TypeNameHandling.All
+        //    };
+
+        //    var eventJson = JsonConvert.SerializeObject(EventSrc, settings);
+        //    return (IEvent)JsonConvert.DeserializeObject(eventJson, settings);
+        //}
+
+        //[Benchmark]
+        //public IEvent Serialize_Deserialize_By_Newtonsoft_WithType()
+        //{
+        //    var eventType = EventSrc.GetType();
+
+        //    var eventJson = JsonConvert.SerializeObject(EventSrc);
+        //    return (IEvent)JsonConvert.DeserializeObject(eventJson, eventType);
+        //}
+
+        //[Benchmark]
+        //public IEvent Serialize_Deserialize_By_Microsoft_WithType()
+        //{
+        //    var eventType = EventSrc.GetType();
+
+        //    var eventJson = JsonSerializer.Serialize(EventSrc);
+        //    return (IEvent)JsonSerializer.Deserialize(eventJson, eventType);
+        //}
     }
 
     [JsonSerializable(typeof(IEnumerable<Person>))]
@@ -127,8 +133,7 @@ namespace Benchmarks
     public partial class PersonJsonContext : JsonSerializerContext
     { }
 
-    public record TestEvent : IEvent{
+    public partial record TestEvent : IEvent{
 
     }
-
 }

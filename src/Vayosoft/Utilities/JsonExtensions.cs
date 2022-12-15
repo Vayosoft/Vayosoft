@@ -5,7 +5,7 @@ namespace Vayosoft.Utilities
 {
     public static class JsonExtensions
     {
-        private static readonly JsonSerializerOptions _options = new()
+        private static readonly JsonSerializerOptions Options = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
@@ -19,7 +19,7 @@ namespace Vayosoft.Utilities
         /// <returns>deserialized object</returns>
         public static T FromJson<T>(this string json)
         {
-            return JsonSerializer.Deserialize<T>(json, _options);
+            return JsonSerializer.Deserialize<T>(json, Options);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Vayosoft.Utilities
         /// <returns>json string</returns>
         public static string ToJson(this object obj)
         {
-            return JsonSerializer.Serialize(obj, _options);
+            return JsonSerializer.Serialize(obj, Options);
         }
 
         /// <summary>

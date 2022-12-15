@@ -21,6 +21,7 @@ namespace Vayosoft.Web.Model
                 ArgumentException _ => HttpStatusCode.BadRequest,
                 ValidationException _ => HttpStatusCode.BadRequest,
                 AggregateNotFoundException _ => HttpStatusCode.NotFound,
+                EntityNotFoundException _ => HttpStatusCode.NotFound,
                 _ => HttpStatusCode.InternalServerError
             };
 

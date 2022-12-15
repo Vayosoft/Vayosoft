@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Bogus;
+using MemoryPack;
 
 namespace Benchmarks
 {
@@ -84,7 +85,8 @@ namespace Benchmarks
         }
     }
 
-    public class Person
+    [MemoryPackable]
+    public partial class Person
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;

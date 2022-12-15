@@ -81,7 +81,7 @@ namespace Vayosoft.Utilities
         }
 
         /// <summary>
-        /// Equalses the or null empty.
+        /// Equalizes the or null empty.
         /// </summary>
         /// <param name="str1">The STR1.</param>
         /// <param name="str2">The STR2.</param>
@@ -89,7 +89,7 @@ namespace Vayosoft.Utilities
         /// <returns></returns>
         public static bool EqualsOrNullEmpty(this string str1, string str2, StringComparison comparisonType)
         {
-            return string.Compare(str1 ?? "", str2 ?? "", comparisonType) == 0;
+            return (str1 ?? "").Equals(str2 ?? "", comparisonType);
         }
 
         /// <summary>
@@ -147,13 +147,13 @@ namespace Vayosoft.Utilities
         public static string EscapeSearchTerm(this string term)
         {
             char[] specialCharacters = { '+', '-', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\' };
-            var result = new StringBuilder("");
+            var result = new StringBuilder(string.Empty);
             //'&&', '||',
             foreach (var ch in term)
             {
-                if (specialCharacters.Any(x => x == ch))
+                if (specialCharacters.Contains(ch))
                 {
-                    result.Append("\\");
+                    result.Append('\\');
                 }
                 result.Append(ch);
             }

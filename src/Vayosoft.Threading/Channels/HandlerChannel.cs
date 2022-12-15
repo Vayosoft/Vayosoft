@@ -13,17 +13,13 @@ namespace Vayosoft.Threading.Channels
         private readonly TH _handler;
         private readonly HandlerMeasurement _measurement;
 
-
         [ActivatorUtilitiesConstructor]
-        public HandlerChannel(IConfiguration config, ILoggerFactory loggerFactory)
-            : this(config.GetSection(typeof(TH).Name).Get<ChannelOptions>(), loggerFactory)
-        { }
-
-        public HandlerChannel(ChannelOptions options, ILoggerFactory loggerFactory)
-            : base(options, loggerFactory.CreateLogger<HandlerChannel<T, TH>>())
+        public HandlerChannel(IServiceProvider serviceProvider)
+            :base(serviceProvider.GetRequiredService<IConfiguration>().GetSection(typeof(TH).Name).Get<ChannelOptions>(),
+                serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<HandlerChannel<T, TH>>())
         {
             _measurement = new HandlerMeasurement();
-            _handler = CreateHandler(loggerFactory.CreateLogger<TH>());
+            _handler = serviceProvider.GetRequiredService<TH>();
         }
 
         protected override async ValueTask OnDataReceivedAsync(T item, CancellationToken token)
@@ -70,19 +66,6 @@ namespace Vayosoft.Threading.Channels
             };
 
             return snapshot;
-        }
-
-        protected TH CreateHandler(ILogger logger)
-        {
-            var type = typeof(TH);
-
-            var constructor = type.GetConstructor(new[] { typeof(ILogger) });
-            if (constructor != null)
-            {
-                return (TH)Activator.CreateInstance(type,  logger);
-            }
-
-            return Activator.CreateInstance<TH>();
         }
     }
 }

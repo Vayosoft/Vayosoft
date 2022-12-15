@@ -19,7 +19,7 @@
 
         public override string ToString()
         {
-            return $"{InstanceId}:{(IsToken ? "token" : "key")}:{string.Join(", ", CacheKeys?.Select(x => x) ?? new object[] { })}";
+            return $"{InstanceId}:{(IsToken ? "token" : "key")}:{string.Join(", ", CacheKeys?.Select(x => x) ?? Array.Empty<object>())}";
         }
     }
 }

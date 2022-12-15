@@ -1,5 +1,4 @@
-﻿using System;
-using System.Buffers.Text;
+﻿using System.Buffers.Text;
 using System.Runtime.InteropServices;
 
 namespace Vayosoft.Threading.Utilities

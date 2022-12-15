@@ -87,10 +87,12 @@ namespace Vayosoft.Caching.Redis
         protected virtual void OnMessage(RedisChannel channel, RedisValue redisValue)
         {
             var message = JsonSerializer.Deserialize<RedisCachingMessage>(redisValue!);
-
             if (!string.IsNullOrEmpty(message?.InstanceId) && !message.InstanceId.EqualsInvariant(InstanceId))
             {
-                _log.LogTrace($"Received message {message}");
+                if (_log.IsEnabled(LogLevel.Trace))
+                {
+                    _log.LogTrace("Received message {message}", message);
+                }
 
                 foreach (var key in message.CacheKeys?.OfType<string>() ?? Array.Empty<string>())
                 {
@@ -118,7 +120,7 @@ namespace Vayosoft.Caching.Redis
 
         protected override void EvictionCallback(object key, object value, EvictionReason reason, object state)
         {
-            var message = new RedisCachingMessage { InstanceId = InstanceId, CacheKeys = new[] { key } };
+            var message = new RedisCachingMessage { InstanceId = InstanceId, CacheKeys = new [] { key } };
             Publish(message);
             if (_log.IsEnabled(LogLevel.Trace))
             {
@@ -131,7 +133,8 @@ namespace Vayosoft.Caching.Redis
         private void Publish(RedisCachingMessage message)
         {
             EnsureRedisServerConnection();
-            _bus.Subscriber.Publish(_redisCachingOptions.ChannelName, JsonSerializer.Serialize(message), CommandFlags.FireAndForget);
+            var cachingMessage = JsonSerializer.Serialize(message);
+            _bus.Subscriber.Publish(_redisCachingOptions.ChannelName, cachingMessage, CommandFlags.FireAndForget);
         }
 
         private void EnsureRedisServerConnection()
