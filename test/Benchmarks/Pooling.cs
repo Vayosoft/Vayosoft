@@ -3,6 +3,8 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 using System.Buffers;
+using System.Reflection.PortableExecutable;
+using Microsoft.IO;
 
 namespace Benchmarks
 {
@@ -43,6 +45,32 @@ namespace Benchmarks
             byte[] array = pool.Rent(SizeInBytes);
             pool.Return(array);
         }
+
+        //private readonly RecyclableMemoryStreamManager _manager = new();
+        //[Benchmark]
+        //public byte[] ReorderPagesRecycle(byte[] pdf, List<int> order)
+        //{
+        //    using (var inputStream = _manager.GetStream(pdf))
+        //    {
+        //        using (var reader = new PdfReader(inputStream))
+        //        {
+        //            using (var outputStream = _manager.GetStream("Reorder", PdfSize))
+        //            {
+        //                using (var writer = new PdfWriter(outputStream))
+        //                {
+        //                    using (var inputDocument = new PdfDocument(reader))
+        //                    {
+        //                        using (var outputDocument = new PdfDocument(writer))
+        //                        {
+        //                            inputDocument.CopyPagesTo(order, outputDocument);
+        //                            return outputStream.GetBuffer();
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public class DontForceGcCollectionsConfig : ManualConfig
