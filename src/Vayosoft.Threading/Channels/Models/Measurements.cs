@@ -1,37 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace Vayosoft.Threading.Channels.Models
+﻿namespace Vayosoft.Threading.Channels.Models
 {
-    public class Measurements
-    {
-        public QueueTelemetryReport ReceiverReport { set; get; }
-        public SnapshotTime SnapshotTime { set; get; }
-        public QueueHandlerTelemetryReport DeviceReport { set; get; }
-        public QueueHandlerTelemetryReport DeviceDataReport { set; get; }
-        public QueueHandlerTelemetryReport BackgroundReport { set; get; }
-        public QueueHandlerTelemetryReport EventsReport { set; get; }
-        public QueueHandlerTelemetryReport EventsMessages { set; get; }
-        public QueueHandlerTelemetryReport StoreReport { set; get; }
-        public double CpuUsage { set; get; }
-    }
-
-    public class DateTimeConverter : IsoDateTimeConverter
-    {
-        public DateTimeConverter()
-        {
-            DateTimeFormat = "dd-MM-yyyy HH:mm:ss";
-        }
-    }
-
-    [JsonObject]
-    public class SnapshotTime
-    {
-        public DateTime? From { set; get; }
-        public DateTime To { set; get; }
-    }
-
-    [JsonObject]
     public class QueueTelemetryReport
     {
         public int ConsumersCount { set; get; }

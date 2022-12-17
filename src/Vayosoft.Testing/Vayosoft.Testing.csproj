@@ -7,7 +7,7 @@
 	  <IsPackable>true</IsPackable>
 	  <Company>Vayosoft</Company>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageVersion>2.2.1</PackageVersion>
+	  <PackageVersion>2.2.2</PackageVersion>
 	  <Version>1.0.0</Version>
 	  <SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
 	  <Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 10000))))</Revision>
@@ -29,7 +29,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="6.8.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.1" />
 		<PackageReference Include="Ogooreck" Version="0.6.0" />
 		<PackageReference Include="xunit.abstractions" Version="2.0.3" />
     </ItemGroup>
