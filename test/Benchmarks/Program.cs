@@ -1,5 +1,9 @@
 ﻿using BenchmarkDotNet.Running;
 using Benchmarks;
 
-BenchmarkRunner.Run<Pooling>();
+#if DEBUG
+var summary = BenchmarkRunner.Run<ReadLinesBenchmarks>(new BenchmarkDotNet.Configs.DebugInProcessConfig());
+#else
+            var summary = BenchmarkRunner.Run<ReadLinesBenchmarks>();
+#endif
 
