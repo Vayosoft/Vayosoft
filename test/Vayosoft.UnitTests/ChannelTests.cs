@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Tracing;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
-using System.Text;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
-namespace EmulatorRC.UnitTests
+namespace Vayosoft.UnitTests
 {
     public class ChannelTests
     {
@@ -67,7 +60,7 @@ namespace EmulatorRC.UnitTests
 
         public class ScreenChannel : IObservable<string>
         {
-            private const int MAX_QUEUE = 5;
+            private const int MaxQueue = 5;
 
             private readonly Channel<string> _channel;
             private readonly IObservable<string> _replyStream;
@@ -77,7 +70,7 @@ namespace EmulatorRC.UnitTests
             {
                 _cts = new CancellationTokenSource();
 
-                var options = new BoundedChannelOptions(MAX_QUEUE)
+                var options = new BoundedChannelOptions(MaxQueue)
                 {
                     SingleWriter = true,
                     SingleReader = false,
