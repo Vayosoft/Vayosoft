@@ -11,7 +11,7 @@ namespace Benchmarks
     [MemoryDiagnoser]
     public class ReadLinesBenchmarks
     {
-        private static ReadOnlySpan<byte> NewLine => new[] { (byte)'\r', (byte)'\n' };
+        private static ReadOnlySpan<byte> NewLine => "\r\n"u8;
 
         private Stream _stream;
 
@@ -20,7 +20,7 @@ namespace Benchmarks
 
         [ParamsSource(nameof(LineCharMultiplierValues))]
         public int LineCharMultiplier { get; set; }
-        public IEnumerable<int> LineCharMultiplierValues => new[] { 1, 2, 8, 1000 };
+        public static IEnumerable<int> LineCharMultiplierValues => new[] { 1, 2, 8, 1000 };
         //public IEnumerable<int> LineCharMultiplierValues => Enumerable.Range(1, 15).Concat(new[] { 20, 30, 50, 80, 100 });
 
         [GlobalSetup]
