@@ -38,13 +38,18 @@ namespace Vayosoft.Utilities
 
         public async Task StopAsync()
         {
-            if(_task is null) return;
+            if (_task is null)
+            {
+                await Task.CompletedTask;
+            }
+            else
+            {
+                _cts.Cancel();
+                await _task;
+                _cts.Dispose();
 
-            _cts.Cancel();
-            await _task;
-            _cts.Dispose();
-
-            Trace.TraceInformation("Task was canceled.");
+                Trace.TraceInformation("Task was canceled.");
+            }
         }
     }
 }

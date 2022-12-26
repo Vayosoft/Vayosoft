@@ -27,10 +27,11 @@ namespace Vayosoft.Threading.Channels.Producers
         private readonly CancellationTokenSource _cancellationSource;
         private readonly CancellationToken _cancellationToken;
         private readonly System.Timers.Timer _timer;
-        private readonly string _channelName;
         private int _droppedItems;
 
         private readonly bool _enableTaskManagement;
+
+        public string Name { get; }
 
         protected TelemetryProducerConsumerChannelBase(ChannelOptions options, ILogger logger)
             :this(options?.ChannelName, logger, options?.StartedNumberOfWorkerThreads ?? 1, options?.EnableTaskManagement ?? false, options?.SingleWriter ?? true)
@@ -44,7 +45,7 @@ namespace Vayosoft.Threading.Channels.Producers
             if (startedNumberOfWorkerThreads == 0)
                 throw new ArgumentException($"{nameof(startedNumberOfWorkerThreads)} must be > 0");
 
-            _channelName = channelName ?? GetType().Name;
+            Name = channelName ?? GetType().Name;
             _enableTaskManagement = enableTaskManagement;
 
             var options = new BoundedChannelOptions(MaxQueue)
@@ -73,7 +74,7 @@ namespace Vayosoft.Threading.Channels.Producers
             }
 
             _logger.LogInformation("[{ChannelName}] started with {WorkerThreads} consumers. Options: maxWorkers: {MaxWorkers}, maxQueueLength: {MaxQueue}, consumerManagementTimeout: {Timeout} ms",
-                _channelName, startedNumberOfWorkerThreads, MaxWorkers, MaxQueue, ConsumerManagementTimeoutMs);
+                Name, startedNumberOfWorkerThreads, MaxWorkers, MaxQueue, ConsumerManagementTimeoutMs);
 
             _timer = new System.Timers.Timer { Interval = ConsumerManagementTimeoutMs };
             _timer.Elapsed += (sender, e) => ManageWorkers();
@@ -90,7 +91,7 @@ namespace Vayosoft.Threading.Channels.Producers
             return _channel.Writer.TryWrite(t);
         }
 
-        private string ConsumerName => $"Consumer{_channelName}: {Guid.NewGuid().ToShortUID()}";
+        private string ConsumerName => $"Consumer{Name}: {Guid.NewGuid().ToShortUID()}";
 
         protected virtual void OnItemDropped(T item)
         { }
@@ -132,7 +133,7 @@ namespace Vayosoft.Threading.Channels.Producers
                     {
                         _logger.LogDebug(
                             "[{ChannelName}] Removed {ProcessedWorkers} workers, now workers:{WorkersCount} because {Count} queue",
-                            _channelName, processedWorkers, _workers.Count, count);
+                            Name, processedWorkers, _workers.Count, count);
                     }
                 }
                 else if (workersDiff < 0) // missing workers, need to add
@@ -155,7 +156,7 @@ namespace Vayosoft.Threading.Channels.Producers
                     {
                         _logger.LogDebug(
                             "[{ChannelName}] Added {ProcessedWorkers} workers, now workers:{WorkersCount} because {Count} queue",
-                            _channelName, processedWorkers, _workers.Count, count);
+                            Name, processedWorkers, _workers.Count, count);
                     }
                 }
             }
@@ -203,7 +204,7 @@ namespace Vayosoft.Threading.Channels.Producers
             }
             catch (Exception e)
             {
-                _logger.LogWarning("[{ChannelName}.Shutdown]: {Message}", _channelName, e.Message);
+                _logger.LogWarning("[{ChannelName}.Shutdown]: {Message}", Name, e.Message);
             }
             finally
             {
