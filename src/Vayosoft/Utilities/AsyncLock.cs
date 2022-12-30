@@ -11,21 +11,21 @@ namespace Vayosoft.Utilities
             _key = key;
         }
 
-        private static readonly Dictionary<string, RefCounted<SemaphoreSlim>> _semaphoreSlims = new Dictionary<string, RefCounted<SemaphoreSlim>>();
+        private static readonly Dictionary<string, RefCounted<SemaphoreSlim>> SemaphoreSlims = new();
 
-        private SemaphoreSlim GetOrCreate(string key)
+        private static SemaphoreSlim GetOrCreate(string key)
         {
             RefCounted<SemaphoreSlim> item;
-            lock (_semaphoreSlims)
+            lock (SemaphoreSlims)
             {
-                if (_semaphoreSlims.TryGetValue(key, out item))
+                if (SemaphoreSlims.TryGetValue(key, out item))
                 {
                     ++item.RefCount;
                 }
                 else
                 {
                     item = new RefCounted<SemaphoreSlim>(new SemaphoreSlim(1, 1));
-                    _semaphoreSlims[key] = item;
+                    SemaphoreSlims[key] = item;
                 }
             }
             return item.Value;
@@ -36,22 +36,13 @@ namespace Vayosoft.Utilities
             return new AsyncLock(key);
         }
 
-        // TODO: Rename to LockAsync after resolving problem with backward compatibility
-        // in the modules (look on this ticket https://virtocommerce.atlassian.net/browse/PT-3548)
-        public async Task<IDisposable> GetReleaserAsync()
+        public async Task<IDisposable> LockAsync()
         {
             await GetOrCreate(_key).WaitAsync().ConfigureAwait(false);
             return new Releaser(_key);
         }
 
-        [Obsolete("Left for backward compatibility. Use GetReleaserAsync")]
-        public async Task<Releaser> LockAsync()
-        {
-            await GetOrCreate(_key).WaitAsync().ConfigureAwait(false);
-            return new Releaser(_key);
-        }
-
-        public struct Releaser : IDisposable
+        public readonly struct Releaser : IDisposable
         {
             private readonly string _key;
 
@@ -63,13 +54,13 @@ namespace Vayosoft.Utilities
             public void Dispose()
             {
                 RefCounted<SemaphoreSlim> item;
-                lock (_semaphoreSlims)
+                lock (SemaphoreSlims)
                 {
-                    item = _semaphoreSlims[_key];
+                    item = SemaphoreSlims[_key];
                     --item.RefCount;
                     if (item.RefCount == 0)
                     {
-                        _semaphoreSlims.Remove(_key);
+                        SemaphoreSlims.Remove(_key);
                     }
                 }
                 item.Value.Release();
