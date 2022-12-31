@@ -1,4 +1,4 @@
-﻿namespace Vayosoft.Utilities.AsyncLoop
+﻿namespace Vayosoft.Utilities.Tasks
 {
     public interface IAsyncLoopFactory
     {

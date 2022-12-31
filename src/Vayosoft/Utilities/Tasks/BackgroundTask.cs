@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Vayosoft.Utilities
+namespace Vayosoft.Utilities.Tasks
 {
     public abstract class BackgroundTask
     {

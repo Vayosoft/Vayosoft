@@ -7,6 +7,7 @@ using Vayosoft.Commons.Events;
 using Vayosoft.Commons.Events.External;
 using Vayosoft.Streaming.Consumers;
 using Vayosoft.Utilities;
+using Vayosoft.Utilities.Reflection;
 
 namespace Vayosoft.Streaming.Redis.Consumers
 {

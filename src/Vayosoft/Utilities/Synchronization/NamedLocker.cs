@@ -1,11 +1,11 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Vayosoft.Utilities
+namespace Vayosoft.Utilities.Synchronization
 {
     public class NamedLocker
     {
         private readonly ConcurrentDictionary<string, object> _locks = new();
-      
+
         public object GetLock(string name)
         {
             return _locks.GetOrAdd(name, s => new object());

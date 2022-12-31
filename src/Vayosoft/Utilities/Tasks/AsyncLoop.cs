@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Vayosoft.Utilities.AsyncLoop
+namespace Vayosoft.Utilities.Tasks
 {
     public class AsyncLoop : IAsyncLoop
     {

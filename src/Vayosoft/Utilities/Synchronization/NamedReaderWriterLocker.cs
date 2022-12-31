@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Vayosoft.Utilities
+namespace Vayosoft.Utilities.Synchronization
 {
     public class NamedReaderWriterLocker
     {

@@ -1,4 +1,4 @@
-namespace Vayosoft.Utilities
+namespace Vayosoft.Utilities.Synchronization
 {
     //https://stackoverflow.com/questions/31138179/asynchronous-locking-based-on-a-key
     //Asynchronous locking based on a string key

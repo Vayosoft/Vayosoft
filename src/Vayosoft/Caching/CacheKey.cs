@@ -1,4 +1,4 @@
-﻿using Vayosoft.Utilities;
+﻿using Vayosoft.Utilities.Reflection;
 
 namespace Vayosoft.Caching
 {

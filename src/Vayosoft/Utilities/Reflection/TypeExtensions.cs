@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace Vayosoft.Utilities
+namespace Vayosoft.Utilities.Reflection
 {
     public static class TypeExtensions
     {
