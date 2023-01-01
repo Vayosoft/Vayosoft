@@ -21,7 +21,11 @@
                 _readLock = readLock;
                 readLock.EnterReadLock();
             }
-            public void Dispose() => _readLock.ExitReadLock();
+
+            public void Dispose()
+            {
+                _readLock.ExitReadLock();
+            }
         }
 
         private readonly ReaderWriterLockSlim _lock = new();
@@ -29,7 +33,10 @@
         public ReadLockToken ReadLock() => new(_lock);
         public WriteLockToken WriteLock() => new(_lock);
 
-        public void Dispose() => _lock.Dispose();
+        public void Dispose()
+        {
+            _lock.Dispose();
+        }
     }
 }
 

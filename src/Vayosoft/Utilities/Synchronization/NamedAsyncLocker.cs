@@ -2,11 +2,11 @@ namespace Vayosoft.Utilities.Synchronization
 {
     //https://stackoverflow.com/questions/31138179/asynchronous-locking-based-on-a-key
     //Asynchronous locking based on a string key
-    public sealed class AsyncLock
+    public sealed class NamedAsyncLocker
     {
         private readonly string _key;
 
-        public AsyncLock(string key)
+        public NamedAsyncLocker(string key)
         {
             _key = key;
         }
@@ -31,9 +31,9 @@ namespace Vayosoft.Utilities.Synchronization
             return item.Value;
         }
 
-        public static AsyncLock GetLockByKey(string key)
+        public static NamedAsyncLocker GetLockByKey(string key)
         {
-            return new AsyncLock(key);
+            return new NamedAsyncLocker(key);
         }
 
         public async Task<IDisposable> LockAsync()
@@ -42,7 +42,7 @@ namespace Vayosoft.Utilities.Synchronization
             return new Releaser(_key);
         }
 
-        public readonly struct Releaser : IDisposable
+        public readonly struct Releaser : IEquatable<Releaser>, IDisposable
         {
             private readonly string _key;
 
@@ -65,6 +65,36 @@ namespace Vayosoft.Utilities.Synchronization
                 }
                 item.Value.Release();
             }
+
+            public override int GetHashCode()
+            {
+                return _key.GetHashCode();
+            }
+
+            public bool Equals(Releaser other)
+            {
+                return _key == other._key;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj == null)
+                {
+                    return false;
+                }
+
+                return (obj is Releaser other) && Equals(other);
+            }
+
+            public static bool operator ==(Releaser lhs, Releaser rhs)
+            {
+                return lhs.Equals(rhs);
+            }
+
+            public static bool operator !=(Releaser lhs, Releaser rhs)
+            {
+                return !lhs.Equals(rhs);
+            }
         }
 
         private sealed class RefCounted<T>
@@ -76,7 +106,7 @@ namespace Vayosoft.Utilities.Synchronization
             }
 
             public int RefCount { get; set; }
-            public T Value { get; private set; }
+            public T Value { get; }
         }
     }
 }

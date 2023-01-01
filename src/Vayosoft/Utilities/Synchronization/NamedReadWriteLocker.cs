@@ -2,7 +2,7 @@
 
 namespace Vayosoft.Utilities.Synchronization
 {
-    public class NamedReaderWriterLocker
+    public class NamedReadWriteLocker
     {
         private readonly ConcurrentDictionary<string, ReaderWriterLockSlim> _locks = new();
 

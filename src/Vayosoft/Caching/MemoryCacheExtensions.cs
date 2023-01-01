@@ -27,7 +27,7 @@ namespace Vayosoft.Caching
 
             if (!TryGetByIds<TItem>(memoryCache, keyPrefix, ids, out var result))
             {
-                using (await AsyncLock.GetLockByKey(keyPrefix).LockAsync())
+                using (await NamedAsyncLocker.GetLockByKey(keyPrefix).LockAsync())
                 {
                     if (!TryGetByIds(memoryCache, keyPrefix, ids, out result))
                     {
@@ -93,7 +93,7 @@ namespace Vayosoft.Caching
         {
             if (!cache.TryGetValue(key, out var result))
             {
-                using (await AsyncLock.GetLockByKey(key).LockAsync())
+                using (await NamedAsyncLocker.GetLockByKey(key).LockAsync())
                 {
                     if (!cache.TryGetValue(key, out result))
                     {
