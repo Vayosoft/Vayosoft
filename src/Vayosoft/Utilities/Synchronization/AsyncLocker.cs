@@ -2,11 +2,11 @@ namespace Vayosoft.Utilities.Synchronization
 {
     //https://stackoverflow.com/questions/31138179/asynchronous-locking-based-on-a-key
     //Asynchronous locking based on a string key
-    public sealed class NamedAsyncLocker
+    public sealed class AsyncLocker
     {
         private readonly string _key;
 
-        public NamedAsyncLocker(string key)
+        public AsyncLocker(string key)
         {
             _key = key;
         }
@@ -31,9 +31,9 @@ namespace Vayosoft.Utilities.Synchronization
             return item.Value;
         }
 
-        public static NamedAsyncLocker GetLockByKey(string key)
+        public static AsyncLocker GetLockByKey(string key)
         {
-            return new NamedAsyncLocker(key);
+            return new AsyncLocker(key);
         }
 
         public async Task<IDisposable> LockAsync()
