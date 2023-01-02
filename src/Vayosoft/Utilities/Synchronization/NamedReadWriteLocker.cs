@@ -2,69 +2,23 @@
 
 namespace Vayosoft.Utilities.Synchronization
 {
-    public class NamedReadWriteLocker
+    public class NamedReaderWriterLocker
     {
         private readonly ConcurrentDictionary<string, ReaderWriterLockSlim> _locks = new();
 
-        public ReaderWriterLockSlim GetLock(string name)
+        public ReaderWriterLockSlim GetLockByKey(string key)
         {
-            return _locks.GetOrAdd(name, s => new ReaderWriterLockSlim());
+            return _locks.GetOrAdd(key, _ => new ReaderWriterLockSlim());
         }
 
-        public TResult RunWithReadLock<TResult>(string name, Func<TResult> body)
+        public ReadWriteLocker.ReadLockToken ReadLock(string key)
         {
-            var rwLock = GetLock(name);
-            try
-            {
-                rwLock.EnterReadLock();
-                return body();
-            }
-            finally
-            {
-                rwLock.ExitReadLock();
-            }
+            return new ReadWriteLocker.ReadLockToken(GetLockByKey(key));
         }
 
-        public void RunWithReadLock(string name, Action body)
+        public ReadWriteLocker.WriteLockToken WriteLock(string key)
         {
-            var rwLock = GetLock(name);
-            try
-            {
-                rwLock.EnterReadLock();
-                body();
-            }
-            finally
-            {
-                rwLock.ExitReadLock();
-            }
-        }
-
-        public TResult RunWithWriteLock<TResult>(string name, Func<TResult> body)
-        {
-            var rwLock = GetLock(name);
-            try
-            {
-                rwLock.EnterWriteLock();
-                return body();
-            }
-            finally
-            {
-                rwLock.ExitWriteLock();
-            }
-        }
-
-        public void RunWithWriteLock(string name, Action body)
-        {
-            var rwLock = GetLock(name);
-            try
-            {
-                rwLock.EnterWriteLock();
-                body();
-            }
-            finally
-            {
-                rwLock.ExitWriteLock();
-            }
+            return new ReadWriteLocker.WriteLockToken(GetLockByKey(key));
         }
 
         public void RemoveLock(string name)
@@ -73,35 +27,10 @@ namespace Vayosoft.Utilities.Synchronization
         }
     }
 
-    //static readonly NamedReaderWriterLocker _namedRwlocker = new NamedReaderWriterLocker();
-    //void Write(string key, Stream s)
+    //var rwLock = new NamedReaderWriterLocker();
+    //...
+    //using(rwLock.GetReadLock(key))
     //{
-    //    var rwLock = _namedRwlocker.GetLock(key);
-    //    try
-    //    {
-    //        rwLock.EnterWriteLock();
-    //        //write file
-    //    }
-    //    finally
-    //    {
-    //        rwLock.ExitWriteLock();
-    //    }
-    //    //OR
-    //    _namedRwlocker.RunWithWriteLock(key, () => /*write file*/);
-    //}
-    //Stream Read(string key)
-    //{
-    //    var rwLock = _namedRwlocker.GetLock(key);
-    //    try
-    //    {
-    //        rwLock.EnterReadLock();
-    //        //read file
-    //    }
-    //    finally
-    //    {
-    //        rwLock.ExitReadLock();
-    //    }
-    //    //OR
-    //    return _namedRwlocker.RunWithReadLock(key, () => /*read file*/);
+    //   
     //}
 }

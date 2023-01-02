@@ -10,7 +10,11 @@
                 _writLock = writLock;
                 writLock.EnterWriteLock();
             }
-            public void Dispose() => _writLock.ExitWriteLock();
+
+            public void Dispose()
+            {
+                _writLock.ExitWriteLock();
+            }
         }
 
         public readonly struct ReadLockToken : IDisposable
@@ -40,7 +44,7 @@
     }
 }
 
-//    var rwLock = new RWLock();
+//    var rwLock = new ReadWriteLocker();
 //// ...
 //    using(rwLock.ReadLock())
 //    {

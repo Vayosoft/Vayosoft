@@ -6,21 +6,9 @@ namespace Vayosoft.Utilities.Synchronization
     {
         private readonly ConcurrentDictionary<string, object> _locks = new();
 
-        public object GetLock(string name)
+        public object GetLockByKey(string key)
         {
-            return _locks.GetOrAdd(name, s => new object());
-        }
-
-        public TResult RunWithLock<TResult>(string name, Func<TResult> body)
-        {
-            lock (_locks.GetOrAdd(name, s => new object()))
-                return body();
-        }
-
-        public void RunWithLock(string name, Action body)
-        {
-            lock (_locks.GetOrAdd(name, s => new object()))
-                body();
+            return _locks.GetOrAdd(key, s => new object());
         }
 
         public void RemoveLock(string name)
