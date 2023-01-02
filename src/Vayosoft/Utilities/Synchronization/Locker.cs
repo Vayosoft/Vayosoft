@@ -8,7 +8,7 @@ namespace Vayosoft.Utilities.Synchronization
 
         public object Lock(string key)
         {
-            return _locks.GetOrAdd(key, s => new object());
+            return _locks.GetOrAdd(key, _ => new object());
         }
 
         public void RemoveLock(string name)

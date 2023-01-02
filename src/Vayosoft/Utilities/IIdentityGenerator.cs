@@ -1,4 +1,4 @@
-namespace Vayosoft.Utilities
+﻿namespace Vayosoft.Utilities
 {
     public interface IIdentityGenerator : IIdentityGenerator<Guid> { }
 

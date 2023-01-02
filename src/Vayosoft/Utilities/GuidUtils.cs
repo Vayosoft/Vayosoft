@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Vayosoft.Utilities
 {
-    public static partial class GuidUtils
+    public static class GuidUtils
     {
         private const char EqualsChar = '=';
         private const char Slash = '/';
