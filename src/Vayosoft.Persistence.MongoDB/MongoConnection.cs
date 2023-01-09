@@ -76,7 +76,7 @@ namespace Vayosoft.Persistence.MongoDB
         public IMongoDatabase GetDatabase(string db)
             => _client.GetDatabase(db);
 
-        public IMongoCollection<T> Collection<T>(CollectionName collectionName = null) where T : IEntity
+        public IMongoCollection<T> Collection<T>(CollectionName collectionName = null)
             => Database.GetDocumentCollection<T>(collectionName);
 
         private static string GetDatabaseName(string connectionString)
@@ -84,10 +84,10 @@ namespace Vayosoft.Persistence.MongoDB
             var hostIndex = connectionString.IndexOf("//", StringComparison.Ordinal);
             if (hostIndex > 0)
             {
-                var startIndex = connectionString.IndexOf("/", hostIndex + 2, StringComparison.Ordinal) + 1;
-                var endIndex = connectionString.IndexOf("?", startIndex, StringComparison.Ordinal);
+                var startIndex = connectionString.IndexOf('/', hostIndex + 2) + 1;
                 if (startIndex > 0)
                 {
+                    var endIndex = connectionString.IndexOf('?', startIndex);
                     return endIndex > 0 ?
                         connectionString[startIndex..endIndex] :
                         connectionString[startIndex..];

@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using Vayosoft.Commons.Entities;
 
 namespace Vayosoft.Persistence.MongoDB
 {
@@ -12,6 +11,6 @@ namespace Vayosoft.Persistence.MongoDB
 
         IMongoDatabase GetDatabase(string db);
 
-        IMongoCollection<T> Collection<T>(CollectionName collectionName = null) where T : IEntity;
+        IMongoCollection<T> Collection<T>(CollectionName collectionName = null);
     }
 }

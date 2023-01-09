@@ -11,7 +11,6 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
     public static class CollectionExtensions
     {
         public static IMongoCollection<T> GetDocumentCollection<T>(this IMongoDatabase database, CollectionName collectionName = null)
-            where T : IEntity
             => GetDocumentCollection<T>(database, collectionName ?? CollectionName.For<T>(), null);
 
         public static IMongoCollection<T> GetDocumentCollection<T>(
@@ -24,8 +23,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             this IMongoDatabase database,
             CollectionName collectionName,
             MongoCollectionSettings settings
-        ) where T : IEntity
-            => database.GetCollection<T>(collectionName == null ? CollectionName.For<T>() : collectionName, settings);
+        ) => database.GetCollection<T>(collectionName == null ? CollectionName.For<T>() : collectionName, settings);
 
         public static Task<bool> DocumentExists<T>(
             this IMongoCollection<T> collection,
