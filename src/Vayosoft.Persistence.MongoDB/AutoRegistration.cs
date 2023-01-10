@@ -9,7 +9,7 @@ namespace Vayosoft.Persistence.MongoDB
             domainAssembly ??= Assembly.GetCallingAssembly();
             var classMaps = domainAssembly
                 .GetTypes()
-                .Where(t => t.BaseType is { IsGenericType: true } && t.BaseType.GetGenericTypeDefinition() == typeof(MongoClassMap<>));
+                .Where(t => t.BaseType is { IsGenericType: true } && t.BaseType.GetGenericTypeDefinition() == typeof(MongoDbClassMap<>));
 
             foreach (var classMap in classMaps)
                 Activator.CreateInstance(classMap);

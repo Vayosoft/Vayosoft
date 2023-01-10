@@ -2,7 +2,7 @@
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public interface IMongoConnection
+    public interface IMongoDbConnection
     {
         IMongoDatabase Database { get; }
         IClientSessionHandle Session { get; }

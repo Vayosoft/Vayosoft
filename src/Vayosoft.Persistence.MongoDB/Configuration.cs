@@ -7,7 +7,7 @@ namespace Vayosoft.Persistence.MongoDB
         public static IServiceCollection AddMongoContext(this IServiceCollection services,
             Action configureOptions = null)
         {
-            services.AddSingleton<IMongoConnection, MongoConnection>();
+            services.AddSingleton<IMongoDbConnection, MongoDbConnection>();
             configureOptions?.Invoke();
             return services;
         }

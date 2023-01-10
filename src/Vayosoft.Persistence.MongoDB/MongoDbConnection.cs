@@ -4,12 +4,11 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
-using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence.MongoDB.Extensions;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public sealed class MongoConnection : IMongoConnection
+    public sealed class MongoDbConnection : IMongoDbConnection
     {
         private const string DefaultDb = "default";
         private readonly MongoClient _client;
@@ -17,11 +16,11 @@ namespace Vayosoft.Persistence.MongoDB
         public IClientSessionHandle Session { get; private set; }
 
         [ActivatorUtilitiesConstructor]
-        public MongoConnection(IConfiguration config, ILoggerFactory loggerFactory) 
+        public MongoDbConnection(IConfiguration config, ILoggerFactory loggerFactory) 
             : this(config.GetConnectionSetting(), loggerFactory) { }
-        public MongoConnection(ConnectionSetting config, ILoggerFactory loggerFactory) 
+        public MongoDbConnection(ConnectionSetting config, ILoggerFactory loggerFactory) 
             : this(config?.ConnectionString, config?.ReplicaSet?.BootstrapServers, loggerFactory) { }
-        public MongoConnection(string connectionString, string[] bootstrapServers, ILoggerFactory loggerFactory)
+        public MongoDbConnection(string connectionString, string[] bootstrapServers, ILoggerFactory loggerFactory)
         {
             MongoClientSettings settings;
             string databaseName = null;
@@ -50,7 +49,7 @@ namespace Vayosoft.Persistence.MongoDB
                 }
             }
 
-            var logger = loggerFactory.CreateLogger<MongoConnection>();
+            var logger = loggerFactory.CreateLogger<MongoDbConnection>();
             settings.ClusterConfigurator = cb =>
             {
                 cb.Subscribe<CommandStartedEvent>(e =>

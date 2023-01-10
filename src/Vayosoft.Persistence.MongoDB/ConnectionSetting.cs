@@ -18,7 +18,7 @@ namespace Vayosoft.Persistence.MongoDB
     {
         public static ConnectionSetting GetConnectionSetting(this IConfiguration configuration)
         {
-            var settings =  configuration.GetSection(nameof(MongoConnection)).Get<ConnectionSetting>() ?? new ConnectionSetting();
+            var settings =  configuration.GetSection(nameof(MongoDbConnection)).Get<ConnectionSetting>() ?? new ConnectionSetting();
             if(string.IsNullOrEmpty(settings.ConnectionString))
             {
                 settings.ConnectionString = configuration.GetConnectionString("MongoDbConnection");

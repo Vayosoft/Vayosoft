@@ -2,9 +2,9 @@
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public abstract class MongoClassMap<T>
+    public abstract class MongoDbClassMap<T>
     {
-        protected MongoClassMap()
+        protected MongoDbClassMap()
         {
             if (!BsonClassMap.IsClassMapRegistered(typeof(T)))
                 BsonClassMap.RegisterClassMap<T>(Map);

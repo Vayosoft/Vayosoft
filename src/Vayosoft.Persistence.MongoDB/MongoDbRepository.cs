@@ -9,14 +9,14 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoRepository<T> : IRepository<T> where T : class, IAggregateRoot
+    public class MongoDbRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {
         protected readonly IMapper Mapper;
-        protected readonly IMongoConnection Connection;
+        protected readonly IMongoDbConnection Connection;
 
         protected readonly IMongoCollection<T> Collection;
 
-        public MongoRepository(IMongoConnection connection, IMapper mapper)
+        public MongoDbRepository(IMongoDbConnection connection, IMapper mapper)
         {
             Mapper = mapper;
             Connection = connection;
