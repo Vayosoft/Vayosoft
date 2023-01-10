@@ -14,11 +14,11 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             where T : class
             => queryable.Skip((page - 1) * pageSize).Take(pageSize);
 
-        public static async Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
+        public static Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
             IPagingModel pagingModel, CancellationToken cancellationToken = default)
             where T : class
         {
-            return await queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.Size, cancellationToken);
+            return queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.Size, cancellationToken);
         }
 
         public static async Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,

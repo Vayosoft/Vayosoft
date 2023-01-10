@@ -11,14 +11,20 @@ namespace Vayosoft.Persistence.MongoDB
 {
     public class MongoRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {
-        private readonly IMapper mapper;
+        protected readonly IMapper Mapper;
+        protected readonly IMongoConnection Connection;
+
         protected readonly IMongoCollection<T> Collection;
 
         public MongoRepository(IMongoConnection connection, IMapper mapper)
         {
-            this.mapper = mapper;
+            Mapper = mapper;
+            Connection = connection;
             Collection = connection.Collection<T>(CollectionName.For<T>());
         }
+
+        protected IMongoQueryable<TEntity> Set<TEntity>() => 
+            Connection.Collection<TEntity>(CollectionName.For<TEntity>()).AsQueryable();
 
         public IQueryable<T> AsQueryable()
             => Collection.AsQueryable();
@@ -26,7 +32,7 @@ namespace Vayosoft.Persistence.MongoDB
         public Task<T> FindAsync<TId>(TId id, CancellationToken cancellationToken = default) =>
             Collection.Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
         public Task<TResult> FindAsync<TId, TResult>(TId id, CancellationToken cancellationToken = default) =>
-            Collection.Find(q => q.Id.Equals(id)).Project(e => mapper.Map<TResult>(e)).FirstOrDefaultAsync(cancellationToken);
+            Collection.Find(q => q.Id.Equals(id)).Project(e => Mapper.Map<TResult>(e)).FirstOrDefaultAsync(cancellationToken);
 
 
         public virtual Task AddAsync(T entity, CancellationToken cancellationToken = default) =>
