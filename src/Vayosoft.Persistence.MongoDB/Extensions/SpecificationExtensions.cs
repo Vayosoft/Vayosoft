@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Models;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB.Extensions
@@ -18,6 +19,12 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             }
 
             return query;
+        }
+
+        public static IMongoQueryable<T> Apply<T>(this IMongoQueryable<T> input, ICriteria<T> criteria)
+            where T : class
+        {
+            return input.Where(criteria.ToExpression());
         }
     }
 }
