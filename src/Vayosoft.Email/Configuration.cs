@@ -2,9 +2,9 @@
 
 namespace Vayosoft.Email
 {
-    public static class Config
+    public static class Configuration
     {
-        public static IServiceCollection AddEmail(this IServiceCollection services)
+        public static IServiceCollection AddEmailService(this IServiceCollection services)
         {
            
 
