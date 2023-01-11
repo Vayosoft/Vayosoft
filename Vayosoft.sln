@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "test\Benchmar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Web.Identity", "src\Vayosoft.Web.Identity\Vayosoft.Web.Identity.csproj", "{6A0E6B7E-3D52-4FFF-8F99-2AAA01DBDD41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.SMS", "sms\Vayosoft.SMS\Vayosoft.SMS.csproj", "{90F7B36E-37DF-4948-9231-FBE0D0F93D28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.SmsBrokers", "src\Vayosoft.SmsBrokers\Vayosoft.SmsBrokers.csproj", "{90F7B36E-37DF-4948-9231-FBE0D0F93D28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

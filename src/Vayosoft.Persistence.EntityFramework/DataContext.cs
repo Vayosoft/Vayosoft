@@ -111,7 +111,7 @@ namespace Vayosoft.Persistence.EntityFramework
                 .ToListAsync(cancellationToken);
         }
 
-        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec)
+        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -119,8 +119,7 @@ namespace Vayosoft.Persistence.EntityFramework
                 .BySpecification(spec)
                 .AsAsyncEnumerable();
         }
-
-
+        
         public IQueryable<TEntity> AsQueryable<TEntity>()
             where TEntity : class, IEntity
         {
