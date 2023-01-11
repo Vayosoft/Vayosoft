@@ -65,19 +65,22 @@ namespace Vayosoft.Persistence.MongoDB
         public Task UpdateAsync<T>(T entity, CancellationToken cancellationToken = default)
             where T : class, IEntity
         {
-            return Collection<T>().ReplaceOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id), entity, cancellationToken: cancellationToken);
+            return Collection<T>().ReplaceOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id), entity,
+                cancellationToken: cancellationToken);
         }
 
         public Task DeleteAsync<T>(T entity, CancellationToken cancellationToken = default) 
             where T : class, IEntity
         {
-            return Collection<T>().DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id), cancellationToken: cancellationToken);
+            return Collection<T>().DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id),
+                cancellationToken: cancellationToken);
         }
 
         public Task DeleteAsync<T, TId>(TId id, CancellationToken cancellationToken = default)
             where T : class, IEntity
         {
-            return Collection<T>().DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, id), cancellationToken: cancellationToken);
+            return Collection<T>().DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, id),
+                cancellationToken: cancellationToken);
         }
 
         public void Dispose()
@@ -97,14 +100,16 @@ namespace Vayosoft.Persistence.MongoDB
             _disposed = true;
         }
 
-        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default) 
+        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria,
+            CancellationToken cancellationToken = default) 
             where TEntity : class, IEntity
         {
             return IAsyncCursorSourceExtensions.SingleOrDefaultAsync(Set<TEntity>()
                     .Apply(criteria), cancellationToken);
         }
 
-        public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
+        public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec,
+            CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -112,7 +117,8 @@ namespace Vayosoft.Persistence.MongoDB
                 .ToListAsync(cancellationToken);
         }
 
-        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec,
+            CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
