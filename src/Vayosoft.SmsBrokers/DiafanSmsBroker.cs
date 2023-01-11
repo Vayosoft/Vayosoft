@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using System.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Vayosoft.Commons.Enums;
 using Vayosoft.Commons.ValueObjects;
 using Vayosoft.Utilities;
 
-namespace Vayosoft.SMS
+namespace Vayosoft.SmsBrokers
 {
     internal sealed class DiafanSmsBroker : ISmsBroker
     {

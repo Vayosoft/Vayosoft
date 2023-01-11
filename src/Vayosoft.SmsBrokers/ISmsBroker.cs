@@ -1,7 +1,7 @@
 ﻿using Vayosoft.Commons.Enums;
 using Vayosoft.Commons.ValueObjects;
 
-namespace Vayosoft.SMS
+namespace Vayosoft.SmsBrokers
 {
     public interface ISmsBroker
     {

@@ -1,4 +1,4 @@
-﻿namespace Vayosoft.SMS
+﻿namespace Vayosoft.SmsBrokers
 {
     public class SmsBrokerFactory
     {
@@ -8,12 +8,12 @@
             _serviceProvider = serviceProvider;
         }
 
-        public ISmsBroker GetFor(string platformName)
+        public ISmsBroker GetFor(string brokerName)
         {
-            return platformName switch
+            return brokerName switch
             {
                 "Diafan" => (ISmsBroker) _serviceProvider.GetService(typeof(DiafanSmsBroker))!,
-                _ => throw new ArgumentOutOfRangeException(nameof(platformName), platformName, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(brokerName), brokerName, null)
             };
         }
     }

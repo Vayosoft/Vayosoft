@@ -36,7 +36,7 @@ namespace Vayosoft.Web.Identity.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody] LoginRequest model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login([FromBody] LoginRequest model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace Vayosoft.Web.Identity.Controllers
 
         [AllowAnonymous]
         [HttpPost("logout")]
-        public async Task<IActionResult> PostLogout()
+        public async Task<IActionResult> Logout()
         {
             //await HttpContext.SignOutAsync(".session");
             HttpContext.Session.Clear();

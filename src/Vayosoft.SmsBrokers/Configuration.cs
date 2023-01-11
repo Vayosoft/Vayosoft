@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Vayosoft.SMS
+namespace Vayosoft.SmsBrokers
 {
     public static class Configuration
     {
