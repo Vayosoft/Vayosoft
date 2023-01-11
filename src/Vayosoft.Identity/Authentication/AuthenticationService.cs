@@ -32,6 +32,11 @@ namespace Vayosoft.Identity.Authentication
             if (user is null || !_passwordHasher.VerifyHashedPassword(user.PasswordHash, password))
                 throw new ApplicationException("Username or password is incorrect");
 
+            return await AuthenticateAsync(user, ipAddress, cancellationToken);
+        }
+
+        public async Task<AuthenticationResult> AuthenticateAsync(UserEntity user, string ipAddress, CancellationToken cancellationToken = default)
+        {
             // authentication successful so generate jwt and refresh tokens
             List<RoleDTO> roles = null;
             if (_userRepository is IUserRoleStore roleStore)
