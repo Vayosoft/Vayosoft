@@ -4,11 +4,21 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Vayosoft.Commands;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Identity;
 using Vayosoft.Identity.Authentication;
 using Vayosoft.Identity.EntityFramework;
 using Vayosoft.Identity.Persistence;
+using Vayosoft.Identity.Providers;
+using Vayosoft.Identity.Security.Commands;
+using Vayosoft.Identity.Security.Models;
+using Vayosoft.Identity.Security.Queries;
+using Vayosoft.Identity.Specifications;
 using Vayosoft.Identity.Tokens;
+using Vayosoft.Persistence.Commands;
+using Vayosoft.Persistence.Queries;
+using Vayosoft.Queries;
 
 namespace Vayosoft.Web.Identity
 {
@@ -31,8 +41,34 @@ namespace Vayosoft.Web.Identity
             //        policy => policy.Requirements.Add(new Over18Requirement()));
             //});
 
+            //Web.Identity
+            services.AddUserService();
+            services.AddSecurityService();
+            services.AddProviderService();
+
             return services;
         }
+
+        private static IServiceCollection AddUserService(this IServiceCollection services) =>
+            services
+                .AddQueryHandler<SpecificationQuery<GetUsersSpec, IPagedEnumerable<UserEntityDto>>, IPagedEnumerable<UserEntityDto>,
+                    PagingQueryHandler<string, GetUsersSpec, UserEntity, UserEntityDto>>()
+                .AddQueryHandler<SingleQuery<UserEntityDto>, UserEntityDto, SingleQueryHandler<long, UserEntity, UserEntityDto>>()
+
+                .AddCommandHandler<SaveUser, HandleSaveUser>()
+                .AddCommandHandler<DeleteCommand<UserEntity>, DeleteCommandHandler<long, UserEntity>>();
+
+        private static IServiceCollection AddSecurityService(this IServiceCollection services) =>
+            services
+                .AddQueryHandler<GetPermissions, RolePermissions, HandleGetPermissions>()
+
+                .AddCommandHandler<SavePermissions, HandleSavePermissions>()
+                .AddCommandHandler<SaveRole, HandleSaveRole>();
+
+        private static IServiceCollection AddProviderService(this IServiceCollection services) =>
+            services
+                .AddCommandHandler<DeleteCommand<ProviderEntity>, DeleteCommandHandler<long, ProviderEntity>>()
+                .AddCommandHandler<CreateOrUpdateCommand<ProviderEntity>, CreateOrUpdateHandler<long, ProviderEntity, ProviderEntity>>();
 
         //https://blog.devgenius.io/jwt-authentication-in-asp-net-core-e67dca9ae3e8
         public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, string symmetricKey)
