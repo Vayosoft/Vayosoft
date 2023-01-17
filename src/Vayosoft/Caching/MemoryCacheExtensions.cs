@@ -1,15 +1,18 @@
-using System.Collections.Concurrent;
+using AsyncKeyedLock;
 using Microsoft.Extensions.Caching.Memory;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Utilities;
-using Vayosoft.Utilities.Synchronization;
 
 namespace Vayosoft.Caching
 {
     public static class MemoryCacheExtensions
     {
         private static readonly StringComparer IgnoreCase = StringComparer.OrdinalIgnoreCase;
-        private static readonly ConcurrentDictionary<string, object> LockLookup = new();
+        private static readonly AsyncKeyedLocker<string> _asyncKeyedLocker = new(o =>
+        {
+            o.PoolSize = 20;
+            o.PoolInitialFill = 1;
+        });
 
         public static async Task<IList<TItem>> GetOrLoadByIdsAsync<TItem>(
             this IMemoryCache memoryCache,
@@ -27,7 +30,7 @@ namespace Vayosoft.Caching
 
             if (!TryGetByIds<TItem>(memoryCache, keyPrefix, ids, out var result))
             {
-                using (await AsyncLocker.GetLockByKey(keyPrefix).LockAsync())
+                using (await _asyncKeyedLocker.LockAsync(keyPrefix).ConfigureAwait(false))
                 {
                     if (!TryGetByIds(memoryCache, keyPrefix, ids, out result))
                     {
@@ -93,7 +96,7 @@ namespace Vayosoft.Caching
         {
             if (!cache.TryGetValue(key, out var result))
             {
-                using (await AsyncLocker.GetLockByKey(key).LockAsync())
+                using (await _asyncKeyedLocker.LockAsync(key).ConfigureAwait(false))
                 {
                     if (!cache.TryGetValue(key, out result))
                     {
@@ -116,23 +119,16 @@ namespace Vayosoft.Caching
         {
             if (!cache.TryGetValue(key, out var result))
             {
-                lock (LockLookup.GetOrAdd(key, new object()))
+                using (_asyncKeyedLocker.Lock(key))
                 {
-                    try
+                    if (!cache.TryGetValue(key, out result))
                     {
-                        if (!cache.TryGetValue(key, out result))
+                        var options = cache is IDistributedMemoryCache platformMemoryCache ? platformMemoryCache.GetDefaultCacheEntryOptions() : new MemoryCacheEntryOptions();
+                        result = factory(options);
+                        if (!CacheDisabler.CacheDisabled && (result != null || cacheNullValue))
                         {
-                            var options = cache is IDistributedMemoryCache platformMemoryCache ? platformMemoryCache.GetDefaultCacheEntryOptions() : new MemoryCacheEntryOptions();
-                            result = factory(options);
-                            if (!CacheDisabler.CacheDisabled && (result != null || cacheNullValue))
-                            {
-                                cache.Set(key, result, options);
-                            }
+                            cache.Set(key, result, options);
                         }
-                    }
-                    finally
-                    {
-                        LockLookup.TryRemove(key, out var _);
                     }
                 }
             }
