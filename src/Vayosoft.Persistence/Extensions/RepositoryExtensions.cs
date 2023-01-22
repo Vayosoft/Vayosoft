@@ -7,7 +7,7 @@ namespace Vayosoft.Persistence.Extensions
 {
     public static class RepositoryExtensions
     {
-        public static async Task<T> GetAsync<T, TId>(this IReadOnlyRepository<T> repository, TId id, CancellationToken cancellationToken = default)
+        public static async Task<T> GetAsync<T, TId>(this IRepository<T> repository, TId id, CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot
         {
             var entity = await repository.FindAsync(id, cancellationToken);
