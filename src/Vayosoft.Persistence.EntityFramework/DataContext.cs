@@ -111,7 +111,8 @@ namespace Vayosoft.Persistence.EntityFramework
                 .ToListAsync(cancellationToken);
         }
 
-        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec) where TEntity : class, IEntity
+        public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec,
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 //.AsNoTracking()
