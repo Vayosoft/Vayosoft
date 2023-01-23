@@ -12,7 +12,7 @@ namespace Vayosoft.Web.Model
 
         public PagedResponse(IPagedEnumerable<T> items, long pageSize)
         {
-            Items = items.ToList();
+            Items = Array.AsReadOnly(items.ToArray());
 
             TotalItems = items.TotalCount;
 
