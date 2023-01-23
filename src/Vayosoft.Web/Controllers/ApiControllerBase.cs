@@ -9,7 +9,7 @@ using Vayosoft.Web.Model;
 namespace Vayosoft.Web.Controllers
 {
     [ApiController]
-    public class ApiControllerBase : ControllerBase
+    public abstract class ApiControllerBase : ControllerBase
     {
         protected IActionResult Result<TResult>(Result<TResult> result) {
             return result.Match(obj => Ok(obj), Problem);

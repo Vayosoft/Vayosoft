@@ -23,7 +23,7 @@ namespace Vayosoft.Web.Exceptions
             logger = loggerFactory.CreateLogger<ExceptionHandlingMiddleware>();
         }
 
-        public async Task Invoke(HttpContext context /* other scoped dependencies */)
+        public async Task Invoke(HttpContext context)
         {
             try
             {
@@ -37,13 +37,13 @@ namespace Vayosoft.Web.Exceptions
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            logger.LogError(exception, "An unhandled exception has occurred, {0}", exception.Message);
+            logger.LogError(exception, "An unhandled exception has occurred, {Message}", exception.Message);
             //context.Response.Redirect("/error");
 
             if (exception is ValidationException validationException)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Response.WriteAsJsonAsync(validationException.Errors.ToProblemDetails(context.Request.Path));
+                context.Response.WriteAsJsonAsync(validationException.Errors.ToProblemDetails(context.Request.Path), context.RequestAborted);
             }
             else
             {
@@ -52,24 +52,24 @@ namespace Vayosoft.Web.Exceptions
                     title: "An error occurred while processing your request.", statusCode: (int)codeInfo.Code);
 
                 context.Response.StatusCode = (int)codeInfo.Code;
-                context.Response.WriteAsJsonAsync(problemDetails);
+                context.Response.WriteAsJsonAsync(problemDetails, context.RequestAborted);
             }
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
-        public bool IsAjaxRequest(HttpContext context)
+        public static bool IsAjaxRequest(HttpContext context)
         {
-            if (string.IsNullOrEmpty(context.Request.Headers["x-requested-with"])) return false;
-            return context.Request.Headers["x-requested-with"][0].ToLower() == "xmlhttprequest";
+            return !string.IsNullOrEmpty(context.Request.Headers["x-requested-with"]) && 
+                   context.Request.Headers["x-requested-with"][0]!.Equals("xmlhttprequest", StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool IsAcceptMimeType(HttpContext context, string mimeType)
+        public static bool IsAcceptMimeType(HttpContext context, string mimeType)
         {
             var acceptHeader = context.Request.GetTypedHeaders().Accept;
             var result = acceptHeader.Any(t => 
-                t.Suffix.Value?.ToLower() == mimeType ||
-                t.SubTypeWithoutSuffix.Value?.ToLower() == mimeType);
+                (t.Suffix != null && t.Suffix.Equals(mimeType)) || 
+                (t.SubTypeWithoutSuffix != null && t.SubTypeWithoutSuffix.Equals(mimeType)));
             return result;
         }
     }
