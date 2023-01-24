@@ -133,7 +133,7 @@ namespace Vayosoft.Web.Identity.Controllers
                 // The client should follow its default cookie policy.
                 // SameSite = SameSiteMode.Unspecified
             };
-            Response.Cookies.Append(".refreshToken", token, cookieOptions);
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
 
         private string IpAddress()

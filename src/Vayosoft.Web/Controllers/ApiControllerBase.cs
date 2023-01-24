@@ -19,7 +19,7 @@ namespace Vayosoft.Web.Controllers
             return result.Match(obj => Ok(mapper(obj)), Problem);
         }
 
-        protected IActionResult PagedList<TResult>(IPagedEnumerable<TResult> collection, long pageSize)
+        protected IActionResult Page<TResult>(IPagedEnumerable<TResult> collection, long pageSize)
         {
             return Ok(new PagedResponse<TResult>(collection, pageSize));
         }

@@ -12,7 +12,7 @@ namespace Vayosoft.Identity.Specifications
 
         public GetUsersSpec(int page, int size, long? providerId = null, string searchTerm = null)
         {
-            Page = page; Size = size;
+            Page = page; PageSize = size;
             _providerId = providerId;
             _searchTerm = searchTerm;
         }

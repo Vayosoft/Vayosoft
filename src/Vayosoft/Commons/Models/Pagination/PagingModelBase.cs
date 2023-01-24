@@ -14,7 +14,7 @@ namespace Vayosoft.Commons.Models.Pagination
         protected PagingModelBase(int page, int pageSize)
         {
             Page = page;
-            Size = pageSize;
+            PageSize = pageSize;
         }
 
         public int Page
@@ -27,7 +27,7 @@ namespace Vayosoft.Commons.Models.Pagination
             }
         }
 
-        public int Size
+        public int PageSize
         {
             get => _size;
             set

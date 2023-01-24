@@ -7,12 +7,12 @@
             => (pagingModel.OrderBy.SortOrder == SortOrder.Asc
                 ? queryable.OrderBy(pagingModel.OrderBy.Expression)
                 : queryable.OrderByDescending(pagingModel.OrderBy.Expression))
-                .Skip((pagingModel.Page - 1) * pagingModel.Size)
-                .Take(pagingModel.Size);
+                .Skip((pagingModel.Page - 1) * pagingModel.PageSize)
+                .Take(pagingModel.PageSize);
 
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, IPagingModel pagingModel)
             where T : class
-            => Paginate(queryable, pagingModel.Page, pagingModel.Size);
+            => Paginate(queryable, pagingModel.Page, pagingModel.PageSize);
 
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, int page, int pageSize)
             where T : class

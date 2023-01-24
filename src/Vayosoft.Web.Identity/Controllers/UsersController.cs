@@ -48,7 +48,7 @@ namespace Vayosoft.Web.Identity.Controllers
             var spec = new GetUsersSpec(page, size, providerId, searchTerm);
             var query = new SpecificationQuery<GetUsersSpec, IPagedEnumerable<UserEntityDto>>(spec);
 
-            return PagedList(await queryBus.Send(query, token), size);
+            return Page(await queryBus.Send(query, token), size);
         }
 
         [HttpGet("{id}")]

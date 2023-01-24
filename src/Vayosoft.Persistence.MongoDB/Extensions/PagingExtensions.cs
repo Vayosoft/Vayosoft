@@ -8,7 +8,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
     {
         public static IMongoQueryable<T> Paginate<T>(this IMongoQueryable<T> queryable, IPagingModel pagingModel)
             where T : class
-            => Paginate(queryable, pagingModel.Page, pagingModel.Size);
+            => Paginate(queryable, pagingModel.Page, pagingModel.PageSize);
 
         public static IMongoQueryable<T> Paginate<T>(this IMongoQueryable<T> queryable, int page, int pageSize)
             where T : class
@@ -18,7 +18,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             IPagingModel pagingModel, CancellationToken cancellationToken = default)
             where T : class
         {
-            return queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.Size, cancellationToken);
+            return queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.PageSize, cancellationToken);
         }
 
         public static async Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,

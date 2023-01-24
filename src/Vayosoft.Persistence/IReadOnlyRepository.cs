@@ -22,10 +22,13 @@ namespace Vayosoft.Persistence
         Task<List<TAggregateRoot>> ListAsync(ISpecification<TAggregateRoot> spec,
             CancellationToken cancellationToken = default);
 
-        Task<IPagedEnumerable<TAggregateRoot>> PageAsync(ILinqSpecification<TAggregateRoot> spec, int page = 1, int pageSize = IPagingModel.DefaultSize,
+        Task<IPagedEnumerable<TAggregateRoot>> PageAsync(IPagingSpecification<TAggregateRoot> spec,
             CancellationToken cancellationToken = default);
 
-        IAsyncEnumerable<TAggregateRoot> StreamAsync(ISpecification<TAggregateRoot> spec,
+        Task<IPagedEnumerable<TAggregateRoot>> PageAsync(Expression<Func<TAggregateRoot, bool>> criteria, IPagingModel<TAggregateRoot, object> model,
+            CancellationToken cancellationToken = default);
+
+        IAsyncEnumerable <TAggregateRoot> StreamAsync(ISpecification<TAggregateRoot> spec,
             CancellationToken cancellationToken = default);
     }
 }
