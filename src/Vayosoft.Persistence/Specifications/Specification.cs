@@ -10,14 +10,13 @@ namespace Vayosoft.Persistence.Specifications
         public Sorting<T> Sorting { get; private set; }
         public Expression<Func<T, object>> GroupBy { get; private set; }
 
-        public Specification()
+        public Specification(ICriteria<T> criteria = null, Sorting<T> sorting = null)
         {
-            Criteria = new Criteria<T>();
-        }
-
-        public Specification(ICriteria<T> criteria)
-        {
-            Criteria = criteria;
+            Criteria = criteria ?? new Criteria<T>();
+            if (sorting != null)
+            {
+                Sorting = sorting;
+            }
         }
 
         protected void Where(Expression<Func<T, bool>> predicate)

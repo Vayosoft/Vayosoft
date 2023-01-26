@@ -11,9 +11,12 @@ namespace Vayosoft.Commons.Models
     public class Sorting<TEntity> : Sorting<TEntity, object> where TEntity : class
     {
         public Sorting(Expression<Func<TEntity, object>> expression, SortOrder sortOrder = SortOrder.Asc) 
-            : base(expression, sortOrder)
-        {
-        }
+            : base(expression, sortOrder) { }
+
+        public static Sorting<TEntity> Asc(Expression<Func<TEntity, object>> expression) =>
+            new(expression);
+        public static Sorting<TEntity> Desc(Expression<Func<TEntity, object>> expression) =>
+            new(expression, SortOrder.Desc);
     }
 
     public class Sorting<TEntity, TKey>
