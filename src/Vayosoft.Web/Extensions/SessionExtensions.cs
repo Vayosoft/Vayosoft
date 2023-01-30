@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 
-namespace Vayosoft.Identity.Extensions
+namespace Vayosoft.Web.Extensions
 {
     public static class SessionExtensions
     {
@@ -22,9 +22,9 @@ namespace Vayosoft.Identity.Extensions
             session.SetString(key, JsonSerializer.Serialize(value));
         }
 
-        public static async Task<T> GetAsync<T>(this ISession session, string key) where T : class
+        public static async Task<T> GetAsync<T>(this ISession session, string key, CancellationToken cancellationToken = default) where T : class
         {
-            if (!session.IsAvailable) await session.LoadAsync();
+            if (!session.IsAvailable) await session.LoadAsync(cancellationToken);
             var value = session.GetString(key);
             return value == null ? default : JsonSerializer.Deserialize<T>(value);
         }

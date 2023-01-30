@@ -1,12 +1,11 @@
-﻿using LanguageExt.Pipes;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Vayosoft.Caching;
 using Vayosoft.Identity.Authentication;
-using Vayosoft.Identity.Extensions;
 using Vayosoft.Utilities;
+using Vayosoft.Web.Extensions;
 using Vayosoft.Web.Identity.Authorization;
 using Vayosoft.Web.Model;
 using Vayosoft.Web.Model.Authentication;

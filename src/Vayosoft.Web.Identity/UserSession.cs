@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Text.Json;
-using Vayosoft.Identity.Extensions;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Vayosoft.Identity;
+using Vayosoft.Web.Extensions;
 
-namespace Vayosoft.Identity
+namespace Vayosoft.Web.Identity
 {
     public class UserSession : IUserSession
     {

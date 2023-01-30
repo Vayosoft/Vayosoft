@@ -46,6 +46,9 @@ namespace Vayosoft.Web.Identity
             services.AddSecurityService();
             services.AddProviderService();
 
+            services.AddHttpContextAccessor()
+                .AddScoped<IUserContext, UserContext>();
+
             return services;
         }
 
