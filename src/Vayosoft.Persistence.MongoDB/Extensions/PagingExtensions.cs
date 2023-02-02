@@ -4,7 +4,7 @@ using Vayosoft.Commons.Models.Pagination;
 
 namespace Vayosoft.Persistence.MongoDB.Extensions
 {
-    internal static class PagingExtensions
+    public static class PagingExtensions
     {
         public static IMongoQueryable<T> Paginate<T>(this IMongoQueryable<T> queryable, IPagingModel pagingModel)
             where T : class
