@@ -24,6 +24,11 @@
             where T : class
             => From(queryable.Paginate(pagingModel).ToArray(), queryable.Count());
 
+        public static IPagedEnumerable<T> ToPagedEnumerable<T>(this IQueryable<T> queryable,
+            int page, int pageSize)
+            where T : class
+            => From(queryable.Paginate(page, pageSize).ToArray(), queryable.Count());
+
         public static IPagedEnumerable<T> From<T>(IEnumerable<T> inner, int totalCount)
             =>  new PagedCollection<T>(inner, totalCount);
 

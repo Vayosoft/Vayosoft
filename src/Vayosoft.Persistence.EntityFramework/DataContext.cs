@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.EntityFramework.Converters;
 using Vayosoft.Persistence.Specifications;
@@ -118,6 +120,17 @@ namespace Vayosoft.Persistence.EntityFramework
                 //.AsNoTracking()
                 .BySpecification(spec)
                 .AsAsyncEnumerable();
+        }
+
+        public async Task<IPagedEnumerable<TEntity>> PageAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec, 
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            var query = Set<TEntity>()
+                //.AsNoTracking()
+                .BySpecification(spec);
+
+            var paginate = query.Paginate(page, pageSize);
+            return new PagedCollection<TEntity>(await paginate.ToArrayAsync(cancellationToken), await query.CountAsync(cancellationToken));
         }
 
         public IQueryable<TEntity> AsQueryable<TEntity>()
