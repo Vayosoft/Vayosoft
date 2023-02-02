@@ -545,5 +545,16 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
 
             return new PagedCollection<T>(data, count);
         }
+
+        public static async Task<bool> HasIndex<T>(this IMongoCollection<T> mongoCollection, string indexName, CancellationToken cancellationToken = default)
+        {
+            var indexes = (await mongoCollection.Indexes.ListAsync(cancellationToken)).ToList(cancellationToken);
+            var indexNames = indexes
+                .SelectMany(i => i.Elements)
+                .Where(e => string.Equals(e.Name, "name", StringComparison.CurrentCultureIgnoreCase))
+                .Select(n => n.Value.ToString());
+
+            return indexNames.Contains(indexName);
+        }
     }
 }
