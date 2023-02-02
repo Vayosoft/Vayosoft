@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.MongoDB.Extensions;
 using Vayosoft.Persistence.Specifications;
@@ -101,7 +102,7 @@ namespace Vayosoft.Persistence.MongoDB
         }
 
         public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria,
-            CancellationToken cancellationToken = default) 
+            CancellationToken cancellationToken) 
             where TEntity : class, IEntity
         {
             return IAsyncCursorSourceExtensions.SingleOrDefaultAsync(Set<TEntity>()
@@ -109,7 +110,7 @@ namespace Vayosoft.Persistence.MongoDB
         }
 
         public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -118,12 +119,21 @@ namespace Vayosoft.Persistence.MongoDB
         }
 
         public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 .Apply(spec)
-                .ToAsyncEnumerable(cancellationToken); ;
+                .ToAsyncEnumerable(cancellationToken);
+        }
+
+        public Task<IPagedEnumerable<TEntity>> PageAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec,
+            CancellationToken cancellationToken)
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>()
+                .Apply(spec)
+                .ToPagedEnumerableAsync(page, pageSize, cancellationToken);
         }
     }
 }

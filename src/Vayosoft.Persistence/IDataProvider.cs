@@ -1,4 +1,5 @@
 ﻿using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
@@ -13,6 +14,9 @@ namespace Vayosoft.Persistence
             CancellationToken cancellationToken = default) where TEntity : class, IEntity;
 
         IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec, 
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+
+        Task<IPagedEnumerable<TEntity>> PageAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec,
             CancellationToken cancellationToken = default) where TEntity : class, IEntity;
     }
 }
