@@ -10,6 +10,7 @@ namespace Vayosoft.Persistence
         Task<T> FindAsync<TId>(TId id,
             CancellationToken cancellationToken = default) where TId : notnull;
 
+
         Task AddAsync(T entity,
             CancellationToken cancellationToken = default);
 
@@ -33,6 +34,7 @@ namespace Vayosoft.Persistence
 
         Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> criteria,
             CancellationToken cancellationToken = default);
+
 
         Task<List<T>> ListAsync(ISpecification<T> spec,
             CancellationToken cancellationToken = default);
