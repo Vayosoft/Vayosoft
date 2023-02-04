@@ -11,7 +11,7 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbDao : IDAO, IDisposable
+    public class GenericDao : IDAO, IDisposable
     {
         private bool _disposed;
 
@@ -19,7 +19,7 @@ namespace Vayosoft.Persistence.MongoDB
         protected readonly IServiceScope Scope;
         protected readonly Dictionary<string, object> Repositories = new();
 
-        public MongoDbDao(IMongoDbConnection connection, IServiceProvider serviceProvider)
+        public GenericDao(IMongoDbConnection connection, IServiceProvider serviceProvider)
         {
             Connection = connection;
             Scope = serviceProvider.CreateScope();
@@ -132,7 +132,7 @@ namespace Vayosoft.Persistence.MongoDB
         {
             return Set<TEntity>()
                 .Apply(spec)
-                .ToPagedEnumerableAsync(page, pageSize, cancellationToken);
+                .ToPagedListAsync(page, pageSize, cancellationToken);
         }
     }
 }

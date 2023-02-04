@@ -3,7 +3,7 @@ using Vayosoft.Persistence.Criterias;
 
 namespace Vayosoft.Persistence
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUoW : IDisposable
     {
         TEntity Find<TEntity>(object id)
             where TEntity : class, IEntity;

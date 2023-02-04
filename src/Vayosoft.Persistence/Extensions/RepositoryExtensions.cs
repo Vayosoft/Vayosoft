@@ -25,7 +25,7 @@ namespace Vayosoft.Persistence.Extensions
             return Unit.Value;
         }
 
-        public static async Task<T> GetAsync<T, TId>(this IUnitOfWork unitOfWork, TId id, CancellationToken cancellationToken = default)
+        public static async Task<T> GetAsync<T, TId>(this IUoW unitOfWork, TId id, CancellationToken cancellationToken = default)
             where T : class, IEntity
         {
             var entity = await unitOfWork.FindAsync<T>(id, cancellationToken);

@@ -8,9 +8,9 @@ namespace Vayosoft.AutoMapper
     public class DtoEntityTypeConverter<TKey, TDto, TEntity> : ITypeConverter<TDto, TEntity>
             where TEntity : class, IEntity<TKey>, new()     
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUoW _unitOfWork;
 
-        public DtoEntityTypeConverter(IUnitOfWork unitOfWork)
+        public DtoEntityTypeConverter(IUoW unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

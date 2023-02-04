@@ -7,8 +7,8 @@ namespace Vayosoft.Persistence
 {
     public interface IRepository<T> where T : class, IAggregateRoot
     {
-        Task<T> FindAsync<TId>(TId id,
-            CancellationToken cancellationToken = default) where TId : notnull;
+        Task<T> FindAsync(object id,
+            CancellationToken cancellationToken = default);
 
 
         Task AddAsync(T entity,
@@ -20,11 +20,9 @@ namespace Vayosoft.Persistence
         Task DeleteAsync(T entity,
             CancellationToken cancellationToken = default);
 
-        Task DeleteAsync<TId>(TId id,
-            CancellationToken cancellationToken = default) where TId : notnull;
+        Task DeleteAsync(object id,
+            CancellationToken cancellationToken = default);
 
-        Task<TResult> FindAsync<TId, TResult>(TId id,
-            CancellationToken cancellationToken = default) where TId : notnull;
 
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> criteria,
             CancellationToken cancellationToken = default);

@@ -11,9 +11,9 @@ public record DeleteCommand<TEntity>(TEntity Entity) : ICommand where TEntity : 
 public class DeleteCommandHandler<TKey, TEntity> : ICommandHandler<DeleteCommand<TEntity>>
     where TEntity : class, IEntity
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUoW _unitOfWork;
 
-    public DeleteCommandHandler(IUnitOfWork unitOfWork)
+    public DeleteCommandHandler(IUoW unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

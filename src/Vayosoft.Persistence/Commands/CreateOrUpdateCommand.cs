@@ -12,10 +12,10 @@ public class CreateOrUpdateHandler<TKey, TEntity, TDto> : ICommandHandler<Create
     where TEntity : class, IEntity<TKey>
     where TDto : class, IEntity<TKey>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUoW _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateOrUpdateHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateOrUpdateHandler(IUoW unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

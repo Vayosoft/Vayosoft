@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Commons;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.MongoDB.Extensions;
@@ -9,16 +8,14 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbRepository<T> : IRepository<T> where T : class, IAggregateRoot
+    public class GenericRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {
-        protected readonly IMapper Mapper;
         protected readonly IMongoDbConnection Connection;
 
         protected readonly IMongoCollection<T> Collection;
 
-        public MongoDbRepository(IMongoDbConnection connection, IMapper mapper)
+        public GenericRepository(IMongoDbConnection connection)
         {
-            Mapper = mapper;
             Connection = connection;
             Collection = connection.Collection<T>(CollectionName.For<T>());
         }
@@ -29,10 +26,8 @@ namespace Vayosoft.Persistence.MongoDB
         public IQueryable<T> AsQueryable()
             => Collection.AsQueryable();
 
-        public Task<T> FindAsync<TId>(TId id, CancellationToken cancellationToken = default) =>
+        public Task<T> FindAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
-        public Task<TResult> FindAsync<TId, TResult>(TId id, CancellationToken cancellationToken = default) =>
-            Collection.Find(q => q.Id.Equals(id)).Project(e => Mapper.Map<TResult>(e)).FirstOrDefaultAsync(cancellationToken);
 
 
         public virtual Task AddAsync(T entity, CancellationToken cancellationToken = default) =>
@@ -43,7 +38,7 @@ namespace Vayosoft.Persistence.MongoDB
 
         public virtual Task DeleteAsync(T entity, CancellationToken cancellationToken = default) =>
             Collection.DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id), cancellationToken: cancellationToken);
-        public virtual Task DeleteAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull =>
+        public virtual Task DeleteAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, id), cancellationToken: cancellationToken);
 
 
