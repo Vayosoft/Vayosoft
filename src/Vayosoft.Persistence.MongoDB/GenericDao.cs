@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Entities;
@@ -13,12 +12,10 @@ namespace Vayosoft.Persistence.MongoDB
     public class GenericDao : IDAO
     {
         protected readonly IMongoDbConnection Connection;
-        protected readonly IServiceScope Scope;
     
-        public GenericDao(IMongoDbConnection connection, IServiceProvider serviceProvider)
+        public GenericDao(IMongoDbConnection connection)
         {
             Connection = connection;
-            Scope = serviceProvider.CreateScope();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -33,7 +30,7 @@ namespace Vayosoft.Persistence.MongoDB
             return Connection.Collection<T>(CollectionName.For<T>());
         }
 
-        public Task<T> FindAsync<T, TId>(TId id, CancellationToken cancellationToken = default) 
+        public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) 
             where T : class, IEntity
         {
             return Collection<T>().Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
