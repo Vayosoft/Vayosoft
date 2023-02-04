@@ -7,27 +7,27 @@ namespace Vayosoft.Persistence
 {
     public interface IDAO
     {
-        Task<TEntity> FindAsync<TEntity>(ICriteria<TEntity> criteria,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task<T> FindAsync<T>(ICriteria<T> criteria,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
         
-        Task CreateAsync<TEntity>(TEntity entity,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task CreateAsync<T>(T entity,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
-        Task UpdateAsync<TEntity>(TEntity entity,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task UpdateAsync<T>(T entity,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
-        Task DeleteAsync<TEntity>(TEntity entity,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task DeleteAsync<T>(T entity,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
 
-        Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> specification,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task<List<T>> ListAsync<T>(ISpecification<T> specification,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
-        Task<PagedList<TEntity>> PagedListAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> specification,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        Task<PagedList<T>> PagedListAsync<T>(int page, int pageSize, ISpecification<T> specification,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
 
-        IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> specification,
-            CancellationToken cancellationToken = default) where TEntity : class, IEntity;
+        IAsyncEnumerable<T> StreamAsync<T>(ISpecification<T> specification,
+            CancellationToken cancellationToken = default) where T : class, IEntity;
     }
 }
