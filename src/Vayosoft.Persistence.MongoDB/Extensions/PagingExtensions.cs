@@ -12,13 +12,13 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
         public static IMongoQueryable<T> Paginate<T>(this IMongoQueryable<T> queryable, int page, int pageSize)
             => queryable.Skip((page - 1) * pageSize).Take(pageSize);
 
-        public static Task<PagedList<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
+        public static Task<PagedList<T>> ToPagedListAsync<T>(this IMongoQueryable<T> queryable,
             IPagingModel pagingModel, CancellationToken cancellationToken = default)
         {
-            return queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.PageSize, cancellationToken);
+            return queryable.ToPagedListAsync(pagingModel.Page, pagingModel.PageSize, cancellationToken);
         }
 
-        public static async Task<PagedList<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
+        public static async Task<PagedList<T>> ToPagedListAsync<T>(this IMongoQueryable<T> queryable,
             int page = 1, int pageSize = IPagingModel.DefaultSize, CancellationToken cancellationToken = default)
         {
             var list = queryable.Paginate(page, pageSize).ToListAsync(cancellationToken: cancellationToken);
@@ -33,7 +33,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
         public static IFindFluent<TDocument, TProjection> Paginate<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
             int page, int pageSize) => query.Skip((page - 1) * pageSize).Limit(pageSize);
 
-        public static async Task<IPagedEnumerable<TProjection>> ToPagedEnumerableAsync<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
+        public static async Task<IPagedEnumerable<TProjection>> ToPagedListAsync<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
             int page = 1, int pageSize = IPagingModel.DefaultSize, CancellationToken cancellationToken = default)
         {
             var list = query.Paginate(page, pageSize).ToListAsync(cancellationToken);
