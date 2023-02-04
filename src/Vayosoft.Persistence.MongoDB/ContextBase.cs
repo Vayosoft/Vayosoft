@@ -3,14 +3,14 @@ using Vayosoft.Commons.Aggregates;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public abstract class StoreBase : IDisposable
+    public abstract class ContextBase : IDisposable
     {
         private bool _disposed;
 
         protected readonly IServiceScope Scope;
         protected readonly Dictionary<string, object> Repositories = new();
 
-        protected StoreBase(IServiceProvider serviceProvider)
+        protected ContextBase(IServiceProvider serviceProvider)
         {
             Scope = serviceProvider.CreateScope();
         }
