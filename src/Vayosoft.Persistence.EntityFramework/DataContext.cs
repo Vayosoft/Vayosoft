@@ -9,7 +9,7 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.EntityFramework
 {
-    public class DataContext : DbContext, ILinqProvider, IDataProvider, IUnitOfWork
+    public class DataContext : DbContext, ILinqProvider, IDAO, IUnitOfWork
     {
         public DataContext(DbContextOptions options)
             : base(options) { }
@@ -39,6 +39,27 @@ namespace Vayosoft.Persistence.EntityFramework
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
+        public async Task CreateAsync<TEntity>(TEntity entity,
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            await base.AddAsync(entity, cancellationToken);
+            await CommitAsync(cancellationToken);
+        }
+
+        public async Task UpdateAsync<TEntity>(TEntity entity, 
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            base.Update(entity);
+            await CommitAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync<TEntity>(TEntity entity, 
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
+        {
+            base.Remove(entity);
+            await CommitAsync(cancellationToken);
+        }
+
 
         public new void Add<TEntity>(TEntity entity)
             where TEntity : class, IEntity
@@ -46,8 +67,8 @@ namespace Vayosoft.Persistence.EntityFramework
             base.Add(entity);
         }
 
-        public new async ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity
+        public new async ValueTask AddAsync<TEntity>(TEntity entity,
+            CancellationToken cancellationToken = default) where TEntity : class, IEntity
         {
             await base.AddAsync(entity, cancellationToken);
         }
@@ -94,15 +115,6 @@ namespace Vayosoft.Persistence.EntityFramework
             return false;
         }
 
-
-        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity
-        {
-            return Set<TEntity>()
-                //.AsNoTracking()
-                .ByCriteria(criteria)
-                .SingleOrDefaultAsync(cancellationToken);
-        }
 
         public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
             where TEntity : class, IEntity
