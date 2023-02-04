@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
@@ -11,32 +10,15 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class GenericDao : IDAO, IDisposable
+    public class GenericDao : IDAO
     {
-        private bool _disposed;
-
         protected readonly IMongoDbConnection Connection;
         protected readonly IServiceScope Scope;
-        protected readonly Dictionary<string, object> Repositories = new();
-
+    
         public GenericDao(IMongoDbConnection connection, IServiceProvider serviceProvider)
         {
             Connection = connection;
             Scope = serviceProvider.CreateScope();
-        }
-
-        protected IRepository<T> Repository<T>() where T : class, IAggregateRoot
-        {
-            var key = typeof(T).Name;
-            if (Repositories.TryGetValue(key, out var repo))
-            {
-                return (IRepository<T>)repo;
-            }
-
-            var r = Scope.ServiceProvider.GetRequiredService<IRepository<T>>();
-            Repositories.Add(key, r);
-
-            return r;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -91,23 +73,6 @@ namespace Vayosoft.Persistence.MongoDB
                 cancellationToken: cancellationToken);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            if (disposing)
-            {
-                Scope.Dispose();
-            }
-            _disposed = true;
-        }
-        
         public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec,
             CancellationToken cancellationToken)
             where TEntity : class, IEntity
