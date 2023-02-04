@@ -9,7 +9,7 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.EntityFramework
 {
-    public class DataContext : DbContext, ILinqProvider, IDAO, IUnitOfWork
+    public class DataContext : DbContext, ILinqProvider, IDAO, IUoW
     {
         public DataContext(DbContextOptions options)
             : base(options) { }
