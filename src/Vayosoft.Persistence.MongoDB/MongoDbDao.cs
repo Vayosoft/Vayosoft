@@ -126,7 +126,7 @@ namespace Vayosoft.Persistence.MongoDB
                 .ToAsyncEnumerable(cancellationToken);
         }
 
-        public Task<IPagedEnumerable<TEntity>> PageAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec,
+        public Task<PagedList<TEntity>> PagedListAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec,
             CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {

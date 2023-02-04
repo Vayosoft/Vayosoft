@@ -543,7 +543,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
                 .Facets.First(x => x.Name == "data")
                 .Output<T>();
 
-            return new PagedCollection<T>(data, count);
+            return new PagedList<T>(data, count);
         }
 
         public static async Task<bool> HasIndex<T>(this IMongoCollection<T> mongoCollection, string indexName, CancellationToken cancellationToken = default)

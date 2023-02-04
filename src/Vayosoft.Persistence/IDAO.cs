@@ -24,10 +24,10 @@ namespace Vayosoft.Persistence
         Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> specification,
             CancellationToken cancellationToken = default) where TEntity : class, IEntity;
 
-        IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> specification,
+        Task<PagedList<TEntity>> PagedListAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> specification,
             CancellationToken cancellationToken = default) where TEntity : class, IEntity;
 
-        Task<IPagedEnumerable<TEntity>> PageAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> specification,
+        IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> specification,
             CancellationToken cancellationToken = default) where TEntity : class, IEntity;
     }
 }

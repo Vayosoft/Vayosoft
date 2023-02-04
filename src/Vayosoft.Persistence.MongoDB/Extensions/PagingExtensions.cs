@@ -1,6 +1,5 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Commons;
 using Vayosoft.Commons.Models.Pagination;
 
 namespace Vayosoft.Persistence.MongoDB.Extensions
@@ -13,19 +12,19 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
         public static IMongoQueryable<T> Paginate<T>(this IMongoQueryable<T> queryable, int page, int pageSize)
             => queryable.Skip((page - 1) * pageSize).Take(pageSize);
 
-        public static Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
+        public static Task<PagedList<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
             IPagingModel pagingModel, CancellationToken cancellationToken = default)
         {
             return queryable.ToPagedEnumerableAsync(pagingModel.Page, pagingModel.PageSize, cancellationToken);
         }
 
-        public static async Task<IPagedEnumerable<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
+        public static async Task<PagedList<T>> ToPagedEnumerableAsync<T>(this IMongoQueryable<T> queryable,
             int page = 1, int pageSize = IPagingModel.DefaultSize, CancellationToken cancellationToken = default)
         {
             var list = queryable.Paginate(page, pageSize).ToListAsync(cancellationToken: cancellationToken);
             var count = queryable.CountAsync(cancellationToken: cancellationToken);
             await Task.WhenAll(list, count);
-            return new PagedCollection<T>(await list, await count);
+            return new PagedList<T>(await list, await count);
         }
 
         public static IFindFluent<TDocument, TProjection> Paginate<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
@@ -40,7 +39,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             var list = query.Paginate(page, pageSize).ToListAsync(cancellationToken);
             var count = query.CountDocumentsAsync(cancellationToken: cancellationToken);
             await Task.WhenAll(list, count);
-            return new PagedCollection<TProjection>(await list, await count);
+            return new PagedList<TProjection>(await list, await count);
         }
     }
 }

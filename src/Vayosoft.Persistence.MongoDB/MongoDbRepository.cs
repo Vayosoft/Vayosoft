@@ -66,11 +66,11 @@ namespace Vayosoft.Persistence.MongoDB
             return Collection.AsQueryable().Apply(spec).ToAsyncEnumerable(cancellationToken);
         }
 
-        public Task<IPagedEnumerable<T>> PageAsync(IPagingSpecification<T> spec, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(spec).ToPagedEnumerableAsync(spec.Page, spec.PageSize, cancellationToken: cancellationToken);
+        public Task<PagedList<T>> PagedListAsync(int page, int pageSize, ISpecification<T> spec, CancellationToken cancellationToken = default) {
+            return Collection.AsQueryable().Apply(spec).ToPagedEnumerableAsync(page, pageSize, cancellationToken: cancellationToken);
         }
 
-        public Task<IPagedEnumerable<T>> PageAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model, CancellationToken cancellationToken = default) =>
+        public Task<IPagedEnumerable<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model, CancellationToken cancellationToken = default) =>
             Collection.AggregateByPage(model, Builders<T>.Filter.Where(criteria), cancellationToken);
     }
 }

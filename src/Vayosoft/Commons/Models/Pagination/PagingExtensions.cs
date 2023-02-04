@@ -30,7 +30,7 @@
             => From(queryable.Paginate(page, pageSize).ToArray(), queryable.Count());
 
         public static IPagedEnumerable<T> From<T>(IEnumerable<T> inner, int totalCount)
-            =>  new PagedCollection<T>(inner, totalCount);
+            =>  new PagedList<T>(inner, totalCount);
 
         public static IPagedEnumerable<T> Empty<T>()
              =>  From(Enumerable.Empty<T>(), 0);
