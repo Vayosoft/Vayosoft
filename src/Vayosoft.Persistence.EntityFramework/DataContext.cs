@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Linq;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;

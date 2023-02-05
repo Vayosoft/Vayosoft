@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons.Models;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 
 namespace Vayosoft.Persistence.Specifications
 {
-    public class Specification<T> : ISpecification<T> where T : class
+    public class Specification<T> : PagingModelBase, ISpecification<T> where T : class
     {
         public ICriteria<T> Criteria { get; private set; }
         public Sorting<T> Sorting { get; private set; }

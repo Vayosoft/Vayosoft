@@ -37,7 +37,7 @@ namespace Vayosoft.Persistence
         Task<List<T>> ListAsync(ISpecification<T> spec,
             CancellationToken cancellationToken = default);
 
-        Task<PagedList<T>> PagedListAsync(int page, int pageSize, ISpecification<T> spec,
+        Task<PagedList<T>> PagedListAsync(ISpecification<T> spec,
             CancellationToken cancellationToken = default);
 
         Task<PagedList<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model,
