@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Models.Pagination;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.MongoDB.Extensions;
 using Vayosoft.Persistence.Specifications;
 
@@ -29,6 +29,10 @@ namespace Vayosoft.Persistence.MongoDB
         public virtual Task<T> FindAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
 
+        public Task<T> FindAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+        {
+            return Collection.Find(criteria.ToExpression()).SingleOrDefaultAsync(cancellationToken);
+        }
 
         public virtual Task AddAsync(T entity, CancellationToken cancellationToken = default) =>
             Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
@@ -41,31 +45,16 @@ namespace Vayosoft.Persistence.MongoDB
         public virtual Task DeleteAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, id), cancellationToken: cancellationToken);
 
-
-        public virtual Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> criteria, CancellationToken cancellationToken = default) =>
-            Collection.Find(criteria).FirstOrDefaultAsync(cancellationToken);
-
-        public virtual Task<T> FirstOrDefaultAsync(ILinqSpecification<T> spec, CancellationToken cancellationToken = default) =>
-            Collection.AsQueryable().Apply(spec).FirstOrDefaultAsync(cancellationToken);
-
-
-        public virtual Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> criteria, CancellationToken cancellationToken = default) =>
-            Collection.Find(criteria).SingleOrDefaultAsync(cancellationToken);
-
-
-        public virtual Task<List<T>> ListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(spec).ToListAsync(cancellationToken);
+        public virtual Task<List<T>> ListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
+            return Collection.AsQueryable().Apply(specification).ToListAsync(cancellationToken);
         }
         
-        public virtual IAsyncEnumerable<T> StreamAsync(ISpecification<T> spec, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(spec).ToAsyncEnumerable(cancellationToken);
+        public virtual IAsyncEnumerable<T> StreamAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
+            return Collection.AsQueryable().Apply(specification).ToAsyncEnumerable(cancellationToken);
         }
 
-        public virtual Task<PagedList<T>> PagedListAsync(ISpecification<T> spec, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(spec).ToPagedListAsync(spec.Page, spec.PageSize, cancellationToken: cancellationToken);
+        public virtual Task<PagedList<T>> PagedListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
+            return Collection.AsQueryable().Apply(specification).ToPagedListAsync(specification.Page, specification.PageSize, cancellationToken: cancellationToken);
         }
-
-        public virtual Task<PagedList<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model, CancellationToken cancellationToken = default) =>
-            Collection.AggregateByPage(model, Builders<T>.Filter.Where(criteria), cancellationToken);
     }
 }

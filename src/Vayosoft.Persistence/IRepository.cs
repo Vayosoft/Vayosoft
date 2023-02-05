@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Vayosoft.Commons.Aggregates;
+﻿using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Models.Pagination;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence
@@ -9,7 +9,8 @@ namespace Vayosoft.Persistence
     {
         Task<T> FindAsync(object id,
             CancellationToken cancellationToken = default);
-
+        Task<T> FindAsync(ICriteria<T> criteria,
+            CancellationToken cancellationToken = default);
 
         Task AddAsync(T entity,
             CancellationToken cancellationToken = default);
@@ -24,26 +25,13 @@ namespace Vayosoft.Persistence
             CancellationToken cancellationToken = default);
 
 
-        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> criteria,
+        Task<List<T>> ListAsync(ISpecification<T> specification,
             CancellationToken cancellationToken = default);
 
-        Task<T> FirstOrDefaultAsync(ILinqSpecification<T> spec,
+        Task<PagedList<T>> PagedListAsync(ISpecification<T> specification,
             CancellationToken cancellationToken = default);
 
-        Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> criteria,
-            CancellationToken cancellationToken = default);
-
-
-        Task<List<T>> ListAsync(ISpecification<T> spec,
-            CancellationToken cancellationToken = default);
-
-        Task<PagedList<T>> PagedListAsync(ISpecification<T> spec,
-            CancellationToken cancellationToken = default);
-
-        Task<PagedList<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model,
-            CancellationToken cancellationToken = default);
-
-        IAsyncEnumerable<T> StreamAsync(ISpecification<T> spec,
+        IAsyncEnumerable<T> StreamAsync(ISpecification<T> specification,
             CancellationToken cancellationToken = default);
     }
 }
