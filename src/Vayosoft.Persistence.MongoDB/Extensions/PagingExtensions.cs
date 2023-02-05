@@ -33,7 +33,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
         public static IFindFluent<TDocument, TProjection> Paginate<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
             int page, int pageSize) => query.Skip((page - 1) * pageSize).Limit(pageSize);
 
-        public static async Task<IPagedEnumerable<TProjection>> ToPagedListAsync<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
+        public static async Task<PagedList<TProjection>> ToPagedListAsync<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
             int page = 1, int pageSize = IPagingModel.DefaultSize, CancellationToken cancellationToken = default)
         {
             var list = query.Paginate(page, pageSize).ToListAsync(cancellationToken);

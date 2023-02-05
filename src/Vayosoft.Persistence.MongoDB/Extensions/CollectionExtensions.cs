@@ -491,7 +491,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
 
         #endregion
 
-        public static Task<IPagedEnumerable<T>> AggregateByPage<T>(
+        public static Task<PagedList<T>> AggregateByPage<T>(
             this IMongoCollection<T> collection,
             IPagingModel<T, object> model,
             FilterDefinition<T> filterDefinition,
@@ -505,7 +505,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             return collection.AggregateByPage(filterDefinition, sortDefinition, model.Page, model.PageSize, cancellationToken);
         }
 
-        public static async Task<IPagedEnumerable<T>> AggregateByPage<T>(
+        public static async Task<PagedList<T>> AggregateByPage<T>(
             this IMongoCollection<T> collection,
             FilterDefinition<T> filterDefinition,
             SortDefinition<T> sortDefinition,

@@ -65,7 +65,7 @@ namespace Vayosoft.Persistence.MongoDB
             return Collection.AsQueryable().Apply(spec).ToPagedListAsync(page, pageSize, cancellationToken: cancellationToken);
         }
 
-        public virtual Task<IPagedEnumerable<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model, CancellationToken cancellationToken = default) =>
+        public virtual Task<PagedList<T>> PagedListAsync(Expression<Func<T, bool>> criteria, IPagingModel<T, object> model, CancellationToken cancellationToken = default) =>
             Collection.AggregateByPage(model, Builders<T>.Filter.Where(criteria), cancellationToken);
     }
 }
