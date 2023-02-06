@@ -46,4 +46,12 @@ namespace Vayosoft.Persistence.Specifications
             GroupBy = groupByExpression;
         }
     }
+
+    public class Specification<TResult, TSource> : Specification<TSource>, ISpecification<TResult, TSource>
+        where TResult : class
+        where TSource : class
+    {
+        public Specification(ICriteria<TSource> criteria = null, Sorting<TSource> sorting = null)
+            : base(criteria, sorting) { }
+    }
 }

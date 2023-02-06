@@ -8,7 +8,7 @@ namespace Vayosoft.Commons.Models
         Desc = 2
     }
 
-    public class Sorting<TEntity> : Sorting<TEntity, object> where TEntity : class
+    public sealed class Sorting<TEntity> : Sorting<TEntity, object> where TEntity : class
     {
         public Sorting(Expression<Func<TEntity, object>> expression, SortOrder sortOrder = SortOrder.Asc) 
             : base(expression, sortOrder) { }

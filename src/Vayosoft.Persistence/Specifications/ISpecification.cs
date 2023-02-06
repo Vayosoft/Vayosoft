@@ -11,4 +11,9 @@ namespace Vayosoft.Persistence.Specifications
         Sorting<T> Sorting { get; }
         Expression<Func<T, object>> GroupBy { get; }
     }
+
+    public interface ISpecification<TResult, TSource> : ISpecification<TSource>
+        where TResult : class
+        where TSource : class
+    { }
 }
