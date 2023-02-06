@@ -28,7 +28,7 @@ public class CreateOrUpdateHandler<TKey, TEntity, TDto> : ICommandHandler<Create
         var id = command.Entity.Id;
         if (id != null && !default(TKey)!.Equals(id))
         {
-            var entity = _mapper.Map(command.Entity, _unitOfWork.Find<TEntity>(id));
+            var entity = _mapper.Map(command.Entity, await _unitOfWork.FindAsync<TEntity>(id, cancellationToken));
             _unitOfWork.Update(entity);
         }
         else
@@ -37,7 +37,8 @@ public class CreateOrUpdateHandler<TKey, TEntity, TDto> : ICommandHandler<Create
             _unitOfWork.Add(entity);
         }
 
-        await _unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync(cancellationToken);
+
         return Unit.Value;
     }
 }

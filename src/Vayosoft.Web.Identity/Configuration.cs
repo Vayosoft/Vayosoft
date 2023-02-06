@@ -59,7 +59,7 @@ namespace Vayosoft.Web.Identity
                 .AddQueryHandler<SingleQuery<UserEntityDto>, UserEntityDto, SingleQueryHandler<long, UserEntity, UserEntityDto>>()
 
                 .AddCommandHandler<SaveUser, HandleSaveUser>()
-                .AddCommandHandler<DeleteCommand<UserEntity>, DeleteCommandHandler<long, UserEntity>>();
+                .AddCommandHandler<DeleteCommand<UserEntity>, DeleteCommandHandler<UserEntity>>();
 
         private static IServiceCollection AddSecurityService(this IServiceCollection services) =>
             services
@@ -70,7 +70,7 @@ namespace Vayosoft.Web.Identity
 
         private static IServiceCollection AddProviderService(this IServiceCollection services) =>
             services
-                .AddCommandHandler<DeleteCommand<ProviderEntity>, DeleteCommandHandler<long, ProviderEntity>>()
+                .AddCommandHandler<DeleteCommand<ProviderEntity>, DeleteCommandHandler<ProviderEntity>>()
                 .AddCommandHandler<CreateOrUpdateCommand<ProviderEntity>, CreateOrUpdateHandler<long, ProviderEntity, ProviderEntity>>();
 
         //https://blog.devgenius.io/jwt-authentication-in-asp-net-core-e67dca9ae3e8

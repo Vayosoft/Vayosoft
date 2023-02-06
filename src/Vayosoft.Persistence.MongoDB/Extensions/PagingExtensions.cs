@@ -24,7 +24,8 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             var list = queryable.Paginate(page, pageSize).ToListAsync(cancellationToken: cancellationToken);
             var count = queryable.CountAsync(cancellationToken: cancellationToken);
             await Task.WhenAll(list, count);
-            return new PagedList<T>(await list, await count);
+
+            return From(await list, await count);
         }
 
         public static IFindFluent<TDocument, TProjection> Paginate<TDocument, TProjection>(this IFindFluent<TDocument, TProjection> query,
@@ -39,7 +40,10 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
             var list = query.Paginate(page, pageSize).ToListAsync(cancellationToken);
             var count = query.CountDocumentsAsync(cancellationToken: cancellationToken);
             await Task.WhenAll(list, count);
-            return new PagedList<TProjection>(await list, await count);
+
+            return From(await list, await count);
         }
+        public static PagedList<T> From<T>(IEnumerable<T> inner, long totalCount) => 
+            new(inner, totalCount);
     }
 }
