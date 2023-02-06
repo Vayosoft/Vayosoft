@@ -76,7 +76,7 @@ namespace Vayosoft.Web.Identity.Controllers
                 return BadRequest(ModelState);
             }
 
-            var authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(model.Token), async options =>
+            var authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(refreshToken), async options =>
             {
                 options.AbsoluteExpirationRelativeToNow = TimeSpans.Minute;
                 var response = await _authService.RefreshTokenAsync(refreshToken, IpAddress(), cancellationToken);
