@@ -1,7 +1,5 @@
 ﻿using Vayosoft.Commons.Aggregates;
-using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
-using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence
 {
@@ -22,16 +20,6 @@ namespace Vayosoft.Persistence
             CancellationToken cancellationToken = default);
 
         Task DeleteAsync(object id,
-            CancellationToken cancellationToken = default);
-
-
-        Task<List<T>> ListAsync(ISpecification<T> specification,
-            CancellationToken cancellationToken = default);
-
-        Task<PagedList<T>> PagedListAsync(ISpecification<T> specification,
-            CancellationToken cancellationToken = default);
-
-        IAsyncEnumerable<T> StreamAsync(ISpecification<T> specification,
             CancellationToken cancellationToken = default);
     }
 }

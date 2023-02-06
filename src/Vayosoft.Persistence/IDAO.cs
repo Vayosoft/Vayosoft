@@ -24,7 +24,7 @@ namespace Vayosoft.Persistence
         Task<List<T>> ListAsync<T>(ISpecification<T> specification,
             CancellationToken cancellationToken = default) where T : class, IEntity;
 
-        Task<PagedList<T>> PagedListAsync<T>(int page, int pageSize, ISpecification<T> specification,
+        Task<PagedList<T>> PagedListAsync<T>(ISpecification<T> specification,
             CancellationToken cancellationToken = default) where T : class, IEntity;
 
         IAsyncEnumerable<T> StreamAsync<T>(ISpecification<T> specification,

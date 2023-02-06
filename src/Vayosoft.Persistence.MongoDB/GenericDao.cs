@@ -88,13 +88,13 @@ namespace Vayosoft.Persistence.MongoDB
                 .ToAsyncEnumerable(cancellationToken);
         }
 
-        public Task<PagedList<TEntity>> PagedListAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec,
+        public Task<PagedList<TEntity>> PagedListAsync<TEntity>(ISpecification<TEntity> spec,
             CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 .Apply(spec)
-                .ToPagedListAsync(page, pageSize, cancellationToken);
+                .ToPagedListAsync(spec.Page, spec.PageSize, cancellationToken);
         }
     }
 }

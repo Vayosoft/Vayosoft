@@ -1,10 +1,7 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Aggregates;
-using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
-using Vayosoft.Persistence.MongoDB.Extensions;
-using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
@@ -44,17 +41,5 @@ namespace Vayosoft.Persistence.MongoDB
             Collection.DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, entity.Id), cancellationToken: cancellationToken);
         public virtual Task DeleteAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.DeleteOneAsync(Builders<T>.Filter.Eq(e => e.Id, id), cancellationToken: cancellationToken);
-
-        public virtual Task<List<T>> ListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(specification).ToListAsync(cancellationToken);
-        }
-        
-        public virtual IAsyncEnumerable<T> StreamAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(specification).ToAsyncEnumerable(cancellationToken);
-        }
-
-        public virtual Task<PagedList<T>> PagedListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default) {
-            return Collection.AsQueryable().Apply(specification).ToPagedListAsync(specification.Page, specification.PageSize, cancellationToken: cancellationToken);
-        }
     }
 }

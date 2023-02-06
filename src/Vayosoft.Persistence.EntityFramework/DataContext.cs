@@ -133,14 +133,14 @@ namespace Vayosoft.Persistence.EntityFramework
                 .AsAsyncEnumerable();
         }
 
-        public async Task<PagedList<TEntity>> PagedListAsync<TEntity>(int page, int pageSize, ISpecification<TEntity> spec, 
+        public async Task<PagedList<TEntity>> PagedListAsync<TEntity>(ISpecification<TEntity> spec, 
             CancellationToken cancellationToken = default) where TEntity : class, IEntity
         {
             var query = Set<TEntity>()
                 //.AsNoTracking()
                 .BySpecification(spec);
 
-            var paginate = query.Paginate(page, pageSize);
+            var paginate = query.Paginate(spec.Page, spec.PageSize);
             return new PagedList<TEntity>(await paginate.ToArrayAsync(cancellationToken), await query.CountAsync(cancellationToken));
         }
 
