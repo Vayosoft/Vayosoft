@@ -54,9 +54,9 @@ namespace Vayosoft.Web.Identity
 
         private static IServiceCollection AddUserService(this IServiceCollection services) =>
             services
-                .AddQueryHandler<SpecificationQuery<GetUsersSpec, IPagedEnumerable<UserEntityDto>>, IPagedEnumerable<UserEntityDto>,
-                    PagingQueryHandler<string, GetUsersSpec, UserEntity, UserEntityDto>>()
-                .AddQueryHandler<SingleQuery<UserEntityDto>, UserEntityDto, SingleQueryHandler<long, UserEntity, UserEntityDto>>()
+                //.AddQueryHandler<SpecificationQuery<GetUsersSpec, IPagedEnumerable<UserEntityDto>>, IPagedEnumerable<UserEntityDto>,
+                //    PagingQueryHandler<string, GetUsersSpec, UserEntity, UserEntityDto>>()
+                //.AddQueryHandler<SingleQuery<UserEntityDto>, UserEntityDto, SingleQueryHandler<long, UserEntity, UserEntityDto>>()
 
                 .AddCommandHandler<SaveUser, HandleSaveUser>()
                 .AddCommandHandler<DeleteCommand<UserEntity>, DeleteCommandHandler<UserEntity>>();
