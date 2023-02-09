@@ -26,7 +26,7 @@ namespace Vayosoft.Web.Controllers
 
         protected IActionResult List<TResult>(IEnumerable<TResult> collection)
         {
-            return Ok(new ListResponse<TResult>(collection));
+            return Ok(new ListResponse<TResult>(collection ?? Array.Empty<TResult>()));
         }
 
         protected IActionResult Problem(Exception exception)

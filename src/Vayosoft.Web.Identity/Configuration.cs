@@ -63,7 +63,7 @@ namespace Vayosoft.Web.Identity
 
         private static IServiceCollection AddSecurityService(this IServiceCollection services) =>
             services
-                .AddQueryHandler<GetPermissions, RolePermissions, HandleGetPermissions>()
+                //.AddQueryHandler<GetPermissions, RolePermissions, HandleGetPermissions>()
 
                 .AddCommandHandler<SavePermissions, HandleSavePermissions>()
                 .AddCommandHandler<SaveRole, HandleSaveRole>();
