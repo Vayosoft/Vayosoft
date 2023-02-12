@@ -29,6 +29,5 @@ namespace Vayosoft.Commons.Aggregates
         {
             uncommittedEvents.Enqueue(@event);
         }
-
     }
 }

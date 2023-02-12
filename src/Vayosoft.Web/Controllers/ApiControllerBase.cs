@@ -2,6 +2,7 @@
 using FluentValidation;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Web.Exceptions;
 using Vayosoft.Web.Model;
@@ -44,6 +45,19 @@ namespace Vayosoft.Web.Controllers
                         statusCode: (int)(codeInfo?.Code ?? HttpStatusCode.InternalServerError));
                 }
             }
+        }
+    }
+
+    public class ExecutionResult
+    {
+        public static OkObjectResult Success([ActionResultObjectValue] object value = null)
+        {
+            return new OkObjectResult(value);
+        }
+
+        public static OkObjectResult Error()
+        {
+            return new OkObjectResult(null);
         }
     }
 }
