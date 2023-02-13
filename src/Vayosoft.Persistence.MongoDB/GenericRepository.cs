@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System.Collections.ObjectModel;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Vayosoft.Commons.Aggregates;
 using Vayosoft.Persistence.Criterias;
@@ -27,8 +28,8 @@ namespace Vayosoft.Persistence.MongoDB
         public virtual Task<T> FindAsync(object id, CancellationToken cancellationToken = default) =>
             Collection.Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
 
-        public Task<T> FindAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default) =>
-            Collection.Find(criteria.ToExpression()).SingleOrDefaultAsync(cancellationToken);
+        public Task<List<T>> FindAsync(ICriteria<T> criteria, CancellationToken cancellationToken = default) =>
+            Collection.Find(criteria.ToExpression()).ToListAsync(cancellationToken);
 
 
         public virtual Task AddAsync(T entity, CancellationToken cancellationToken = default) =>

@@ -7,7 +7,7 @@ namespace Vayosoft.Persistence
     {
         Task<T> FindAsync(object id,
             CancellationToken cancellationToken = default);
-        Task<T> FindAsync(ICriteria<T> criteria,
+        Task<List<T>> FindAsync(ICriteria<T> criteria,
             CancellationToken cancellationToken = default);
 
         Task AddAsync(T entity,

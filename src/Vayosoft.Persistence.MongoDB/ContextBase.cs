@@ -10,6 +10,9 @@ namespace Vayosoft.Persistence.MongoDB
         protected readonly IServiceScope Scope;
         protected readonly Dictionary<string, object> Repositories = new();
 
+        // var root = IdentityMap.OfType<T>().FirstOrDefault(a => a.Id.Equals(id));
+        protected readonly ISet<IAggregateRoot> IdentityMap = new HashSet<IAggregateRoot>(AggregateRootEqualityComparer.Instance);
+
         protected ContextBase(IServiceProvider serviceProvider)
         {
             Scope = serviceProvider.CreateScope();
@@ -44,6 +47,29 @@ namespace Vayosoft.Persistence.MongoDB
                 Scope.Dispose();
             }
             _disposed = true;
+        }
+    }
+
+    public class AggregateRootEqualityComparer : IEqualityComparer<IAggregateRoot>
+    {
+        private static readonly Lazy<AggregateRootEqualityComparer> Lazy =
+            new(() => new AggregateRootEqualityComparer());
+
+        public static AggregateRootEqualityComparer Instance => Lazy.Value;
+
+        public bool Equals(IAggregateRoot x, IAggregateRoot y)
+        {
+            if (x == null && y == null)
+                return true;
+            if (x == null || y == null)
+                return false;
+
+            return x.Id.Equals(y.Id);
+        }
+
+        public int GetHashCode(IAggregateRoot obj)
+        {
+            return obj.Id.GetHashCode();
         }
     }
 }
