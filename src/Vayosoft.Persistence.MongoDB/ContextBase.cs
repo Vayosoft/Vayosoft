@@ -8,28 +8,58 @@ namespace Vayosoft.Persistence.MongoDB
         private bool _disposed;
 
         protected readonly IServiceScope Scope;
-        protected readonly Dictionary<string, object> Repositories = new();
-
+        private readonly Dictionary<string, object> _repositories = new();
+        private readonly ISet<IAggregateRoot> _identityMap = 
+            new HashSet<IAggregateRoot>(AggregateRootEqualityComparer.Instance);   
         // var root = IdentityMap.OfType<T>().FirstOrDefault(a => a.Id.Equals(id));
-        protected readonly ISet<IAggregateRoot> IdentityMap = new HashSet<IAggregateRoot>(AggregateRootEqualityComparer.Instance);
 
         protected ContextBase(IServiceProvider serviceProvider)
         {
             Scope = serviceProvider.CreateScope();
         }
 
+        protected T Repository<T, TEntity>() where T : IRepository<TEntity> where TEntity : class, IAggregateRoot
+        {
+            var key = typeof(T).Name;
+            if (_repositories.TryGetValue(key, out var repo))
+            {
+                return (T)repo;
+            }
+
+            var r = Scope.ServiceProvider.GetRequiredService<T>();
+            _repositories.Add(key, r);
+
+            return r;
+        }
+
         protected IRepository<T> Repository<T>() where T : class, IAggregateRoot
         {
             var key = typeof(T).Name;
-            if (Repositories.TryGetValue(key, out var repo))
+            if (_repositories.TryGetValue(key, out var repo))
             {
                 return (IRepository<T>)repo;
             }
 
             var r = Scope.ServiceProvider.GetRequiredService<IRepository<T>>();
-            Repositories.Add(key, r);
+            _repositories.Add(key, r);
 
             return r;
+        }
+
+        protected T Find<T>(object id) where T : IAggregateRoot
+            => _identityMap.OfType<T>().FirstOrDefault(ab => ab.Id.Equals(id));
+
+        protected void Register(IAggregateRoot entity)
+        {
+            _identityMap.Add(entity);
+        }
+
+        protected void Register(IEnumerable<IAggregateRoot> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Register(entity);
+            }
         }
 
         public void Dispose()
@@ -50,7 +80,7 @@ namespace Vayosoft.Persistence.MongoDB
         }
     }
 
-    public class AggregateRootEqualityComparer : IEqualityComparer<IAggregateRoot>
+    internal sealed class AggregateRootEqualityComparer : IEqualityComparer<IAggregateRoot>
     {
         private static readonly Lazy<AggregateRootEqualityComparer> Lazy =
             new(() => new AggregateRootEqualityComparer());
