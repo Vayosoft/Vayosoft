@@ -3,6 +3,7 @@
     public class MongoDbUoW : IDocumentUoW
     {
         private readonly IMongoDbContext _context;
+        private bool _disposed;
 
         public MongoDbUoW(IMongoDbContext context)
         {
@@ -16,7 +17,19 @@
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
         }
     }
 }
