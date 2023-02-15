@@ -1,6 +1,6 @@
 ﻿namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbUoW
+    public class MongoDbUoW : IDocumentUoW
     {
         private readonly IMongoDbContext _context;
 
