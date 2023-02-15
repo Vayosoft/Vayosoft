@@ -9,11 +9,11 @@ using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class GenericDao : IDAO
+    public class MongoDbDao : IDAO
     {
         protected readonly IMongoDbConnection Connection;
     
-        public GenericDao(IMongoDbConnection connection)
+        public MongoDbDao(IMongoDbConnection connection)
         {
             Connection = connection;
         }

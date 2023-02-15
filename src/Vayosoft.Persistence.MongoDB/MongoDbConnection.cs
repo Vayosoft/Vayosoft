@@ -13,12 +13,11 @@ namespace Vayosoft.Persistence.MongoDB
         private const string DefaultDb = "default";
         private readonly MongoClient _client;
         public IMongoDatabase Database { get; }
-        public IClientSessionHandle Session { get; private set; }
 
         [ActivatorUtilitiesConstructor]
         public MongoDbConnection(IConfiguration config, ILoggerFactory loggerFactory) 
-            : this(config.GetConnectionSetting(), loggerFactory) { }
-        public MongoDbConnection(ConnectionSetting config, ILoggerFactory loggerFactory) 
+            : this(config.GetMongoDbSettings(), loggerFactory) { }
+        public MongoDbConnection(MongoDbSettings config, ILoggerFactory loggerFactory) 
             : this(config?.ConnectionString, config?.ReplicaSet?.BootstrapServers, loggerFactory) { }
         public MongoDbConnection(string connectionString, string[] bootstrapServers, ILoggerFactory loggerFactory)
         {
@@ -65,11 +64,9 @@ namespace Vayosoft.Persistence.MongoDB
             Database = _client.GetDatabase(databaseName ?? DefaultDb);
         }
 
-        public async Task<IClientSessionHandle> StartSession(CancellationToken cancellationToken = default)
+        public Task<IClientSessionHandle> StartSessionAsync(CancellationToken cancellationToken = default)
         {
-            var session = await _client.StartSessionAsync(cancellationToken: cancellationToken);
-            Session = session;
-            return session;
+            return _client.StartSessionAsync(cancellationToken: cancellationToken);
         }
 
         public IMongoDatabase GetDatabase(string db)
