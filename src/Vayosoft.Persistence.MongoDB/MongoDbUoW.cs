@@ -1,13 +1,20 @@
-﻿using Vayosoft.Commons.Aggregates;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Vayosoft.Commons.Aggregates;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public sealed class MongoDbUoW : ContextBase, IDocumentUoW
+    public class MongoDbUoW : IUnitOfWork
     {
+        private bool _disposed;
+        private readonly Dictionary<string, object> _repositories = new();
         private readonly IMongoDbContext _context;
 
-        public MongoDbUoW(IServiceProvider serviceProvider, IMongoDbContext context) : base(serviceProvider)
+        protected readonly IServiceScope Scope;
+
+        public MongoDbUoW(IServiceProvider serviceProvider, IMongoDbContext context)
         {
+            Scope = serviceProvider.CreateScope();
+
             _context = context;
         }
         public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
@@ -40,11 +47,51 @@ namespace Vayosoft.Persistence.MongoDB
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
-        
-        protected override void Dispose(bool disposing)
+
+        public void Dispose()
         {
-            base.Dispose(disposing);
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                Scope.Dispose();
+                _context.Dispose();
+            }
+            _disposed = true;
+        }
+
+        protected T Repository<T, TEntity>() where T : IRepository<TEntity> where TEntity : class, IAggregateRoot
+        {
+            var key = typeof(T).Name;
+            if (_repositories.TryGetValue(key, out var repo))
+            {
+                return (T)repo;
+            }
+
+            var r = Scope.ServiceProvider.GetRequiredService<T>();
+            _repositories.Add(key, r);
+
+            return r;
+        }
+
+        protected IRepository<T> Repository<T>() where T : class, IAggregateRoot
+        {
+            var key = typeof(T).Name;
+            if (_repositories.TryGetValue(key, out var repo))
+            {
+                return (IRepository<T>)repo;
+            }
+
+            var r = Scope.ServiceProvider.GetRequiredService<IRepository<T>>();
+            _repositories.Add(key, r);
+
+            return r;
         }
     }
 }

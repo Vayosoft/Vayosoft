@@ -1,8 +1,8 @@
 ﻿using Vayosoft.Commons.Aggregates;
 
-namespace Vayosoft.Persistence.MongoDB
+namespace Vayosoft.Persistence
 {
-    public interface IDocumentUoW : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot;
