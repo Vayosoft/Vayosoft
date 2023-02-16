@@ -2,49 +2,43 @@
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbContext : IMongoDbContext
+    public abstract class MongoDbContext : IDisposable
     {
-        private readonly IMongoDbConnection _connection;
+        private bool _disposed;
+        protected readonly IMongoDbConnection Connection;
 
-        private readonly List<Func<CancellationToken, Task>> _commands = new();
+        protected IClientSessionHandle Session { get; private set; }
 
-        public IClientSessionHandle Session { get; private set; }
-
-        public MongoDbContext(IMongoDbConnection connection)
+        protected MongoDbContext(IMongoDbConnection connection)
         {
-            _connection = connection;
+            Connection = connection;
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task<IClientSessionHandle> StartSessionAsync(CancellationToken cancellationToken)
         {
-            using (Session = await _connection.StartSessionAsync(cancellationToken: cancellationToken))
-            {
-                Session.StartTransaction();
-
-                var commandTasks = _commands.Select(c => c(cancellationToken));
-
-                await Task.WhenAll(commandTasks);
-
-                await Session.CommitTransactionAsync(cancellationToken);
-            }
-
-            return _commands.Count;
-        }
-
-        public void AddCommand(Func<CancellationToken, Task> func)
-        {
-            _commands.Add(func);
+            return Session = await Connection.StartSessionAsync(cancellationToken: cancellationToken);
         }
 
         public IMongoCollection<T> GetCollection<T>(CollectionName collectionName = null)
         {
-            return _connection.Collection<T>(collectionName);
+            return Connection.Collection<T>(collectionName);
         }
 
         public void Dispose()
         {
-            Session?.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                Session?.Dispose();
+            }
+            _disposed = true;
         }
     }
 }

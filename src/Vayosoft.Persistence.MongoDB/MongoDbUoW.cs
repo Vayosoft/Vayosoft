@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 using Vayosoft.Commons.Aggregates;
 
 namespace Vayosoft.Persistence.MongoDB
@@ -6,16 +7,16 @@ namespace Vayosoft.Persistence.MongoDB
     public class MongoDbUoW : IUnitOfWork
     {
         private bool _disposed;
+        private readonly List<Func<CancellationToken, Task>> _commands = new();
         private readonly Dictionary<string, object> _repositories = new();
-        private readonly IMongoDbContext _context;
 
+        protected readonly IMongoDbConnection Connection;
         protected readonly IServiceScope Scope;
 
-        public MongoDbUoW(IServiceProvider serviceProvider, IMongoDbContext context)
+        public MongoDbUoW(IMongoDbConnection connection, IServiceProvider serviceProvider)
         {
+            Connection = connection;
             Scope = serviceProvider.CreateScope();
-
-            _context = context;
         }
         public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
         {
@@ -25,7 +26,7 @@ namespace Vayosoft.Persistence.MongoDB
 
         public ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
         {
-            _context.AddCommand(cToken =>
+            AddCommand(cToken =>
                 Repository<T>().AddAsync(entity, cToken));
 
             return ValueTask.CompletedTask;
@@ -33,19 +34,23 @@ namespace Vayosoft.Persistence.MongoDB
 
         public void Update<T>(T entity) where T : class, IAggregateRoot
         {
-            _context.AddCommand(cToken =>
+            AddCommand(cToken =>
                 Repository<T>().UpdateAsync(entity, cToken));
         }
 
         public void Delete<T>(T entity) where T : class, IAggregateRoot
         {
-            _context.AddCommand(cToken =>
+            AddCommand(cToken =>
                 Repository<T>().DeleteAsync(entity, cToken));
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync(cancellationToken);
+            using var session = await Connection.StartSessionAsync(cancellationToken: cancellationToken);
+
+            session.StartTransaction();
+            await Task.WhenAll(_commands.Select(c => c(cancellationToken)));
+            await session.CommitTransactionAsync(cancellationToken);
         }
 
         public void Dispose()
@@ -60,13 +65,19 @@ namespace Vayosoft.Persistence.MongoDB
 
             if (disposing)
             {
-                Scope.Dispose();
-                _context.Dispose();
+                Scope?.Dispose();
             }
             _disposed = true;
         }
 
-        protected T Repository<T, TEntity>() where T : IRepository<TEntity> where TEntity : class, IAggregateRoot
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void AddCommand(Func<CancellationToken, Task> func)
+        {
+            _commands.Add(func);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private T Repository<T, TEntity>() where T : IRepository<TEntity> where TEntity : class, IAggregateRoot
         {
             var key = typeof(T).Name;
             if (_repositories.TryGetValue(key, out var repo))
@@ -80,7 +91,8 @@ namespace Vayosoft.Persistence.MongoDB
             return r;
         }
 
-        protected IRepository<T> Repository<T>() where T : class, IAggregateRoot
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IRepository<T> Repository<T>() where T : class, IAggregateRoot
         {
             var key = typeof(T).Name;
             if (_repositories.TryGetValue(key, out var repo))

@@ -8,7 +8,6 @@ namespace Vayosoft.Persistence.MongoDB
             Action configureOptions = null)
         {
             services.AddSingleton<IMongoDbConnection, MongoDbConnection>();
-            services.AddScoped<IMongoDbContext, MongoDbContext>();
             configureOptions?.Invoke();
             return services;
         }
