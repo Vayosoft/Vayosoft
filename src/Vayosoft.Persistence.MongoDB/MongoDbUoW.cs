@@ -1,35 +1,50 @@
-﻿namespace Vayosoft.Persistence.MongoDB
+﻿using Vayosoft.Commons.Aggregates;
+
+namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbUoW : IDocumentUoW
+    public sealed class MongoDbUoW : ContextBase, IDocumentUoW
     {
         private readonly IMongoDbContext _context;
-        private bool _disposed;
 
-        public MongoDbUoW(IMongoDbContext context)
+        public MongoDbUoW(IServiceProvider serviceProvider, IMongoDbContext context) : base(serviceProvider)
         {
             _context = context;
         }
-
-        public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
+        public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
         {
-            return (await _context.SaveChangesAsync(cancellationToken)) > 0;
+            return Repository<T>()
+                .FindAsync(id, cancellationToken);
         }
 
-        public void Dispose()
+        public ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _context.AddCommand(cToken =>
+                Repository<T>().AddAsync(entity, cToken));
+
+            return ValueTask.CompletedTask;
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void Update<T>(T entity) where T : class, IAggregateRoot
         {
-            if (_disposed) return;
+            _context.AddCommand(cToken =>
+                Repository<T>().UpdateAsync(entity, cToken));
+        }
 
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-            _disposed = true;
+        public void Delete<T>(T entity) where T : class, IAggregateRoot
+        {
+            _context.AddCommand(cToken =>
+                Repository<T>().DeleteAsync(entity, cToken));
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _context.Dispose();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Vayosoft.Persistence.MongoDB
     {
         private readonly IMongoDbConnection _connection;
 
-        private readonly List<Func<Task>> _commands = new();
+        private readonly List<Func<CancellationToken, Task>> _commands = new();
 
         public IClientSessionHandle Session { get; private set; }
 
@@ -21,7 +21,7 @@ namespace Vayosoft.Persistence.MongoDB
             {
                 Session.StartTransaction();
 
-                var commandTasks = _commands.Select(c => c());
+                var commandTasks = _commands.Select(c => c(cancellationToken));
 
                 await Task.WhenAll(commandTasks);
 
@@ -31,7 +31,7 @@ namespace Vayosoft.Persistence.MongoDB
             return _commands.Count;
         }
 
-        public void AddCommand(Func<Task> func)
+        public void AddCommand(Func<CancellationToken, Task> func)
         {
             _commands.Add(func);
         }
