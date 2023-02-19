@@ -70,6 +70,15 @@ namespace Vayosoft.Persistence.EntityFramework
                    throw AggregateNotFoundException.For<T>(id);
         }
 
+        public Task<List<T>> GetAsync<T>(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot
+        {
+            return Set<T>()
+                .AsTracking()
+                .ByCriteria(criteria)
+                .ToListAsync(cancellationToken);
+        }
+
         public new void Add<TEntity>(TEntity entity)
             where TEntity : class, IEntity
         {

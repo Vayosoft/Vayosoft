@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 using Vayosoft.Commons.Aggregates;
+using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.Extensions;
 
 namespace Vayosoft.Persistence.MongoDB
@@ -24,6 +25,13 @@ namespace Vayosoft.Persistence.MongoDB
         {
             return Repository<T>()
                 .GetAsync(id, cancellationToken);
+        }
+
+        public Task<List<T>> GetAsync<T>(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot
+        {
+            return Repository<T>()
+                .FindAsync(criteria, cancellationToken);
         }
 
         public ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default)
