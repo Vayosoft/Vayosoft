@@ -2,17 +2,18 @@
 using AutoMapper;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence;
+using Vayosoft.Persistence.Criterias;
 
 namespace Vayosoft.AutoMapper
 {
     public class DtoEntityTypeConverter<TKey, TDto, TEntity> : ITypeConverter<TDto, TEntity>
             where TEntity : class, IEntity<TKey>, new()     
     {
-        private readonly IUoW _unitOfWork;
+        private readonly IDAO _dao;
 
-        public DtoEntityTypeConverter(IUoW unitOfWork)
+        public DtoEntityTypeConverter(IDAO dao)
         {
-            _unitOfWork = unitOfWork;
+            _dao = dao;
         }
 
         public TEntity Convert(TDto source, TEntity destination, ResolutionContext context)
@@ -20,7 +21,7 @@ namespace Vayosoft.AutoMapper
             var sourceId = (source as IEntity)?.Id;
 
             var dest = destination ?? (sourceId != null
-                ? _unitOfWork.Find<TEntity>(sourceId) ?? new TEntity()
+                ? _dao.FindAsync(new Criteria<TEntity>(e => e.Id.Equals(sourceId))).Result ?? new TEntity()
                 : new TEntity());
 
             // Да, reflection, да медленно и может привести к ошибкам в рантайме.
@@ -51,8 +52,8 @@ namespace Vayosoft.AutoMapper
                 if (key.EndsWith("Id")
                     && typeof(IEntity).GetTypeInfo().IsAssignableFrom(propertyInfo.PropertyType))
                 {
-                    var method = _unitOfWork.GetType().GetMethods()
-                        .Where(x => x.Name == nameof(_unitOfWork.Find))
+                    var method = _dao.GetType().GetMethods()
+                        .Where(x => x.Name == nameof(_dao.FindAsync))
                         .First(x => x.IsGenericMethod);
                     var generic = method.MakeGenericMethod(propertyInfo.PropertyType);
 
