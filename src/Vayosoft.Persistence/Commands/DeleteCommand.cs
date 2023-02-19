@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Vayosoft.Commands;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Commons.Exceptions;
 using Vayosoft.Utilities;
 
 namespace Vayosoft.Persistence.Commands;
@@ -11,28 +10,17 @@ public record DeleteCommand<TEntity>(TEntity Entity) : ICommand where TEntity : 
 public class DeleteCommandHandler<TEntity> : ICommandHandler<DeleteCommand<TEntity>>
     where TEntity : class, IEntity
 {
-    private readonly IUoW _unitOfWork;
+    private readonly IDAO _dao;
 
-    public DeleteCommandHandler(IUoW unitOfWork)
+    public DeleteCommandHandler(IDAO dao)
     {
-        _unitOfWork = unitOfWork;
+        _dao = dao;
     }
 
     public async Task<Unit> Handle(DeleteCommand<TEntity> command, CancellationToken cancellationToken)
     {
-        Guard.NotNull(command.Entity, nameof(command.Entity));
-
-        var id = command.Entity.Id;
-
-        var entity = await _unitOfWork.FindAsync<TEntity>(id, cancellationToken);
-        if (entity == null)
-        {
-            throw EntityNotFoundException.For<TEntity>(id);
-        }
-
-        _unitOfWork.Delete(entity);
-
-        await _unitOfWork.CommitAsync(cancellationToken);
+        var entity = Guard.NotNull(command.Entity, nameof(command.Entity));
+        await _dao.DeleteAsync(entity, cancellationToken);
 
         return Unit.Value;
     }
