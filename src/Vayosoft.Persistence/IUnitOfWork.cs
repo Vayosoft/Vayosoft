@@ -4,7 +4,7 @@ namespace Vayosoft.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default)
+        Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot;
 
         ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default)
@@ -13,7 +13,7 @@ namespace Vayosoft.Persistence
         void Update<T>(T entity)
             where T : class, IAggregateRoot;
 
-        void Delete<T>(T entity)
+        void Remove<T>(T entity)
             where T : class, IAggregateRoot;
 
         Task CommitAsync(CancellationToken cancellationToken = default);

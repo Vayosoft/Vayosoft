@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 using Vayosoft.Commons.Aggregates;
+using Vayosoft.Persistence.Extensions;
 
 namespace Vayosoft.Persistence.MongoDB
 {
@@ -18,16 +19,19 @@ namespace Vayosoft.Persistence.MongoDB
             Connection = connection;
             Scope = serviceProvider.CreateScope();
         }
-        public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
+        public Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot
         {
             return Repository<T>()
-                .FindAsync(id, cancellationToken);
+                .GetAsync(id, cancellationToken);
         }
 
-        public ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, IAggregateRoot
+        public ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot
         {
             AddCommand(cToken =>
-                Repository<T>().AddAsync(entity, cToken));
+                Repository<T>()
+                    .AddAsync(entity, cToken));
 
             return ValueTask.CompletedTask;
         }
@@ -35,13 +39,15 @@ namespace Vayosoft.Persistence.MongoDB
         public void Update<T>(T entity) where T : class, IAggregateRoot
         {
             AddCommand(cToken =>
-                Repository<T>().UpdateAsync(entity, cToken));
+                Repository<T>()
+                    .UpdateAsync(entity, cToken));
         }
 
-        public void Delete<T>(T entity) where T : class, IAggregateRoot
+        public void Remove<T>(T entity) where T : class, IAggregateRoot
         {
             AddCommand(cToken =>
-                Repository<T>().DeleteAsync(entity, cToken));
+                Repository<T>()
+                    .DeleteAsync(entity, cToken));
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
