@@ -5,20 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Vayosoft.Commands;
-using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Identity;
 using Vayosoft.Identity.Authentication;
 using Vayosoft.Identity.EntityFramework;
 using Vayosoft.Identity.Persistence;
 using Vayosoft.Identity.Providers;
 using Vayosoft.Identity.Security.Commands;
-using Vayosoft.Identity.Security.Models;
-using Vayosoft.Identity.Security.Queries;
-using Vayosoft.Identity.Specifications;
 using Vayosoft.Identity.Tokens;
 using Vayosoft.Persistence.Commands;
-using Vayosoft.Persistence.Queries;
-using Vayosoft.Queries;
 
 namespace Vayosoft.Web.Identity
 {
