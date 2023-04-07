@@ -2,6 +2,7 @@
 using FluentValidation;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Web.Exceptions;
 using Vayosoft.Web.Model;
@@ -9,7 +10,7 @@ using Vayosoft.Web.Model;
 namespace Vayosoft.Web.Controllers
 {
     [ApiController]
-    public class ApiControllerBase : ControllerBase
+    public abstract class ApiControllerBase : ControllerBase
     {
         protected IActionResult Result<TResult>(Result<TResult> result) {
             return result.Match(obj => Ok(obj), Problem);
@@ -19,9 +20,14 @@ namespace Vayosoft.Web.Controllers
             return result.Match(obj => Ok(mapper(obj)), Problem);
         }
 
-        protected IActionResult Paged<TResult>(IPagedEnumerable<TResult> collection, long pageSize)
+        protected IActionResult Page<TResult>(IPagedEnumerable<TResult> collection, long pageSize)
         {
             return Ok(new PagedResponse<TResult>(collection, pageSize));
+        }
+
+        protected IActionResult List<TResult>(IEnumerable<TResult> collection)
+        {
+            return Ok(new ListResponse<TResult>(collection ?? Array.Empty<TResult>()));
         }
 
         protected IActionResult Problem(Exception exception)
@@ -39,6 +45,19 @@ namespace Vayosoft.Web.Controllers
                         statusCode: (int)(codeInfo?.Code ?? HttpStatusCode.InternalServerError));
                 }
             }
+        }
+    }
+
+    public class ExecutionResult
+    {
+        public static OkObjectResult Success([ActionResultObjectValue] object value = null)
+        {
+            return new OkObjectResult(value);
+        }
+
+        public static OkObjectResult Error()
+        {
+            return new OkObjectResult(null);
         }
     }
 }

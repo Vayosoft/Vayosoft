@@ -1,41 +1,21 @@
 ﻿using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Vayosoft.Commons.Aggregates;
 using Vayosoft.Commons.Entities;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 using Vayosoft.Persistence.MongoDB.Extensions;
 using Vayosoft.Persistence.Specifications;
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class MongoDbDataStore : IDataStore, IDataProvider, IDisposable
+    public class MongoDbDao : IDAO
     {
-        private bool _disposed;
-
         protected readonly IMongoDbConnection Connection;
-        protected readonly IServiceScope Scope;
-        protected readonly Dictionary<string, object> Repositories = new();
-
-        public MongoDbDataStore(IMongoDbConnection connection, IServiceProvider serviceProvider)
+    
+        public MongoDbDao(IMongoDbConnection connection)
         {
             Connection = connection;
-            Scope = serviceProvider.CreateScope();
-        }
-
-        protected IRepository<T> Repository<T>() where T : class, IAggregateRoot
-        {
-            var key = typeof(T).Name;
-            if (Repositories.TryGetValue(key, out var repo))
-            {
-                return (IRepository<T>)repo;
-            }
-
-            var r = Scope.ServiceProvider.GetRequiredService<IRepository<T>>();
-            Repositories.Add(key, r);
-
-            return r;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,13 +30,20 @@ namespace Vayosoft.Persistence.MongoDB
             return Connection.Collection<T>(CollectionName.For<T>());
         }
 
-        public Task<T> FindAsync<T, TId>(TId id, CancellationToken cancellationToken = default) 
+        public Task<T> FindAsync<T>(object id, CancellationToken cancellationToken = default) 
             where T : class, IEntity
         {
             return Collection<T>().Find(q => q.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public Task AddAsync<T>(T entity, CancellationToken cancellationToken = default)
+        public Task<T> FindAsync<T>(ICriteria<T> criteria,
+            CancellationToken cancellationToken = default) where T : class, IEntity
+        {
+            return IAsyncCursorSourceExtensions.SingleOrDefaultAsync(Set<T>()
+                .Apply(criteria), cancellationToken);
+        }
+
+        public Task CreateAsync<T>(T entity, CancellationToken cancellationToken = default)
             where T : class, IEntity
         {
             return Collection<T>().InsertOneAsync(entity, cancellationToken: cancellationToken);
@@ -83,33 +70,8 @@ namespace Vayosoft.Persistence.MongoDB
                 cancellationToken: cancellationToken);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            if (disposing)
-            {
-                Scope.Dispose();
-            }
-            _disposed = true;
-        }
-
-        public Task<TEntity> SingleAsync<TEntity>(ICriteria<TEntity> criteria,
-            CancellationToken cancellationToken = default) 
-            where TEntity : class, IEntity
-        {
-            return IAsyncCursorSourceExtensions.SingleOrDefaultAsync(Set<TEntity>()
-                    .Apply(criteria), cancellationToken);
-        }
-
         public Task<List<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> spec,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
@@ -118,12 +80,21 @@ namespace Vayosoft.Persistence.MongoDB
         }
 
         public IAsyncEnumerable<TEntity> StreamAsync<TEntity>(ISpecification<TEntity> spec,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
             where TEntity : class, IEntity
         {
             return Set<TEntity>()
                 .Apply(spec)
-                .ToAsyncEnumerable(cancellationToken); ;
+                .ToAsyncEnumerable(cancellationToken);
+        }
+
+        public Task<PagedList<TEntity>> PagedListAsync<TEntity>(ISpecification<TEntity> spec,
+            CancellationToken cancellationToken)
+            where TEntity : class, IEntity
+        {
+            return Set<TEntity>()
+                .Apply(spec)
+                .ToPagedListAsync(spec.Page, spec.PageSize, cancellationToken);
         }
     }
 }

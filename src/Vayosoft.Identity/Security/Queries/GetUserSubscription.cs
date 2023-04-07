@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Vayosoft.Identity.Providers;
+﻿using Vayosoft.Identity.Providers;
 using Vayosoft.Identity.Security.Models;
 using Vayosoft.Queries;
 
@@ -9,19 +8,17 @@ public record GetUserSubscription(string UserName, string ProviderName) : IQuery
 
 public class HandleGetUserSubscription : IQueryHandler<GetUserSubscription, UserSubscription>
 {
-    private readonly ProviderFactory providerFactory;
-    private readonly ILogger<HandleGetUserSubscription> logger;
+    private readonly ProviderFactory _providerFactory;
 
-    public HandleGetUserSubscription(ProviderFactory providerFactory, ILogger<HandleGetUserSubscription> logger)
+    public HandleGetUserSubscription(ProviderFactory providerFactory)
     {
-        this.providerFactory = providerFactory;
-        this.logger = logger;
+        this._providerFactory = providerFactory;
     }
 
-    public async Task<UserSubscription> Handle(GetUserSubscription request, CancellationToken cancellationToken)
+    public Task<UserSubscription> Handle(GetUserSubscription request, CancellationToken cancellationToken)
     {
         var (userName, providerName) = request;
-        var provider = providerFactory.GetProviderService(providerName);
-        return await provider.GetUserSubscription(new UserEntity(userName));
+        var provider = _providerFactory.GetProviderService(providerName);
+        return provider.GetUserSubscription(new UserEntity(userName));
     }
 }

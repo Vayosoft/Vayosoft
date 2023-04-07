@@ -1,37 +1,26 @@
 ﻿using MediatR;
 using Vayosoft.Commands;
 using Vayosoft.Commons.Entities;
-using Vayosoft.Commons.Exceptions;
 using Vayosoft.Utilities;
 
 namespace Vayosoft.Persistence.Commands;
 
 public record DeleteCommand<TEntity>(TEntity Entity) : ICommand where TEntity : IEntity;
 
-public class DeleteCommandHandler<TKey, TEntity> : ICommandHandler<DeleteCommand<TEntity>>
+public class DeleteCommandHandler<TEntity> : ICommandHandler<DeleteCommand<TEntity>>
     where TEntity : class, IEntity
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IDAO _dao;
 
-    public DeleteCommandHandler(IUnitOfWork unitOfWork)
+    public DeleteCommandHandler(IDAO dao)
     {
-        _unitOfWork = unitOfWork;
+        _dao = dao;
     }
 
     public async Task<Unit> Handle(DeleteCommand<TEntity> command, CancellationToken cancellationToken)
     {
-        Guard.NotNull(command.Entity, nameof(command.Entity));
-
-        var id = command.Entity.Id;
-
-        var entity = _unitOfWork.Find<TEntity>(id);
-        if (entity == null)
-        {
-            throw EntityNotFoundException.For<TEntity>(id);
-        }
-
-        _unitOfWork.Delete(entity);
-        await _unitOfWork.CommitAsync();
+        var entity = Guard.NotNull(command.Entity, nameof(command.Entity));
+        await _dao.DeleteAsync(entity, cancellationToken);
 
         return Unit.Value;
     }

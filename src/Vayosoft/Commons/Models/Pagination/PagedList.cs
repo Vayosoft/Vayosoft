@@ -2,11 +2,11 @@
 
 namespace Vayosoft.Commons.Models.Pagination
 {
-    public class PagedCollection<T> : IPagedEnumerable<T>
+    public class PagedList<T> : IPagedEnumerable<T>
     {
         private readonly IEnumerable<T> _inner;
 
-        public PagedCollection(IEnumerable<T> inner, long totalCount)
+        public PagedList(IEnumerable<T> inner, long totalCount)
         {
             _inner = inner;
 

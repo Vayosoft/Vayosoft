@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vayosoft.Identity.Persistence;
 using Vayosoft.Identity.Security;
-using Vayosoft.Utilities;
 
 namespace Vayosoft.Identity.EntityFramework
 {
@@ -11,7 +10,7 @@ namespace Vayosoft.Identity.EntityFramework
 
         public UserRepository(IdentityContext context)
         {
-            _context = Guard.NotNull(context);
+            _context = context;
         }
 
         public async Task<List<SecurityRoleEntity>> GetRolesAsync(IEnumerable<object> providers, CancellationToken cancellationToken)

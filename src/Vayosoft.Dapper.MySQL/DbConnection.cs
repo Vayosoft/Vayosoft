@@ -7,6 +7,8 @@ namespace Vayosoft.Dapper.MySQL
 {
     public class DbConnection : IDisposable
     {
+        private bool _disposed;
+
         public DbConnection(IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -40,7 +42,19 @@ namespace Vayosoft.Dapper.MySQL
 
         public void Dispose()
         {
-            InnerConnection.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                InnerConnection.Dispose();
+            }
+            _disposed = true;
         }
     }
 }

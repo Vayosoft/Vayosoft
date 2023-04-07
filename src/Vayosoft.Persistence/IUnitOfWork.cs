@@ -1,34 +1,24 @@
-﻿using Vayosoft.Commons.Entities;
+﻿using Vayosoft.Commons.Aggregates;
 using Vayosoft.Persistence.Criterias;
 
 namespace Vayosoft.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
-        TEntity Find<TEntity>(object id)
-            where TEntity : class, IEntity;
+        Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot;
 
-        Task<TEntity> FindAsync<TEntity>(object id, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity;
+        Task<List<T>> GetAsync<T>(ICriteria<T> criteria, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot;
 
-        Task<TEntity> FindAsync<TEntity>(ICriteria<TEntity> criteria, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity;
+        ValueTask AddAsync<T>(T entity, CancellationToken cancellationToken = default)
+            where T : class, IAggregateRoot;
 
-        void Add<TEntity>(TEntity entity)
-            where TEntity : class, IEntity;
+        void Update<T>(T entity)
+            where T : class, IAggregateRoot;
 
-        ValueTask AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
-            where TEntity : class, IEntity;
-
-
-        void Update<TEntity>(TEntity entity)
-            where TEntity : class, IEntity;
-
-        void Delete<TEntity>(TEntity entity)
-            where TEntity : class, IEntity;
-
-
-        void Commit();
+        void Remove<T>(T entity)
+            where T : class, IAggregateRoot;
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

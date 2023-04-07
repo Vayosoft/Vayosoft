@@ -7,12 +7,12 @@
             => (pagingModel.OrderBy.SortOrder == SortOrder.Asc
                 ? queryable.OrderBy(pagingModel.OrderBy.Expression)
                 : queryable.OrderByDescending(pagingModel.OrderBy.Expression))
-                .Skip((pagingModel.Page - 1) * pagingModel.Size)
-                .Take(pagingModel.Size);
+                .Skip((pagingModel.Page - 1) * pagingModel.PageSize)
+                .Take(pagingModel.PageSize);
 
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, IPagingModel pagingModel)
             where T : class
-            => Paginate(queryable, pagingModel.Page, pagingModel.Size);
+            => Paginate(queryable, pagingModel.Page, pagingModel.PageSize);
 
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, int page, int pageSize)
             where T : class
@@ -24,8 +24,13 @@
             where T : class
             => From(queryable.Paginate(pagingModel).ToArray(), queryable.Count());
 
+        public static IPagedEnumerable<T> ToPagedEnumerable<T>(this IQueryable<T> queryable,
+            int page, int pageSize)
+            where T : class
+            => From(queryable.Paginate(page, pageSize).ToArray(), queryable.Count());
+
         public static IPagedEnumerable<T> From<T>(IEnumerable<T> inner, int totalCount)
-            =>  new PagedCollection<T>(inner, totalCount);
+            =>  new PagedList<T>(inner, totalCount);
 
         public static IPagedEnumerable<T> Empty<T>()
              =>  From(Enumerable.Empty<T>(), 0);

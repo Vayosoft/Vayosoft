@@ -491,7 +491,7 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
 
         #endregion
 
-        public static Task<IPagedEnumerable<T>> AggregateByPage<T>(
+        public static Task<PagedList<T>> AggregateByPage<T>(
             this IMongoCollection<T> collection,
             IPagingModel<T, object> model,
             FilterDefinition<T> filterDefinition,
@@ -502,10 +502,10 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
                 ? Builders<T>.Sort.Ascending(model.OrderBy.Expression) 
                 : Builders<T>.Sort.Descending(model.OrderBy.Expression);
 
-            return collection.AggregateByPage(filterDefinition, sortDefinition, model.Page, model.Size, cancellationToken);
+            return collection.AggregateByPage(filterDefinition, sortDefinition, model.Page, model.PageSize, cancellationToken);
         }
 
-        public static async Task<IPagedEnumerable<T>> AggregateByPage<T>(
+        public static async Task<PagedList<T>> AggregateByPage<T>(
             this IMongoCollection<T> collection,
             FilterDefinition<T> filterDefinition,
             SortDefinition<T> sortDefinition,
@@ -543,7 +543,18 @@ namespace Vayosoft.Persistence.MongoDB.Extensions
                 .Facets.First(x => x.Name == "data")
                 .Output<T>();
 
-            return new PagedCollection<T>(data, count);
+            return new PagedList<T>(data, count);
+        }
+
+        public static async Task<bool> HasIndex<T>(this IMongoCollection<T> mongoCollection, string indexName, CancellationToken cancellationToken = default)
+        {
+            var indexes = (await mongoCollection.Indexes.ListAsync(cancellationToken)).ToList(cancellationToken);
+            var indexNames = indexes
+                .SelectMany(i => i.Elements)
+                .Where(e => string.Equals(e.Name, "name", StringComparison.CurrentCultureIgnoreCase))
+                .Select(n => n.Value.ToString());
+
+            return indexNames.Contains(indexName);
         }
     }
 }

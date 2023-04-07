@@ -4,7 +4,7 @@
     {
         int Page { get; }
 
-        int Size { get; }
+        int PageSize { get; }
 
         const int DefaultSize = 30;
     }

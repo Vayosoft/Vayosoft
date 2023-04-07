@@ -2,8 +2,9 @@
 
 namespace Vayosoft.Persistence.MongoDB
 {
-    public class ConnectionSetting
+    public class MongoDbSettings
     {
+        public const string DefaultConnectionString = "MongoDbConnection";
         public ReplicaSetSetting ReplicaSet { set; get; }
 
         public string ConnectionString { set; get; }
@@ -16,12 +17,12 @@ namespace Vayosoft.Persistence.MongoDB
 
     public static class ConnectionSettingExtensions
     {
-        public static ConnectionSetting GetConnectionSetting(this IConfiguration configuration)
+        public static MongoDbSettings GetMongoDbSettings(this IConfiguration configuration)
         {
-            var settings =  configuration.GetSection(nameof(MongoDbConnection)).Get<ConnectionSetting>() ?? new ConnectionSetting();
+            var settings =  configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>() ?? new MongoDbSettings();
             if(string.IsNullOrEmpty(settings.ConnectionString))
             {
-                settings.ConnectionString = configuration.GetConnectionString("MongoDbConnection");
+                settings.ConnectionString = configuration.GetConnectionString(MongoDbSettings.DefaultConnectionString);
             }
             
             return settings;

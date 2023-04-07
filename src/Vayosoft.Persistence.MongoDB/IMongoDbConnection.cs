@@ -5,9 +5,8 @@ namespace Vayosoft.Persistence.MongoDB
     public interface IMongoDbConnection
     {
         IMongoDatabase Database { get; }
-        IClientSessionHandle Session { get; }
 
-        Task<IClientSessionHandle> StartSession(CancellationToken cancellationToken = default);
+        Task<IClientSessionHandle> StartSessionAsync(CancellationToken cancellationToken = default);
 
         IMongoDatabase GetDatabase(string db);
 

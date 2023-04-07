@@ -1,23 +1,23 @@
 ﻿using System.Linq.Expressions;
 using Vayosoft.Commons.Models;
+using Vayosoft.Commons.Models.Pagination;
 using Vayosoft.Persistence.Criterias;
 
 namespace Vayosoft.Persistence.Specifications
 {
-    public class Specification<T> : ISpecification<T> where T : class
+    public class Specification<T> : PagingModelBase, ISpecification<T> where T : class
     {
         public ICriteria<T> Criteria { get; private set; }
         public Sorting<T> Sorting { get; private set; }
         public Expression<Func<T, object>> GroupBy { get; private set; }
 
-        public Specification()
+        public Specification(ICriteria<T> criteria = null, Sorting<T> sorting = null)
         {
-            Criteria = new Criteria<T>();
-        }
-
-        public Specification(ICriteria<T> criteria)
-        {
-            Criteria = criteria;
+            Criteria = criteria ?? new Criteria<T>();
+            if (sorting != null)
+            {
+                Sorting = sorting;
+            }
         }
 
         protected void Where(Expression<Func<T, bool>> predicate)
@@ -45,5 +45,13 @@ namespace Vayosoft.Persistence.Specifications
         {
             GroupBy = groupByExpression;
         }
+    }
+
+    public class Specification<TResult, TSource> : Specification<TSource>, ISpecification<TResult, TSource>
+        where TResult : class
+        where TSource : class
+    {
+        public Specification(ICriteria<TSource> criteria = null, Sorting<TSource> sorting = null)
+            : base(criteria, sorting) { }
     }
 }
