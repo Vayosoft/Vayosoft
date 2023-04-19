@@ -2,8 +2,8 @@
 using Benchmarks;
 
 #if DEBUG
-var summary = BenchmarkRunner.Run<ReadLinesBenchmarks>(new BenchmarkDotNet.Configs.DebugInProcessConfig());
+var summary = BenchmarkRunner.Run<Serialization>(new BenchmarkDotNet.Configs.DebugInProcessConfig());
 #else
-            var summary = BenchmarkRunner.Run<ReadLinesBenchmarks>();
+            var summary = BenchmarkRunner.Run<Serialization>();
 #endif
 

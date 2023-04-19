@@ -54,5 +54,11 @@ namespace Vayosoft.Utilities
             Convert.TryFromBase64Chars(base64Chars, idBytes, out _);
             return new Guid(idBytes);
         }
+
+        public static string CreateUid(bool upperCase = false)
+        {
+            var guid = Guid.NewGuid().ToString("N");
+            return upperCase ? guid.ToUpper() : guid;
+        }
     }
 }
