@@ -57,6 +57,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.Web.Identity", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vayosoft.SmsBrokers", "src\Vayosoft.SmsBrokers\Vayosoft.SmsBrokers.csproj", "{90F7B36E-37DF-4948-9231-FBE0D0F93D28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vayosoft.FFMpeg", "src\Vayosoft.FFMpeg\Vayosoft.FFMpeg.csproj", "{4328CEC5-4357-429D-8127-3DD2D1957172}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,10 @@ Global
 		{90F7B36E-37DF-4948-9231-FBE0D0F93D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F7B36E-37DF-4948-9231-FBE0D0F93D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F7B36E-37DF-4948-9231-FBE0D0F93D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4328CEC5-4357-429D-8127-3DD2D1957172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4328CEC5-4357-429D-8127-3DD2D1957172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4328CEC5-4357-429D-8127-3DD2D1957172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4328CEC5-4357-429D-8127-3DD2D1957172}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{740B45E6-B061-491A-A48A-58AD8B002A94} = {70777D0B-D554-460B-8933-5E2749CBF0F4}
 		{6A0E6B7E-3D52-4FFF-8F99-2AAA01DBDD41} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 		{90F7B36E-37DF-4948-9231-FBE0D0F93D28} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
+		{4328CEC5-4357-429D-8127-3DD2D1957172} = {A0B57AC8-5163-4002-8BF3-8159789274AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3D4576-3849-441F-B671-8487ADDBB191}
