@@ -1,4 +1,5 @@
-﻿using Vayosoft.FFMpeg.ffprobe;
+﻿using System.Text;
+using Vayosoft.FFMpeg.ffprobe;
 
 namespace Vayosoft.FFMpeg.ffmpeg
 {
@@ -9,6 +10,8 @@ namespace Vayosoft.FFMpeg.ffmpeg
 
         public string ThumbnailArgs { get; set; }
         public string TranscodeArgs { get; set; }
+
+        public string LastOutput { get; private set; }
 
         public static string Rotation2Arg(int rotation)
         {
@@ -58,6 +61,8 @@ namespace Vayosoft.FFMpeg.ffmpeg
 
         public byte[] GetThumbnail(FFprobeVideoInfo inputFile, MediaArgs options)
         {
+            LastOutput = "";
+            var sb = new StringBuilder();
             options.CheckTempFolder();
            
             if (options.Width <= 0)
@@ -85,13 +90,16 @@ namespace Vayosoft.FFMpeg.ffmpeg
                 //"-noautorotate -i &quot;{INPUT_FILE}&quot; -f image2 -vframes 1 -vf &quot;thumbnail,scale={SCALE_WIDTH}:{HEIGHT},crop={WIDTH}:{HEIGHT}{ROTATION}&quot; &quot;{OUTPUT_FILE}&quot;"
                 // E:\Vayosoft\Transcoding\ffmpeg\ffmpeg.exe -noautorotate -i "E:\Vayosoft\Transcoding\Temp\d2bd117e-d8b9-4788-994e-2ba8366afa00.MP4" -f image2 -vframes 1 -vf "thumbnail,scale=272:150,crop=148:150,transpose=1" "E:\Vayosoft\Transcoding\Temp\d89797e9-e16d-4b14-aec4-4a501ef46eff.png"
             //TextLogger.Debug($"{_FFmpegFullpath} {args}");
+            sb.AppendLine($"Command line: {_FFmpegFullpath} {args}");
             var d = DateTime.Now;
             var output = RunProcess(_FFmpegFullpath, args);
+            sb.AppendLine(output);
 
             var fi = new FileInfo(options.TempFilename);
             if (!fi.Exists)
                 throw new ApplicationException($"Thumbnail file [{options.TempFilename}] not found. {output}");
             //TextLogger.Info($"Thumbnail({inputFile.Format.Size / 1024}kb) {(DateTime.Now - d).TotalSeconds} seconds");
+            sb.AppendLine($"Thumbnail({inputFile.Format.Size / 1024}kb) {(DateTime.Now - d).TotalSeconds} seconds");
             byte[] res;
             using (var fs = fi.OpenRead())
             {
@@ -102,6 +110,7 @@ namespace Vayosoft.FFMpeg.ffmpeg
             }
             fi.Delete();
 
+            LastOutput = sb.ToString();
             return res;
         }
 
