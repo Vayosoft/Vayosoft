@@ -18,7 +18,7 @@ namespace Vayosoft.Utilities
             Span<byte> idBytes = stackalloc byte[16];
             Span<byte> base64Bytes = stackalloc byte[24];
 
-            MemoryMarshal.TryWrite(idBytes, ref id);
+            MemoryMarshal.TryWrite(idBytes, in id);
             Base64.EncodeToUtf8(idBytes, base64Bytes, out _, out _);
 
             Span<char> result = stackalloc char[22];

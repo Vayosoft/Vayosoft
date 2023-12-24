@@ -33,20 +33,20 @@ namespace Vayosoft.Persistence.EntityFramework
                 .ToListAsync(cancellationToken);
         }
         
-        public new async ValueTask AddAsync<T>(T entity,
+        public async ValueTask AddAsync<T>(T entity,
             CancellationToken cancellationToken = default)
             where T : class, IAggregateRoot
         {
             await _dataContext.AddAsync(entity, cancellationToken);
         }
 
-        public new void Update<T>(T entity)
+        public void Update<T>(T entity)
             where T : class, IAggregateRoot
         {
             _dataContext.Update(entity);
         }
 
-        public new void Remove<T>(T entity)
+        public void Remove<T>(T entity)
             where T : class, IAggregateRoot
         {
             _dataContext.Remove(entity);
