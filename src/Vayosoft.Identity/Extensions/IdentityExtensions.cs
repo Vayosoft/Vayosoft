@@ -40,7 +40,7 @@ namespace Vayosoft.Identity.Extensions
         public static UserType GetUserType(this IIdentity identity)
         {
             var claimsIdentity = identity as ClaimsIdentity;
-            Claim claim = claimsIdentity?.FindFirst(ClaimTypes.Actor);
+            Claim claim = claimsIdentity?.FindFirst(UserClaimType.UserType);
 
             if (claim == null)
                 return UserType.Guest;

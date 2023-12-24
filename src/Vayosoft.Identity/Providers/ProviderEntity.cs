@@ -4,6 +4,6 @@ namespace Vayosoft.Identity.Providers
 {
     public class ProviderEntity : EntityBase<long>
     {
-        public long Parent { get; set; }
+        public long? Parent { get; set; }
     }
 }

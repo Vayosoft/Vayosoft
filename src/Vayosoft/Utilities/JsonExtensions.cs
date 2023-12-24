@@ -27,11 +27,17 @@ namespace Vayosoft.Utilities
         /// </summary>
         /// <param name="obj">object to serialize</param>
         /// <returns>json string</returns>
-        public static string ToJson(this object obj)
+        public static string ToJson(this object obj, bool disableNamingPolicy = false, bool disableIndent = true)
         {
-            return JsonSerializer.Serialize(obj, Options);
-        }
+            var o = new JsonSerializerOptions();
+            if (disableNamingPolicy)
+              o.PropertyNamingPolicy = null;
 
+            o.WriteIndented = !disableIndent;
+            
+            return JsonSerializer.Serialize(obj, o);
+        }
+        
         /// <summary>
         /// Serialize object to json with JsonNet
         /// </summary>
