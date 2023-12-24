@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Versioning;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Vayosoft.Web.Swagger
 {
@@ -48,6 +50,7 @@ namespace Vayosoft.Web.Swagger
                 opt.DefaultApiVersion = new ApiVersion(1, 0);
                 opt.AssumeDefaultVersionWhenUnspecified = true;
                 opt.ReportApiVersions = true;//api-support-versions
+                //opt.ApiVersionReader = new UrlSegmentApiVersionReader();
                 opt.ApiVersionReader = ApiVersionReader.Combine(
                     new UrlSegmentApiVersionReader(),
                     //new QueryStringApiVersionReader("x-api-version"),
