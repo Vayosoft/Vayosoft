@@ -1,6 +1,6 @@
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Reflection;
 using Vayosoft.Commands;
 using Vayosoft.Commons.Events;
 using Vayosoft.Commons.Events.External;
@@ -12,7 +12,7 @@ namespace Vayosoft
     {
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
-            services.AddMediatR()
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
                 .AddScoped<ICommandBus, CommandBus>()
                 .AddScoped<IQueryBus, QueryBus>();
 
@@ -20,12 +20,6 @@ namespace Vayosoft
             services.TryAddScoped<IExternalEventProducer, NullExternalEventProducer>();
 
             return services;
-        }
-
-        private static IServiceCollection AddMediatR(this IServiceCollection services)
-        {
-            return services.AddScoped<IMediator, Mediator>()
-                .AddTransient<ServiceFactory>(sp => sp.GetRequiredService!);
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Vayosoft.Commands
             if (configure == null)
             {
                 services.AddTransient<TCommandHandler, TCommandHandler>();
-                services.AddTransient<IRequestHandler<T, Unit>, TCommandHandler>();
+                services.AddTransient<IRequestHandler<T>, TCommandHandler>();
             }
             else
             {
                 services.AddTransient<TCommandHandler, TCommandHandler>(configure);
-                services.AddTransient<IRequestHandler<T, Unit>, TCommandHandler>(configure);
+                services.AddTransient<IRequestHandler<T>, TCommandHandler>(configure);
             }
 
             return services;

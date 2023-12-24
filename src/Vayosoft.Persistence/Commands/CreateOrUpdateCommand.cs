@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Vayosoft.Commands;
+﻿using Vayosoft.Commands;
 using Vayosoft.Commons;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Persistence.Criterias;
@@ -22,7 +21,7 @@ public class CreateOrUpdateHandler<TKey, TEntity, TDto> : ICommandHandler<Create
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(CreateOrUpdateCommand<TDto> command, CancellationToken cancellationToken)
+    public async Task Handle(CreateOrUpdateCommand<TDto> command, CancellationToken cancellationToken)
     {
         Guard.NotNull(command.Entity, nameof(command.Entity));
 
@@ -37,7 +36,5 @@ public class CreateOrUpdateHandler<TKey, TEntity, TDto> : ICommandHandler<Create
             var entity = _mapper.Map<TEntity>(command.Entity);
             await _dao.CreateAsync(entity, cancellationToken);
         }
-
-        return Unit.Value;
     }
 }

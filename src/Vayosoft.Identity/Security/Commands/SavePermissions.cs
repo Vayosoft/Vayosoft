@@ -21,7 +21,7 @@ namespace Vayosoft.Identity.Security.Commands
             _userContext = userContext;
             _logger = logger;
         }
-        public async Task<Unit> Handle(SavePermissions command, CancellationToken cancellationToken)
+        public async Task Handle(SavePermissions command, CancellationToken cancellationToken)
         {
             try
             {
@@ -75,8 +75,6 @@ namespace Vayosoft.Identity.Security.Commands
             {
                 _logger.LogError($"{e.Message}\r\n{e.StackTrace}");
             }
-
-            return Unit.Value;
         }
     }
 }

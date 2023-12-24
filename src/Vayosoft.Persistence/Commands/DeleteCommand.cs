@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Vayosoft.Commands;
+﻿using Vayosoft.Commands;
 using Vayosoft.Commons.Entities;
 using Vayosoft.Utilities;
 
@@ -17,11 +16,9 @@ public class DeleteCommandHandler<TEntity> : ICommandHandler<DeleteCommand<TEnti
         _dao = dao;
     }
 
-    public async Task<Unit> Handle(DeleteCommand<TEntity> command, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCommand<TEntity> command, CancellationToken cancellationToken)
     {
         var entity = Guard.NotNull(command.Entity, nameof(command.Entity));
         await _dao.DeleteAsync(entity, cancellationToken);
-
-        return Unit.Value;
     }
 }

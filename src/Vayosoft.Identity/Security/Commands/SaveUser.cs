@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using Vayosoft.Commands;
 using Vayosoft.Commons.Enums;
@@ -60,7 +59,7 @@ public class HandleSaveUser : ICommandHandler<SaveUser>
         _logger = logger;
     }
 
-    public async Task<Unit> Handle(SaveUser command, CancellationToken cancellationToken)
+    public async Task Handle(SaveUser command, CancellationToken cancellationToken)
     {
         try
         {
@@ -114,9 +113,9 @@ public class HandleSaveUser : ICommandHandler<SaveUser>
 
             await _userRepository.UpdateAsync(entity, cancellationToken);
 
-            if (command.Roles.Any())
+            if (command.Roles.Count > 0)
             {
-                var userRoles = new List<string>();
+                var userRoles = new List<string>(command.Roles.Count);
                 foreach (var commandRole in command.Roles)
                 {
                     var role = await _userRepository.FindRoleByIdAsync(commandRole, cancellationToken);
@@ -128,9 +127,7 @@ public class HandleSaveUser : ICommandHandler<SaveUser>
         }
         catch (Exception e)
         {
-            _logger.LogError($"{e.Message}\r\n{e.StackTrace}");
+            _logger.LogError(e, $"{e.Message}\r\n{e.StackTrace}");
         }
-
-        return Unit.Value;
     }
 }
