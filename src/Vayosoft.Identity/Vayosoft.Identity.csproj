@@ -6,8 +6,8 @@
 	  <LangVersion>latest</LangVersion>
 	  <Company>Vayosoft</Company>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageVersion>2.4.0</PackageVersion>
-	  <Version>1.0.0</Version>
+	  <PackageVersion>8.0.0</PackageVersion>
+	  <Version>2.0.0</Version>
 	  <SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
 	  <Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 10000))))</Revision>
 	  <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -28,8 +28,8 @@
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>

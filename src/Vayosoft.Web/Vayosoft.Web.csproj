@@ -6,8 +6,8 @@
 	  <LangVersion>latest</LangVersion>
 	  <Company>Vayosoft</Company>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageVersion>2.4.0</PackageVersion>
-	  <Version>1.0.0</Version>
+	  <PackageVersion>8.0.0</PackageVersion>
+	  <Version>2.0.0</Version>
 	  <SecondsSinceEpoch>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::MinValue)).TotalMinutes)</SecondsSinceEpoch>
 	  <Revision>$([System.Math]::Truncate($([System.Decimal]::Remainder($(SecondsSinceEpoch), 10000))))</Revision>
 	  <AssemblyVersion>$(Version)</AssemblyVersion>
