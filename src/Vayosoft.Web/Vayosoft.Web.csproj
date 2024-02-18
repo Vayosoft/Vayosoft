@@ -27,7 +27,7 @@
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="LanguageExt.Core" Version="4.4.7" />
+    <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
