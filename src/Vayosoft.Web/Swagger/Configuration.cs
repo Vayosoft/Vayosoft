@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Vayosoft.Web.Swagger
 {
@@ -56,12 +53,12 @@ namespace Vayosoft.Web.Swagger
                     //new QueryStringApiVersionReader("x-api-version"),
                     //new MediaTypeApiVersionReader("x-api-version"), //accept
                     new HeaderApiVersionReader("x-api-version"));
-            });
-            services.AddVersionedApiExplorer(setup =>
+            }).AddApiExplorer(setup =>
             {
                 setup.GroupNameFormat = "'v'VVV";
                 setup.SubstituteApiVersionInUrl = true;
             });
+
             return services;
         }
     }

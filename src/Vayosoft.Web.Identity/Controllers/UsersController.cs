@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,7 @@ using Vayosoft.Identity.Extensions;
 using Vayosoft.Identity.Security;
 using Vayosoft.Identity.Security.Commands;
 using Vayosoft.Identity.Security.Models;
-using Vayosoft.Identity.Specifications;
 using Vayosoft.Persistence.Commands;
-using Vayosoft.Persistence.Queries;
 using Vayosoft.Queries;
 using Vayosoft.Utilities;
 using Vayosoft.Web.Controllers;
