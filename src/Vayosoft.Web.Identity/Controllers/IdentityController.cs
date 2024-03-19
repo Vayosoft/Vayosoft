@@ -77,12 +77,20 @@ namespace Vayosoft.Web.Identity.Controllers
                 return BadRequest(ModelState);
             }
 
-            var authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(refreshToken), async options =>
+            AuthenticationResult authResult;
+            try
             {
-                options.AbsoluteExpirationRelativeToNow = TimeSpans.Minute;
-                var response = await _authService.RefreshTokenAsync(refreshToken, HttpContext.GetIpAddress(), cancellationToken);
-                return response;
-            });
+                authResult = await _cache.GetOrCreateExclusiveAsync(CacheKey.With<TokenRequest>(refreshToken), async options =>
+                   {
+                       options.AbsoluteExpirationRelativeToNow = TimeSpans.Minute;
+                       var response = await _authService.RefreshTokenAsync(refreshToken, HttpContext.GetIpAddress(), cancellationToken);
+                       return response;
+                   });
+            }
+            catch (ApplicationException)
+            {
+                return StatusCode(401);
+            }
 
             HttpContext.SetTokenCookie(authResult.RefreshToken, _env.IsProduction());
             var response = new AuthenticationResponse(
